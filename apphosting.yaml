@@ -1,0 +1,7 @@
+runtime: nodejs20
+build:
+  commands:
+    - npm ci
+    - npm run build
+run:
+  command: npm start
