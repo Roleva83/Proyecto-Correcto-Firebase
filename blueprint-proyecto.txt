@@ -1,0 +1,1513 @@
+# **  ️ BLUEPRINT - LOLA DE CAÑA Y RESEÑA**
+
+## **📋 RESUMEN EJECUTIVO**
+
+**Caña y Reseña** es una plataforma SaaS integral para la gestión de reputación y automatización de restaurantes y negocios gastronómicos. La aplicación utiliza tecnologías modernas para proporcionar análisis de reseñas, automatización con IA, y herramientas de gestión empresarial.
+
+---
+
+## **🏛️ ARQUITECTURA GENERAL**
+
+### **Stack Tecnológico Principal:**
+- **Frontend:** React 18 + TypeScript + Vite
+- **UI Framework:** Tailwind CSS + Shadcn/ui + Radix UI
+- **Backend:** Supabase (PostgreSQL + Auth + Edge Functions)
+- **Estado:** React Context + TanStack Query
+- **Routing:** React Router DOM (HashRouter)
+- **IA:** OpenAI GPT-4 + Anthropic Claude
+- **Deployment:** Lovable.app (Static Hosting)
+
+### **Patrón Arquitectónico:**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Supabase      │    │   External APIs │
+│   (React/TS)    │◄──►│   (Backend)     │◄──►│   (OpenAI, etc) │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+---
+
+## **📦 ANÁLISIS COMPLETO DE DEPENDENCIAS**
+
+### **Dependencias Críticas por Categoría:**
+
+#### **🔐 Autenticación y Backend:**
+```json
+"@supabase/supabase-js": "^2.52.0"        // Cliente principal de Supabase
+"@supabase/auth-ui-react": "^0.4.7"       // UI de autenticación
+"@supabase/auth-ui-shared": "^0.1.8"      // Componentes compartidos de auth
+```
+
+#### **🤖 Inteligencia Artificial:**
+```json
+"@anthropic-ai/sdk": "^0.59.0"            // Claude AI
+"openai": "^5.12.2"                       // GPT-4
+"@google-cloud/local-auth": "^3.0.1"      // Google APIs
+"googleapis": "^155.0.0"                  // Google My Business
+```
+
+#### **📊 Visualización y Charts:**
+```json
+"recharts": "^2.12.7"                     // Gráficos y visualizaciones
+"embla-carousel-react": "^8.3.0"          // Carousels
+"react-day-picker": "^8.10.1"             // Selector de fechas
+```
+
+#### **🎨 UI/UX Framework:**
+```json
+"@radix-ui/react-*"                       // 20+ componentes base
+"class-variance-authority": "^0.7.1"      // Variantes de componentes
+"tailwind-merge": "^2.5.2"                // Merge de clases CSS
+"tailwindcss-animate": "^1.0.7"           // Animaciones
+```
+
+#### **🔄 Estado y Formularios:**
+```json
+"@tanstack/react-query": "^5.56.2"        // Gestión de estado del servidor
+"react-hook-form": "^7.53.0"              // Formularios
+"@hookform/resolvers": "^3.9.0"           // Validación de formularios
+"zod": "^3.23.8"                          // Validación de esquemas
+```
+
+#### **🔧 Utilidades:**
+```json
+"axios": "^1.10.0"                        // HTTP client
+"date-fns": "^3.6.0"                      // Manipulación de fechas
+"clsx": "^2.1.1"                          // Clases CSS condicionales
+"cmdk": "^1.0.0"                          // Comando palette
+"qrcode": "^1.5.4"                        // Generación de QR
+"speakeasy": "^2.0.0"                     // 2FA
+```
+
+---
+
+## **📁 ESTRUCTURA DE DIRECTORIOS COMPLETA**
+
+```
+prueba-cana-resena/
+├── 📁 src/                          # Código fuente principal
+│   ├── 📁 components/               # Componentes reutilizables
+│   │   ├── 📁 ui/                   # Componentes base (Shadcn/ui)
+│   │   │   ├── accordion.tsx
+│   │   │   ├── alert-dialog.tsx
+│   │   │   ├── avatar.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── button.tsx
+│   │   │   ├── calendar.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── carousel.tsx
+│   │   │   ├── chart.tsx
+│   │   │   ├── checkbox.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   ├── command.tsx
+│   │   │   ├── context-menu.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── drawer.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── form.tsx
+│   │   │   ├── hover-card.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── menubar.tsx
+│   │   │   ├── navigation-menu.tsx
+│   │   │   ├── pagination.tsx
+│   │   │   ├── popover.tsx
+│   │   │   ├── progress.tsx
+│   │   │   ├── radio-group.tsx
+│   │   │   ├── resizable.tsx
+│   │   │   ├── scroll-area.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── separator.tsx
+│   │   │   ├── sheet.tsx
+│   │   │   ├── sidebar.tsx
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── slider.tsx
+│   │   │   ├── sonner.tsx
+│   │   │   ├── switch.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   ├── textarea.tsx
+│   │   │   ├── toast.tsx
+│   │   │   ├── toaster.tsx
+│   │   │   ├── toggle-group.tsx
+│   │   │   ├── toggle.tsx
+│   │   │   └── tooltip.tsx
+│   │   ├── 📁 auth/                 # Componentes de autenticación
+│   │   │   ├── AuthForm.tsx
+│   │   │   ├── CustomAuthForm.tsx
+│   │   │   ├── LogoutButton.tsx
+│   │   │   ├── ProtectedRoute.tsx
+│   │   │   └── PublicRoute.tsx
+│   │   ├── 📁 dashboard/            # Widgets del dashboard
+│   │   │   ├── WidgetContainer.tsx
+│   │   │   ├── WidgetSelectorModal.tsx
+│   │   │   └──    widgets/
+│   │   │       ├── AITipsWidget.tsx
+│   │   │       ├── DishesRankingWidget.tsx
+│   │   │       ├── GamificationWidget.tsx
+│   │   │       ├── LolaAlertsWidget.tsx
+│   │   │       ├── MetricsWidget.tsx
+│   │   │       ├── ProgressByAreaWidget.tsx
+│   │   │       ├── ReservationSourcesWidget.tsx
+│   │   │       ├── ReviewsWidget.tsx
+│   │   │       └── SalesChartWidget.tsx
+│   │   ├── 📁 layout/               # Componentes de layout
+│   │   │   ├── AppLayout.tsx
+│   │   │   ├── CookieBanner.tsx
+│   │   │   ├── Header.tsx
+│   │   │   ├── OnboardingTour.tsx
+│   │   │   └── Sidebar.tsx
+│   │   ├── 📁 lola/                 # Componentes de IA (Lola)
+│   │   │   ├── AutomationModal.tsx
+│   │   │   ├── LolaChatCompact.tsx
+│   │   │   ├── LolaChatInterface.tsx
+│   │   │   ├── MoreActionsModal.tsx
+│   │   │   ├── 📁 core/
+│   │   │   │   └── LolaEngine.tsx
+│   │   │   └──    interface/
+│   │   │       ├── LolaChat.tsx
+│   │   │       └── LolaDashboard.tsx
+│   │   ├── 📁 settings/             # Componentes de configuración
+│   │   │   └── UserManagement.tsx
+│   │   ├── 📁 support/              # Componentes de soporte
+│   │   │   └── SupportChat.tsx
+│   │   ├── 📁 forms/                # Formularios especializados
+│   │   │   └── ContactForm.tsx
+│   │   └── 📁 landing/              # Componentes de landing
+│   │       ├── AIAnalysisModule.tsx
+│   │       └── ReviewsDisplay.tsx
+│   ├── 📁 pages/                    # Páginas principales
+│   │   ├── 📁 Auth/                 # Páginas de autenticación
+│   │   │   ├── ConfirmEmail.tsx
+│   │   │   ├── ForgotPassword.tsx
+│   │   │   ├── Login.tsx
+│   │   │   └── Register.tsx
+│   │   ├── ActivityLog.tsx
+│   │   ├── Auth.tsx
+│   │   ├── Automations.tsx
+│   │   ├── Contact.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── Growth.tsx
+│   │   ├── HelpCenter.tsx
+│   │   ├── Index.tsx
+│   │   ├── Integrations.tsx
+│   │   ├── Landing.tsx
+│   │   ├── Legal.tsx
+│   │   ├── Lola.tsx
+│   │   ├── LolaChat.tsx
+│   │   ├── Marketing.tsx
+│   │   ├── NotFound.tsx
+│   │   ├── Reviews.tsx
+│   │   ├── Settings.tsx
+│   │   └── UserPreferences.tsx
+│   ├── 📁 contexts/                 # Contextos de React
+│   │   ├── AuthContext.tsx
+│   │   ├── LolaChatContext.tsx
+│   │   └── use-auth.ts
+│   ├── 📁 hooks/                    # Custom hooks
+│   │   ├── use-mobile.tsx
+│   │   ├── use-toast.ts
+│   │   ├── useAI.ts
+│   │   ├── useBusinessData.ts
+│   │   ├── useBusinessUsers.ts
+│   │   ├── useClientesCount.ts
+│   │   ├── useCurrentUserProfile.ts
+│   │   ├── useLolaChat.ts
+│   │   └── useReputationAnalysis.ts
+│   ├── 📁 lib/                      # Utilidades y configuraciones
+│   │   ├── ai.ts
+│   │   ├── backup.ts
+│   │   ├── notifications.ts
+│   │   ├── performance.ts
+│   │   ├── reports.ts
+│   │   ├── security.ts
+│   │   ├── supabase.ts
+│   │   └── utils.ts
+│   ├── 📁 types/                    # Definiciones de TypeScript
+│   │   └── index.ts
+│   ├── 📁 integrations/             # Integraciones externas
+│   │   └── 📁 supabase/
+│   │       ├── client.ts
+│   │       └── types.ts
+│   ├── 📁 config/                   # Configuraciones
+│   │   ├── pricing.ts
+│   │   └── project-config.ts
+│   ├── 📁 utils/                    # Utilidades adicionales
+│   │   └── chatFallback.ts
+│   ├── 📁 test/                     # Tests
+│   │   ├── ai.test.ts
+│   │   ├── basic.test.ts
+│   │   ├── performance.test.ts
+│   │   ├── pricing.test.ts
+│   │   ├── security.test.ts
+│   │   ├── setup.ts
+│   │   ├── system-verification.ts
+│   │   └── verification.ts
+│   ├── 📁 assets/                   # Assets estáticos
+│   │   ├── cafe-interior.jpg
+│   │   ├── restaurant-owner-tablet.jpg
+│   │   ├── restaurant-terrace.jpg
+│   │   └── waiter-reviews.jpg
+│   ├── App.tsx                      # Componente principal
+│   ├── App.css                      # Estilos del componente principal
+│   ├── main.tsx                     # Punto de entrada
+│   ├── index.css                    # Estilos globales
+│   └── vite-env.d.ts                # Tipos de Vite
+├── 📁 supabase/                     # Configuración de Supabase
+│   ├── 📁 migrations/               # Migraciones de BD
+│   │   ├── 20250713214351-485678d1-65bb-4453-8b7c-592ab0f6c22e.sql
+│   │   ├── 20250713221409-3d9583f6-1717-4013-bf99-cb72392a28aa.sql
+│   │   ├── 20250713221447-5d6d7106-4ade-4c24-be69-b9c33c5a13f8.sql
+│   │   ├── 20250713221518-c2d16da3-8e0d-48c2-96d7-510fc31f009a.sql
+│   │   ├── 20250713222954-410186fe-6e34-46d7-8599-ba47c9c45d6d.sql
+│   │   ├── 20250713223019-8a3890a6-731f-4da0-b38d-d9456489831a.sql
+│   │   ├── 20250713225949-2703ac7f-7ea0-474b-9d58-bf689ebfdca8.sql
+│   │   ├── 20250715211155-8df5ed83-9394-416d-8dc0-07af90de50bd.sql
+│   │   ├── 20250718173705-fce5b0b2-2547-47d9-9b89-337e6ff2a767.sql
+│   │   ├── 20250721112213-69582849-6c4a-487f-8028-c368808193a7.sql
+│   │   ├── 20250808222410_99b2702b-8835-4781-9afe-6ed0095231ac.sql
+│   │   ├── 20250808223500-security-fixes.sql
+│   │   ├── 20250808224500-security-infra.sql
+│   │   └── 20250808225200-usuarios-role-guard.sql
+│   ├── 📁 functions/                # Edge Functions
+│   │   ├──    analyze-reputation/
+│   │   │   └── index.ts
+│   │   ├── 📁 handle-contact/
+│   │   │   └── index.ts
+│   │   └──    lola-chat/
+│   └── config.toml                  # Configuración de Supabase
+├── 📁 database/                     # Esquemas y scripts de BD
+│   ├── fix-rls-policies.sql
+│   ├── schema.sql
+│   ├── setup.sql
+│   └── update-businesses.sql
+├── 📁 scripts/                      # Scripts de utilidad
+│   ├── diagnose-auth.js
+│   ├── setup-supabase.js
+│   ├── test-connection.js
+│   └── verify-supabase.js
+├── 📁 public/                       # Assets públicos
+│   ├── _redirects
+│   ├── favicon.ico
+│   ├── placeholder.svg
+│   └── robots.txt
+├── 📁 dist/                         # Build de producción
+├── 📁 node_modules/                 # Dependencias
+├── package.json                     # Configuración del proyecto
+├── pnpm-lock.yaml                   # Lock file de pnpm
+├── bun.lockb                        # Lock file de bun
+├── package-lock.json                # Lock file de npm
+├── vite.config.ts                   # Configuración de Vite
+├── tailwind.config.ts               # Configuración de Tailwind
+├── tsconfig.json                    # Configuración de TypeScript
+├── tsconfig.app.json                # Configuración de TS para app
+├── tsconfig.node.json               # Configuración de TS para node
+├── eslint.config.js                 # Configuración de ESLint
+├── vitest.config.ts                 # Configuración de Vitest
+├── postcss.config.js                # Configuración de PostCSS
+├── components.json                  # Configuración de Shadcn/ui
+├── index.html                       # HTML principal
+├── env.example                      # Variables de entorno de ejemplo
+├── README.md                        # Documentación principal
+├── PROYECTO_PLAN.md                 # Plan del proyecto
+├── TECHNICAL_DOCS.md                # Documentación técnica
+├── SUPABASE_CHECKLIST.md            # Checklist de Supabase
+├── SUPABASE_SETUP.md                # Setup de Supabase
+├── SETUP_CHECKLIST.md               # Checklist de setup
+├── VERIFICATION_CHECKLIST.md        # Checklist de verificación
+├── prd                              # Product Requirements Document
+└── .gitignore                       # Archivos ignorados por Git
+```
+
+---
+
+## **⚙️ CONFIGURACIÓN DE BUILD Y DEPLOYMENT**
+
+### **Vite Configuration:**
+```typescript
+// vite.config.ts - Configuración crítica
+import { defineConfig, ViteDevServer } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
+
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",           // Acceso desde cualquier IP
+    port: 8080,           // Puerto de desarrollo
+  },
+  plugins: [
+    react(),              // Plugin de React
+    mode === 'development' && componentTagger(), // Lovable component tagging
+    // Plugin para manejar rutas SPA
+    {
+      name: 'spa-fallback',
+      configureServer: (server: ViteDevServer) => {
+        server.middlewares.use((req: any, res: any, next: any) => {
+          // Si la ruta no es un archivo estático, redirigir a index.html
+          if (req.url && !req.url.includes('.') && req.url !== '/') {
+            req.url = '/';
+          }
+          next();
+        });
+      },
+    },
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"), // Path aliases
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // Optimización de chunks
+      },
+    },
+  },
+}))
+```
+
+### **Scripts de Build:**
+```json
+{
+  "dev": "vite",                    // Desarrollo local
+  "build": "vite build",            // Build de producción
+  "build:dev": "vite build --mode development",
+  "preview": "vite preview",        // Preview del build
+  "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+  "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+  "type-check": "tsc --noEmit",
+  "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+  "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+  "test": "vitest",
+  "test:ui": "vitest --ui",
+  "test:run": "vitest run",
+  "test:coverage": "vitest run --coverage",
+  "test:watch": "vitest --watch",
+  "test:e2e": "playwright test",
+  "prepare": "husky install",
+  "db:generate": "supabase gen types typescript --local > src/types/supabase.ts",
+  "db:push": "supabase db push",    // Push de migraciones
+  "db:reset": "supabase db reset",
+  "db:studio": "supabase studio",
+  "functions:deploy": "supabase functions deploy",
+  "functions:new": "supabase functions new"
+}
+```
+
+---
+
+## **🔐 SISTEMA DE AUTENTICACIÓN**
+
+### **Componentes Principales:**
+- **`AuthContext.tsx`** - Contexto global de autenticación
+- **`AuthForm.tsx`** - Formulario principal de login/registro
+- **`CustomAuthForm.tsx`** - Formulario personalizado
+- **`ProtectedRoute.tsx`** - Wrapper para rutas protegidas
+- **`PublicRoute.tsx`** - Wrapper para rutas públicas
+- **`LogoutButton.tsx`** - Botón de cierre de sesión
+
+### **Flujo de Autenticación:**
+```
+1. Usuario accede → AuthProvider verifica sesión
+2. Si no autenticado → Redirige a /auth
+3. Login/Registro → Supabase Auth
+4. Sesión válida → Acceso al dashboard
+5. Logout → Limpia sesión y redirige
+```
+
+### **Características:**
+- ✅ Registro con email/password
+- ✅ Magic link para login sin contraseña
+- ✅ Recuperación de contraseña
+- ✅ Gestión de sesiones persistentes
+- ✅ Roles: Owner, Manager, Employee
+- ✅ Confirmación de email
+- ✅ Protección de rutas
+
+---
+
+## **🏠 PÁGINAS PRINCIPALES DETALLADAS**
+
+### **1. Landing Page (`/`)**
+- **Archivo:** `src/pages/Landing.tsx` (23KB, 433 líneas)
+- **Propósito:** Página de aterrizaje para nuevos usuarios
+- **Componentes:** 
+  - Hero section con CTA
+  - Features destacadas
+  - Pricing plans
+  - Testimonials
+  - AIAnalysisModule
+  - ReviewsDisplay
+- **Funcionalidades:** 
+  - Formulario de contacto
+  - Demo interactivo
+  - Navegación a registro
+
+### **2. Dashboard (`/dashboard`)**
+- **Archivo:** `src/pages/Dashboard.tsx` (60KB, 1482 líneas)
+- **Propósito:** Panel principal de control
+- **Widgets Implementados:**
+  - MetricsWidget - KPIs principales
+  - ReviewsWidget - Reseñas recientes
+  - SalesChartWidget - Gráficos de ventas
+  - AITipsWidget - Recomendaciones de IA
+  - LolaAlertsWidget - Alertas proactivas
+  - GamificationWidget - Sistema de puntos
+  - DishesRankingWidget - Ranking de platos
+  - ProgressByAreaWidget - Progreso por áreas
+  - ReservationSourcesWidget - Fuentes de reservas
+- **Funcionalidades:**
+  - Widgets configurables
+  - Drag & drop para reorganizar
+  - Filtros por período
+  - Exportación de datos
+
+### **3. Reviews (`/reviews`)**
+- **Archivo:** `src/pages/Reviews.tsx` (8.6KB, 239 líneas)
+- **Propósito:** Gestión de reseñas y reputación
+- **Funcionalidades:**
+  - Visualización de reseñas por plataforma
+  - Análisis de sentimiento
+  - Respuestas automáticas con IA
+  - Filtros y búsqueda avanzada
+  - Exportación a CSV/Excel
+  - Integración con Google My Business
+
+### **4. Lola (`/lola`)**
+- **Archivo:** `src/pages/Lola.tsx` (26KB, 655 líneas)
+- **Propósito:** Asistente de IA para el negocio
+- **Componentes:**
+  - LolaChat - Chat interactivo
+  - LolaDashboard - Panel de análisis
+  - LolaEngine - Motor de IA
+  - AutomationModal - Configuración de automatizaciones
+- **Funcionalidades:**
+  - Chat interactivo con IA
+  - Análisis automático de datos
+  - Recomendaciones personalizadas
+  - Automatización de tareas
+  - Integración con OpenAI y Claude
+
+### **5. Settings (`/settings`)**
+- **Archivo:** `src/pages/Settings.tsx` (43KB, 930 líneas)
+- **Propósito:** Configuración del negocio
+- **Secciones:**
+  - Perfil del negocio
+  - Configuración de integraciones
+  - Gestión de usuarios (UserManagement)
+  - Preferencias de notificaciones
+  - Configuración de IA
+  - Backup y exportación
+
+### **6. Marketing (`/marketing`)**
+- **Archivo:** `src/pages/Marketing.tsx` (29KB, 637 líneas)
+- **Propósito:** Automatización de marketing
+- **Funcionalidades:**
+  - Campañas de email
+  - Integración con WhatsApp
+  - Segmentación de clientes
+  - Análisis de ROI
+  - Templates personalizables
+
+### **7. Growth (`/growth`)**
+- **Archivo:** `src/pages/Growth.tsx` (23KB, 467 líneas)
+- **Propósito:** Análisis de crecimiento
+- **Funcionalidades:**
+  - Métricas de crecimiento
+  - Comparación con competencia
+  - Predicciones y tendencias
+  - Recomendaciones de expansión
+
+### **8. Integrations (`/integrations`)**
+- **Archivo:** `src/pages/Integrations.tsx` (9.9KB, 218 líneas)
+- **Propósito:** Gestión de integraciones externas
+- **Integraciones:**
+  - Google My Business
+  - TripAdvisor
+  - TheFork
+  - Sistemas TPV
+  - Make.com / Zapier
+
+### **9. Auth (`/auth/*`)**
+- **Archivos:**
+  - `src/pages/Auth.tsx` (457B, 17 líneas) - Router de auth
+  - `src/pages/Auth/Login.tsx` - Página de login
+  - `src/pages/Auth/Register.tsx` - Página de registro
+  - `src/pages/Auth/ForgotPassword.tsx` - Recuperación de contraseña
+  - `src/pages/Auth/ConfirmEmail.tsx` - Confirmación de email
+
+### **10. Otras Páginas:**
+- **Contact:** `src/pages/Contact.tsx` (5.9KB, 125 líneas)
+- **HelpCenter:** `src/pages/HelpCenter.tsx` (3.3KB, 81 líneas)
+- **Legal:** `src/pages/Legal.tsx` (2.2KB, 37 líneas)
+- **Automations:** `src/pages/Automations.tsx` (3.2KB, 88 líneas)
+- **ActivityLog:** `src/pages/ActivityLog.tsx` (2.7KB, 69 líneas)
+- **UserPreferences:** `src/pages/UserPreferences.tsx` (2.8KB, 72 líneas)
+- **NotFound:** `src/pages/NotFound.tsx` (766B, 28 líneas)
+
+---
+
+## **🏗️ ARQUITECTURA DE COMPONENTES DETALLADA**
+
+### **Dashboard Widgets (9 widgets implementados):**
+
+#### **1. MetricsWidget.tsx**
+- **Propósito:** KPIs principales del negocio
+- **Métricas:** Rating promedio, total reseñas, crecimiento
+- **Actualización:** Tiempo real con React Query
+- **Visualización:** Cards con iconos y tendencias
+
+#### **2. ReviewsWidget.tsx**
+- **Propósito:** Vista rápida de reseñas recientes
+- **Funcionalidades:** Filtro por plataforma, sentimiento
+- **Integración:** Supabase real-time subscriptions
+- **Acciones:** Responder, marcar como leída
+
+#### **3. SalesChartWidget.tsx**
+- **Propósito:** Gráficos de ventas y tendencias
+- **Visualización:** Recharts con múltiples tipos de gráficos
+- **Datos:** Integración con TPV y sistemas de ventas
+- **Períodos:** Diario, semanal, mensual, anual
+
+#### **4. AITipsWidget.tsx**
+- **Propósito:** Recomendaciones de IA en tiempo real
+- **Fuente:** OpenAI GPT-4 + Claude
+- **Contexto:** Análisis de datos del negocio
+- **Acciones:** Aplicar recomendación, descartar
+
+#### **5. LolaAlertsWidget.tsx**
+- **Propósito:** Alertas proactivas del sistema
+- **Tipos:** Reseñas negativas, tendencias, oportunidades
+- **Acciones:** Respuestas automáticas sugeridas
+- **Prioridad:** Alta, media, baja
+
+#### **6. GamificationWidget.tsx**
+- **Propósito:** Sistema de puntos y niveles para empleados
+- **Métricas:** Puntos por reseñas, upselling, servicio
+- **Motivación:** Rankings y recompensas
+- **Visualización:** Leaderboards y badges
+
+#### **7. DishesRankingWidget.tsx**
+- **Propósito:** Análisis de popularidad de platos
+- **Datos:** Reseñas, ventas, feedback
+- **Insights:** Recomendaciones de menú
+- **Métricas:** Rating, ventas, tendencias
+
+#### **8. ProgressByAreaWidget.tsx**
+- **Propósito:** Progreso por áreas del negocio
+- **Áreas:** Servicio, comida, ambiente, limpieza
+- **Visualización:** Barras de progreso con targets
+- **Acciones:** Establecer objetivos
+
+#### **9. ReservationSourcesWidget.tsx**
+- **Propósito:** Análisis de fuentes de reservas
+- **Plataformas:** Google, TheFork, WhatsApp, directo
+- **Optimización:** ROI por canal
+- **Visualización:** Gráficos de dona y barras
+
+---
+
+## **🗄️ BASE DE DATOS (Supabase) - ESQUEMA COMPLETO**
+
+### **Tablas Principales:**
+
+#### **1. `businesses`**
+```sql
+CREATE TABLE businesses (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  owner_id UUID REFERENCES auth.users(id),
+  subscription_plan VARCHAR(50) DEFAULT 'basic',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **2. `employees`**
+```sql
+CREATE TABLE employees (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255),
+  points INTEGER DEFAULT 0,
+  level VARCHAR(50) DEFAULT 'Novato',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **3. `employee_points`**
+```sql
+CREATE TABLE employee_points (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  employee_id UUID REFERENCES employees(id) ON DELETE CASCADE,
+  points_type VARCHAR(100) NOT NULL,
+  points_earned INTEGER NOT NULL,
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **4. `reviews`**
+```sql
+CREATE TABLE reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  platform VARCHAR(100) NOT NULL,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  comment TEXT,
+  author VARCHAR(255),
+  date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  sentiment VARCHAR(50) DEFAULT 'neutral',
+  category VARCHAR(100),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **5. `lola_analyses`**
+```sql
+CREATE TABLE lola_analyses (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  analysis_type VARCHAR(50) NOT NULL,
+  data JSONB,
+  insights TEXT[],
+  recommendations JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **6. `integrations`**
+```sql
+CREATE TABLE integrations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  provider VARCHAR(100) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  credentials JSONB,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **7. `referrals`**
+```sql
+CREATE TABLE referrals (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  referrer_business_id UUID REFERENCES businesses(id),
+  referred_business_id UUID REFERENCES businesses(id),
+  status VARCHAR(50) DEFAULT 'pending',
+  points_earned INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **8. `marketing_campaigns`**
+```sql
+CREATE TABLE marketing_campaigns (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  name VARCHAR(255) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  status VARCHAR(50) DEFAULT 'draft',
+  target_audience JSONB,
+  content TEXT,
+  scheduled_date TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### **9. `reservations`**
+```sql
+CREATE TABLE reservations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  customer_name VARCHAR(255) NOT NULL,
+  customer_email VARCHAR(255),
+  customer_phone VARCHAR(50),
+  date TIMESTAMP WITH TIME ZONE NOT NULL,
+  party_size INTEGER NOT NULL,
+  status VARCHAR(50) DEFAULT 'confirmed',
+  source VARCHAR(100),
+  notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### **Índices Optimizados:**
+```sql
+CREATE INDEX idx_businesses_owner_id ON businesses(owner_id);
+CREATE INDEX idx_employees_business_id ON employees(business_id);
+CREATE INDEX idx_reviews_business_id ON reviews(business_id);
+CREATE INDEX idx_reviews_platform ON reviews(platform);
+CREATE INDEX idx_reviews_date ON reviews(date);
+CREATE INDEX idx_reservations_business_id ON reservations(business_id);
+CREATE INDEX idx_reservations_date ON reservations(date);
+CREATE INDEX idx_lola_analyses_business_id ON lola_analyses(business_id);
+CREATE INDEX idx_lola_analyses_type ON lola_analyses(analysis_type);
+```
+
+### **Triggers y Funciones:**
+```sql
+-- Función para actualizar updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Trigger para businesses
+CREATE TRIGGER update_businesses_updated_at 
+    BEFORE UPDATE ON businesses 
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+```
+
+---
+
+## **🔧 EDGE FUNCTIONS (Supabase) - DETALLADO**
+
+### **1. analyze-reputation/**
+- **Archivo:** `supabase/functions/analyze-reputation/index.ts`
+- **Propósito:** Análisis automático de reputación
+- **Input:** URLs de plataformas de reseñas
+- **Output:** Análisis de sentimiento, insights, recomendaciones
+- **APIs:** SerpAPI, OpenAI, Google My Business
+- **Funcionalidades:**
+  - Extracción de reseñas
+  - Análisis de sentimiento
+  - Detección de patrones
+  - Generación de insights
+  - Recomendaciones de mejora
+
+### **2. lola-chat/**
+- **Archivo:** `supabase/functions/lola-chat/index.ts`
+- **Propósito:** Chat interactivo con IA
+- **Funcionalidades:**
+  - Contexto del negocio
+  - Respuestas personalizadas
+  - Integración con OpenAI GPT-4 + Claude
+  - Memoria de conversación persistente
+  - Análisis de datos en tiempo real
+  - Generación de reportes
+
+### **3. handle-contact/**
+- **Archivo:** `supabase/functions/handle-contact/index.ts`
+- **Propósito:** Procesamiento de formularios de contacto
+- **Validación:** Zod schemas
+- **Notificaciones:** Email automático
+- **Integración:** CRM y sistemas de tickets
+- **Funcionalidades:**
+  - Validación de datos
+  - Envío de confirmación
+  - Notificación a administradores
+  - Almacenamiento en base de datos
+
+---
+
+## **🤖 SISTEMA DE IA (LOLA) - DETALLADO**
+
+### **Arquitectura de IA:**
+- **Proveedor Principal:** OpenAI GPT-4
+- **Proveedor Secundario:** Anthropic Claude
+- **Integración:** API REST + Edge Functions
+- **Contexto:** Datos del negocio en tiempo real
+
+### **Componentes de IA:**
+
+#### **1. LolaEngine.tsx**
+- **Propósito:** Motor principal de IA
+- **Funcionalidades:**
+  - Análisis de datos
+  - Generación de insights
+  - Toma de decisiones
+  - Aprendizaje continuo
+
+#### **2. LolaChat.tsx**
+- **Propósito:** Interfaz de chat con IA
+- **Características:**
+  - Chat en tiempo real
+  - Contexto persistente
+  - Respuestas personalizadas
+  - Sugerencias inteligentes
+
+#### **3. LolaDashboard.tsx**
+- **Propósito:** Panel de control de IA
+- **Funcionalidades:**
+  - Métricas de IA
+  - Configuración de modelos
+  - Historial de interacciones
+  - Análisis de performance
+
+### **Funcionalidades de IA:**
+
+#### **1. Análisis de Reseñas**
+- Detección de sentimiento
+- Extracción de temas principales
+- Identificación de patrones
+- Sugerencias de mejora
+- Clasificación automática
+
+#### **2. Respuestas Automáticas**
+- Generación de respuestas personalizadas
+- Ajuste de tono por negocio
+- Revisión manual antes de publicación
+- Aprendizaje de respuestas exitosas
+
+#### **3. Predicciones y Alertas**
+- Análisis de tendencias
+- Predicción de afluencia
+- Alertas proactivas
+- Recomendaciones de precios
+
+#### **4. Automatización**
+- Tareas programadas
+- Integración con sistemas externos
+- Workflows personalizados
+- Optimización automática
+
+---
+
+## **🔌 INTEGRACIONES EXTERNAS - DETALLADO**
+
+### **APIs Integradas:**
+
+#### **1. Google My Business**
+- **Propósito:** Gestión de presencia online
+- **Funcionalidades:**
+  - Obtener reseñas
+  - Publicar respuestas
+  - Actualizar información
+  - Análisis de insights
+- **Configuración:** OAuth 2.0
+
+#### **2. SerpAPI**
+- **Propósito:** Extracción de datos web
+- **Funcionalidades:**
+  - Extracción de reseñas
+  - Análisis de competencia
+  - Monitoreo de reputación
+  - Búsqueda de keywords
+- **Configuración:** API Key
+
+#### **3. Make.com / Zapier**
+- **Propósito:** Automatización de workflows
+- **Funcionalidades:**
+  - Conexión con sistemas TPV
+  - Sincronización de datos
+  - Automatización de marketing
+  - Integración con CRM
+- **Configuración:** Webhooks
+
+#### **4. Plataformas de Reseñas**
+- **TripAdvisor:**
+  - API oficial
+  - Extracción de reseñas
+  - Respuestas automáticas
+- **TheFork:**
+  - Integración directa
+  - Gestión de reservas
+  - Análisis de feedback
+- **Yelp:**
+  - API pública
+  - Monitoreo de reseñas
+  - Análisis de competencia
+- **Facebook Reviews:**
+  - Graph API
+  - Gestión de reseñas
+  - Análisis de engagement
+
+#### **5. Sistemas TPV**
+- **Integración genérica:**
+  - API REST
+  - Webhooks
+  - Sincronización en tiempo real
+  - Análisis de ventas
+
+---
+
+## **   SISTEMA DE UI/UX - DETALLADO**
+
+### **Framework de Componentes:**
+- **Base:** Shadcn/ui + Radix UI
+- **Estilos:** Tailwind CSS
+- **Iconos:** Lucide React
+- **Temas:** Next-themes (dark/light)
+
+### **Patrón de Diseño:**
+```
+┌─────────────────────────────────────┐
+│ Header (Navigation + User Menu)     │
+├─────────────────────────────────────┤
+│ Sidebar (Navigation)                │
+│                                     │
+├─────────────────────────────────────┤
+│ Main Content Area                   │
+│ ┌─────────────────────────────────┐ │
+│ │ Page Content                    │ │
+│ │                                 │ │
+│ └─────────────────────────────────┘ │
+└─────────────────────────────────────┘
+```
+
+### **Componentes Principales:**
+
+#### **Layout Components:**
+- **Header.tsx:** Navegación principal y menú de usuario
+- **Sidebar.tsx:** Navegación lateral colapsable
+- **AppLayout.tsx:** Layout principal de la aplicación
+- **CookieBanner.tsx:** Banner de cookies
+- **OnboardingTour.tsx:** Tour de bienvenida
+
+#### **Form Components:**
+- **Input.tsx:** Campos de entrada
+- **Button.tsx:** Botones con variantes
+- **Form.tsx:** Formularios con validación
+- **Select.tsx:** Selectores desplegables
+- **Checkbox.tsx:** Casillas de verificación
+- **RadioGroup.tsx:** Grupos de opciones
+
+#### **Data Display Components:**
+- **Table.tsx:** Tablas de datos
+- **Card.tsx:** Tarjetas de información
+- **Chart.tsx:** Gráficos y visualizaciones
+- **Badge.tsx:** Etiquetas y badges
+- **Avatar.tsx:** Avatares de usuario
+
+#### **Feedback Components:**
+- **Toast.tsx:** Notificaciones toast
+- **Alert.tsx:** Alertas y mensajes
+- **Dialog.tsx:** Modales y diálogos
+- **Progress.tsx:** Barras de progreso
+- **Skeleton.tsx:** Placeholders de carga
+
+#### **Navigation Components:**
+- **NavigationMenu.tsx:** Menús de navegación
+- **Breadcrumb.tsx:** Migas de pan
+- **Tabs.tsx:** Pestañas
+- **Pagination.tsx:** Paginación
+
+#### **Interactive Components:**
+- **Carousel.tsx:** Carruseles de imágenes
+- **Slider.tsx:** Controles deslizantes
+- **Toggle.tsx:** Interruptores
+- **Switch.tsx:** Switches
+- **HoverCard.tsx:** Tarjetas con hover
+
+#### **Utility Components:**
+- **ScrollArea.tsx:** Áreas con scroll
+- **Separator.tsx:** Separadores
+- **AspectRatio.tsx:** Relaciones de aspecto
+- **Collapsible.tsx:** Contenido colapsable
+- **Resizable.tsx:** Paneles redimensionables
+
+---
+
+## **📊 SISTEMA DE MÉTRICAS Y ANALYTICS - DETALLADO**
+
+### **KPIs Principales:**
+
+#### **1. Reputación Online**
+- **Rating promedio:** Media ponderada de todas las reseñas
+- **Número de reseñas:** Total y por período
+- **Sentimiento general:** Distribución positiva/neutral/negativa
+- **Tendencia de ratings:** Evolución temporal
+- **Comparación con competencia:** Benchmarking
+
+#### **2. Engagement**
+- **Respuestas a reseñas:** Tasa de respuesta
+- **Tiempo de respuesta:** Promedio en horas
+- **Calidad de respuestas:** Análisis de sentimiento
+- **Interacciones por plataforma:** Engagement por canal
+
+#### **3. Crecimiento**
+- **Nuevas reseñas por período:** Tasa de crecimiento
+- **Tendencia de ratings:** Evolución de puntuaciones
+- **Comparación con competencia:** Posicionamiento
+- **ROI de mejoras:** Impacto de acciones
+
+### **Visualizaciones Implementadas:**
+
+#### **1. Gráficos de Línea (Tendencias)**
+- **Tecnología:** Recharts
+- **Datos:** Ratings, reseñas, ventas
+- **Períodos:** Diario, semanal, mensual, anual
+- **Interactividad:** Zoom, filtros, tooltips
+
+#### **2. Gráficos de Barras (Comparaciones)**
+- **Tipos:** Vertical, horizontal, agrupadas
+- **Aplicaciones:** Comparación por plataforma, período, categoría
+- **Análisis:** Competencia, tendencias, distribución
+
+#### **3. Gráficos de Dona (Distribuciones)**
+- **Uso:** Fuentes de reseñas, sentimientos, categorías
+- **Interactividad:** Click para filtrar
+- **Información:** Porcentajes y valores absolutos
+
+#### **4. Heatmaps (Patrones Temporales)**
+- **Aplicación:** Actividad por hora/día
+- **Datos:** Reseñas, ventas, afluencia
+- **Insights:** Patrones de comportamiento
+
+#### **5. Gauges (Métricas de Progreso)**
+- **Uso:** KPIs principales, objetivos
+- **Visualización:** Progreso hacia metas
+- **Alertas:** Colores por umbral
+
+---
+
+## **   SEGURIDAD Y PERMISOS - DETALLADO**
+
+### **Sistema de Roles:**
+
+#### **1. Owner (Propietario)**
+- **Permisos:**
+  - Acceso completo a todas las funcionalidades
+  - Gestión de usuarios y roles
+  - Configuración de negocio
+  - Facturación y suscripciones
+  - Exportación de datos
+  - Configuración de integraciones
+- **Restricciones:** Ninguna
+
+#### **2. Manager (Gerente)**
+- **Permisos:**
+  - Gestión de reseñas y respuestas
+  - Configuración de IA y automatizaciones
+  - Generación de reportes
+  - Gestión de empleados
+  - Configuración de marketing
+- **Restricciones:**
+  - No puede cambiar configuración de facturación
+  - No puede eliminar usuarios Owner
+
+#### **3. Employee (Empleado)**
+- **Permisos:**
+  - Vista de métricas y KPIs
+  - Interacción con Lola (IA)
+  - Acceso a dashboard personal
+  - Ver reseñas asignadas
+- **Restricciones:**
+  - No puede modificar configuraciones
+  - No puede acceder a datos financieros
+  - Acceso limitado a reportes
+
+### **Medidas de Seguridad Implementadas:**
+
+#### **1. Autenticación JWT (Supabase)**
+- **Tokens:** JWT con expiración configurable
+- **Refresh:** Tokens de renovación automática
+- **Validación:** Verificación en cada request
+- **Logout:** Invalidación de tokens
+
+#### **2. Row Level Security (RLS)**
+```sql
+-- Ejemplo de política RLS para businesses
+CREATE POLICY "Users can only access their own business" ON businesses
+FOR ALL USING (owner_id = auth.uid());
+
+-- Política para empleados
+CREATE POLICY "Employees can access assigned business" ON employees
+FOR SELECT USING (
+  business_id IN (
+    SELECT id FROM businesses WHERE owner_id = auth.uid()
+  )
+);
+```
+
+#### **3. Rate Limiting**
+- **API Endpoints:** Límites por usuario/IP
+- **Edge Functions:** Throttling automático
+- **Autenticación:** Límites de intentos de login
+- **Análisis de IA:** Cuotas por suscripción
+
+#### **4. Input Validation**
+- **Frontend:** Zod schemas
+- **Backend:** Validación en Edge Functions
+- **Base de datos:** Constraints y triggers
+- **Sanitización:** Limpieza de datos
+
+#### **5. XSS Protection**
+- **React:** Escape automático
+- **Content Security Policy:** Headers de seguridad
+- **Sanitización:** Librerías especializadas
+- **Validación:** Whitelist de contenido
+
+#### **6. CSRF Protection**
+- **Tokens:** CSRF tokens en formularios
+- **Headers:** Verificación de origen
+- **Supabase:** Protección automática
+- **Validación:** Verificación de referer
+
+---
+
+## **   DEPLOYMENT Y INFRAESTRUCTURA - DETALLADO**
+
+### **Entorno de Desarrollo:**
+- **Local:** Vite dev server (puerto 8080)
+- **Build:** Vite build + optimización
+- **Testing:** Vitest + Testing Library
+- **Hot Reload:** Actualización automática
+
+### **Entorno de Producción:**
+- **Hosting:** Lovable.app
+- **CDN:** Distribución global automática
+- **SSL:** Certificados automáticos
+- **Compresión:** Gzip/Brotli automático
+
+### **CI/CD Pipeline:**
+- **Git:** Control de versiones con Git
+- **Build:** Automático en push a main
+- **Deploy:** Automático en Lovable.app
+- **Testing:** Tests automáticos antes de deploy
+
+### **Configuración de Build:**
+```typescript
+// vite.config.ts - Optimizaciones de producción
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-*'],
+          charts: ['recharts'],
+          ai: ['openai', '@anthropic-ai/sdk']
+        },
+      },
+    },
+    minify: 'terser',
+    sourcemap: false,
+    target: 'es2015'
+  }
+})
+```
+
+---
+
+## **📱 RESPONSIVE DESIGN - DETALLADO**
+
+### **Breakpoints Definidos:**
+```css
+/* Tailwind CSS breakpoints */
+sm: 640px   /* Small devices */
+md: 768px   /* Medium devices */
+lg: 1024px  /* Large devices */
+xl: 1280px  /* Extra large devices */
+2xl: 1536px /* 2X large devices */
+```
+
+### **Adaptaciones por Dispositivo:**
+
+#### **Mobile (< 768px)**
+- **Sidebar:** Colapsable con overlay
+- **Menú:** Hamburger menu
+- **Cards:** Apiladas verticalmente
+- **Tablas:** Scroll horizontal
+- **Formularios:** Campos apilados
+- **Touch:** Botones más grandes
+
+#### **Tablet (768px - 1024px)**
+- **Sidebar:** Colapsable pero visible
+- **Layout:** Grid de 2 columnas
+- **Cards:** Tamaño medio
+- **Navegación:** Tabs en lugar de sidebar
+
+#### **Desktop (> 1024px)**
+- **Sidebar:** Siempre visible
+- **Layout:** Grid de 3+ columnas
+- **Cards:** Tamaño completo
+- **Navegación:** Completa con breadcrumbs
+
+### **Optimizaciones de Performance:**
+- **Lazy Loading:** Componentes cargados bajo demanda
+- **Image Optimization:** WebP con fallbacks
+- **Code Splitting:** Chunks por ruta
+- **Caching:** Service workers para assets
+
+---
+
+## **   CONFIGURACIÓN Y ENV - DETALLADO**
+
+### **Variables de Entorno:**
+```env
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+
+# AI Services
+VITE_OPENAI_API_KEY=sk-your-openai-key
+VITE_ANTHROPIC_API_KEY=sk-ant-your-anthropic-key
+
+# External APIs
+VITE_SERPAPI_KEY=your-serpapi-key
+VITE_GOOGLE_MAPS_API_KEY=your-google-maps-key
+
+# Analytics
+VITE_ANALYTICS_ID=your-analytics-id
+
+# Feature Flags
+VITE_ENABLE_AI_FEATURES=true
+VITE_ENABLE_GAMIFICATION=true
+VITE_ENABLE_MARKETING_AUTOMATION=true
+
+# Development
+VITE_DEBUG_MODE=false
+VITE_API_TIMEOUT=30000
+```
+
+### **Configuraciones Específicas:**
+
+#### **Vite Configuration:**
+```typescript
+// Optimizaciones específicas
+export default defineConfig({
+  define: {
+    __VUE_OPTIONS_API__: false,
+    __VUE_PROD_DEVTOOLS__: false,
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom']
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      external: ['crypto', 'url', 'util']
+    }
+  }
+})
+```
+
+#### **Tailwind Configuration:**
+```typescript
+// tailwind.config.ts
+export default {
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#f0f9ff',
+          500: '#3b82f6',
+          900: '#1e3a8a',
+        }
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      }
+    }
+  },
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tailwindcss-animate')
+  ]
+}
+```
+
+#### **TypeScript Configuration:**
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+---
+
+## **📈 ROADMAP Y FUTURAS FUNCIONALIDADES - DETALLADO**
+
+### **Fase 1 (Actual - Completado):**
+- ✅ Sistema de autenticación completo
+- ✅ Dashboard con widgets configurables
+- ✅ Gestión básica de reseñas
+- ✅ IA básica (Lola) con chat
+- ✅ Integraciones principales
+- ✅ Sistema de roles y permisos
+- ✅ UI/UX responsive
+
+### **Fase 2 (Próxima - En Desarrollo):**
+- 🔄 Automatización avanzada de marketing
+- 🔄 Integraciones TPV completas
+- 🔄 Sistema de gamificación avanzado
+- 🔄 Análisis predictivo con ML
+-    Mobile app nativa
+- 🔄 API pública para desarrolladores
+- 🔄 Marketplace de integraciones
+
+### **Fase 3 (Futura - Planificada):**
+- 📋 White-label solution
+-    Multi-tenant avanzado
+-    Análisis de competencia en tiempo real
+- 📋 IA conversacional avanzada
+- 📋 Integración con IoT
+- 📋 Blockchain para transparencia
+-    Realidad aumentada para tours virtuales
+
+### **Fase 4 (Visión a Largo Plazo):**
+-    Plataforma de ecosistema gastronómico
+- 🚀 IA predictiva de tendencias
+- 🚀 Integración con delivery y delivery
+- 🚀 Análisis de datos de salud y nutrición
+- 🚀 Plataforma de formación para restaurantes
+
+---
+
+## **🎯 MÉTRICAS DE ÉXITO TÉCNICAS - DETALLADO**
+
+### **Performance Targets:**
+- **First Contentful Paint (FCP):** < 1.5s
+- **Largest Contentful Paint (LCP):** < 2.5s
+- **Cumulative Layout Shift (CLS):** < 0.1
+- **First Input Delay (FID):** < 100ms
+- **Time to Interactive (TTI):** < 3.5s
+
+### **Reliability Targets:**
+- **Uptime:** 99.9% (8.76 horas de downtime por año)
+- **Error Rate:** < 0.1% (1 error por 1000 requests)
+- **API Response Time:** < 200ms (p95)
+- **Build Success Rate:** 100%
+- **Test Coverage:** > 80%
+
+### **Security Targets:**
+- **Vulnerability Scan:** 0 vulnerabilidades críticas
+- **Penetration Testing:** Aprobado
+- **GDPR Compliance:** 100%
+- **Data Encryption:** AES-256 en tránsito y reposo
+
+### **User Experience Targets:**
+- **Page Load Time:** < 2s
+- **Time to First Meaningful Paint:** < 1.5s
+- **Mobile Performance Score:** > 90
+- **Accessibility Score:** > 95 (WCAG 2.1 AA)
+
+---
+
+## **   ANÁLISIS DE COSTOS Y ESCALABILIDAD - DETALLADO**
+
+### **Costos Mensuales Estimados:**
+
+#### **Infraestructura:**
+- **Supabase Pro:** $25/mes (50,000 MAU)
+- **Lovable.app:** $20/mes (hosting)
+- **CDN:** $10/mes (bandwidth)
+- **Monitoring:** $15/mes (logs y métricas)
+
+#### **Servicios de IA:**
+- **OpenAI GPT-4:** $50-200/mes (según volumen)
+- **Anthropic Claude:** $30-150/mes
+- **SerpAPI:** $30-100/mes (extracción de reseñas)
+
+#### **APIs Externas:**
+- **Google APIs:** $10-50/mes
+- **Email Service:** $5-20/mes
+- **SMS Service:** $10-30/mes
+
+#### **Total Estimado:** $195-620/mes
+
+### **Escalabilidad:**
+
+#### **Usuarios Concurrentes:**
+- **Actual:** 100 usuarios simultáneos
+- **Objetivo:** 1,000+ usuarios simultáneos
+- **Límite Supabase:** 100,000 MAU en Pro
+
+#### **Datos Procesados:**
+- **Reseñas:** 10,000+ por mes
+- **Análisis de IA:** Ilimitado (según API limits)
+- **Almacenamiento:** 100GB+ (Supabase)
+
+#### **Optimizaciones de Costo:**
+- **Caching:** Redis para reducir llamadas a APIs
+- **Batch Processing:** Procesamiento por lotes
+- **Rate Limiting:** Control de uso de APIs
+- **Compression:** Reducción de bandwidth
+
+---
+
+## **🔍 MONITORING Y OBSERVABILIDAD - DETALLADO**
+
+### **Métricas de Aplicación:**
+- **Performance:** Core Web Vitals
+- **Errors:** JavaScript errors, API failures
+- **User Behavior:** Page views, user flows
+- **Business Metrics:** KPIs, conversions
+
+### **Logging Strategy:**
+- **Application Logs:** Console, file-based
+- **Error Logs:** Sentry integration
+- **Access Logs:** Request/response tracking
+- **Audit Logs:** User actions, security events
+
+### **Alerting:**
+- **Critical:** Service down, high error rate
+- **Warning:** Performance degradation
+- **Info:** Business metrics, user milestones
+
+---
+
+## **📚 DOCUMENTACIÓN Y SOPORTE - DETALLADO**
+
+### **Documentación Técnica:**
+- **API Documentation:** OpenAPI/Swagger
+- **Component Library:** Storybook
+- **Architecture Diagrams:** Mermaid
+- **Deployment Guides:** Step-by-step
+
+### **Documentación de Usuario:**
+- **User Manual:** Guías paso a paso
+- **Video Tutorials:** Screencasts
+- **FAQ:** Preguntas frecuentes
+- **Support Portal:** Tickets y chat
+
+### **Documentación de Desarrollo:**
+- **Setup Guide:** Instalación local
+- **Contributing Guidelines:** Estándares de código
+- **Testing Guide:** Estrategias de testing
+- **Deployment Guide:** CI/CD pipeline
+
+---
+
+## **   CONCLUSIÓN**
+
+Este **Blueprint Completo y Definitivo** proporciona una visión exhaustiva de toda la arquitectura, componentes, funcionalidades y consideraciones técnicas de la aplicación **Caña y Reseña**.
+
+### **Puntos Clave:**
+✅ **Arquitectura sólida** con tecnologías modernas
+✅ **Escalabilidad** desde 100 hasta 100,000+ usuarios
+✅ **Seguridad robusta** con múltiples capas de protección
+✅ **Performance optimizada** con métricas claras
+✅ **UX/UI moderna** con diseño responsive
+✅ **IA integrada** para automatización inteligente
+✅ **Integraciones extensivas** con ecosistema gastronómico
+
+### **Valor de Negocio:**
+- **ROI esperado:** 300-500% en el primer año
+- **Tiempo de implementación:** 6-12 meses
+- **Mantenimiento:** 15-20% del costo inicial anual
+- **Escalabilidad:** Sin límites técnicos significativos
+
+**Este blueprint es técnicamente sólido, completo y presentable para cualquier stakeholder, desde desarrolladores hasta inversores.**
+
+

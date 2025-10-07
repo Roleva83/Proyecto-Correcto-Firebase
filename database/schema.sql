@@ -1,0 +1,1 @@
+-- database/schema.sql - Esquema de base de datos
