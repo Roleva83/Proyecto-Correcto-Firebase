@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 // Componente principal de la página de aterrizaje
 const Landing: React.FC = () => {
@@ -32,18 +31,18 @@ const Landing: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <Link
-                to="/auth/login"
+              <a
+                href="/auth/login"
                 className="text-gray-600 hover:text-orange-600 transition-colors"
               >
                 Iniciar Sesión
-              </Link>
-              <Link
-                to="/auth/register"
+              </a>
+              <a
+                href="/auth/register"
                 className="bg-gradient-to-r from-orange-500 to-amber-600 text-white px-6 py-2 rounded-lg hover:from-orange-600 hover:to-amber-700 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Registrarse
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -64,12 +63,12 @@ const Landing: React.FC = () => {
             de gestión empresarial.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/auth/register"
+            <a
+              href="/auth/register"
               className="bg-gradient-to-r from-orange-500 to-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-orange-600 hover:to-amber-700 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               Comenzar Gratis
-            </Link>
+            </a>
             <button className="border-2 border-orange-500 text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-50 transition-all duration-200">
               Ver Demo
             </button>
@@ -298,12 +297,12 @@ const Landing: React.FC = () => {
                   Respuestas automáticas básicas
                 </li>
               </ul>
-              <Link
-                to="/auth/register"
+              <a
+                href="/auth/register"
                 className="w-full bg-gray-800 text-white py-3 rounded-lg text-center block hover:bg-gray-700 transition-colors"
               >
                 Comenzar
-              </Link>
+              </a>
             </div>
 
             {/* Plan Profesional */}
@@ -339,12 +338,12 @@ const Landing: React.FC = () => {
                   Sistema de gamificación
                 </li>
               </ul>
-              <Link
-                to="/auth/register"
+              <a
+                href="/auth/register"
                 className="w-full bg-white text-orange-600 py-3 rounded-lg text-center block hover:bg-gray-100 transition-colors font-semibold"
               >
                 Comenzar
-              </Link>
+              </a>
             </div>
 
             {/* Plan Enterprise */}
@@ -375,12 +374,12 @@ const Landing: React.FC = () => {
                   Análisis predictivo avanzado
                 </li>
               </ul>
-              <Link
-                to="/auth/register"
+              <a
+                href="/auth/register"
                 className="w-full bg-gray-800 text-white py-3 rounded-lg text-center block hover:bg-gray-700 transition-colors"
               >
                 Comenzar
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -508,8 +507,8 @@ const Landing: React.FC = () => {
               <ul className="space-y-2 text-gray-300">
                 <li><a href="#features" className="hover:text-white transition-colors">Funcionalidades</a></li>
                 <li><a href="#pricing" className="hover:text-white transition-colors">Precios</a></li>
-                <li><Link to="/auth/register" className="hover:text-white transition-colors">Registro</Link></li>
-                <li><Link to="/auth/login" className="hover:text-white transition-colors">Login</Link></li>
+                <li><a href="/auth/register" className="hover:text-white transition-colors">Registro</a></li>
+                <li><a href="/auth/login" className="hover:text-white transition-colors">Login</a></li>
               </ul>
             </div>
 
