@@ -1,34 +1,29 @@
 import { defineFlow } from '@genkit-ai/flow';
-import { PredictionServiceClient } from '@google-cloud/aiplatform';
+import OpenAI from 'openai';
 
+// Usaremos OpenAI porque ya está en tus dependencias y es la forma más rápida
+// de probar sin crear una cuenta en GCP/Vertex.
 // Variables de entorno que debes configurar:
-// PROJECT_ID - ID del proyecto GCP
-// LOCATION - región, por ejemplo: "us-central1"
-// MODEL_ID - ID del modelo o endpoint según la configuración de Vertex AI
-const project = process.env.PROJECT_ID;
-const location = process.env.LOCATION || 'us-central1';
-const modelId = process.env.MODEL_ID; // por ejemplo: "models/text-bison@001" o endpoint resource
+// OPENAI_API_KEY - tu clave de OpenAI
+// OPENAI_MODEL - (opcional) modelo a usar, por ejemplo: "gpt-4o-mini" o "gpt-4-turbo"
+const openaiApiKey = process.env.OPENAI_API_KEY;
+const openaiModel = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
-const client = new PredictionServiceClient();
+const openai = new OpenAI({ apiKey: openaiApiKey });
 
-async function generateWithVertex(prompt: string) {
-  if (!project || !modelId) {
-    throw new Error('PROJECT_ID and MODEL_ID must be set in environment variables');
+async function generateWithOpenAI(prompt: string) {
+  if (!openaiApiKey) {
+    throw new Error('OPENAI_API_KEY must be set in environment variables');
   }
 
-  const endpoint = `projects/${project}/locations/${location}/endpoints/${modelId}`;
-
-  const [response] = await client.predict({
-    endpoint,
-    instances: [{ content: prompt }],
-    // parameters: {}, // agrega si necesitas configurar generación
+  const res: any = await openai.chat.completions.create({
+    model: openaiModel,
+    messages: [{ role: 'user', content: prompt }],
+    temperature: 0.9,
   });
 
-  // Dependiendo de la respuesta, ajusta cómo extraes el texto
-  const predictions = (response as any).predictions || [];
-  const first = predictions[0] || {};
-  // intentamos obtener `content` o `text` en la respuesta
-  const text = first.content || first.text || JSON.stringify(first);
+  // Extraer texto según la estructura de la respuesta
+  const text = res?.choices?.[0]?.message?.content ?? res?.choices?.[0]?.text ?? JSON.stringify(res);
   return { text };
 }
 export const generateResponseToReview = defineFlow(
@@ -47,7 +42,7 @@ Eres un asistente de atención al cliente para restaurantes. Lee esta reseña:
 Genera una respuesta amable, profesional y breve, usando el tono del restaurante.
     `;
 
-    const { text } = await generateWithVertex(prompt);
+    const { text } = await generateWithOpenAI(prompt);
     return { response: text };
   }
 );
