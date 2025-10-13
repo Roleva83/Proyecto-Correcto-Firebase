@@ -1,3 +1,3 @@
 {
-  "/_not-found/page": "app/_not-found/page.js"
+  "/api/genkit/[...flow]/route": "app/api/genkit/[...flow]/route.js"
 }
