@@ -4,4 +4,4 @@ build:
     - npm ci
     - npm run build
 run:
-  command: npm start
+  command: 'next start -p ${PORT:-8080}'
