@@ -1,11 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed `output: 'export'` because app routes (API) are not compatible
-  // with static export. Keeping default server-enabled output so API routes
-  // like /api/genkit/[...flow] can be built.
+  // Para despliegue en Firebase
+  output: 'export',
   images: {
     unoptimized: true
-  }
+  },
+  // Configuración estricta de React
+  reactStrictMode: true,
+  // Sin experimental para evitar warnings
 }
 
 module.exports = nextConfig
