@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function Home() {
     return (
       <main className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100">
