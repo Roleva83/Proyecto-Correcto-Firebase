@@ -1,1 +1,6 @@
-// integrations/supabase/types.ts - Tipos de Supabase
+// Supabase types
+export interface Database {
+  public: {
+    Tables: {}
+  }
+}
