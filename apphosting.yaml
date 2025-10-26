@@ -1,7 +1,13 @@
-runtime: nodejs20
-build:
-  commands:
-    - npm ci
-    - npm run build
-run:
-  command: 'next start -p ${PORT:-8080}'
+runConfig:
+  runtime: nodejs20
+  buildCommand: npm run build
+  startCommand: npm start
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+  minInstances: 0
+  maxInstances: 4
+
+env:
+  - variable: NODE_ENV
+    value: production
