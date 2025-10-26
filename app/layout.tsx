@@ -1,6 +1,9 @@
-export const metadata = {
-  title: 'Lola AI',
-  description: 'Caña y Reseña',
+import './globals.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Caña y Reseña - Lola AI',
+  description: 'Gestión inteligente de reseñas con IA',
 }
 
 export default function RootLayout({
