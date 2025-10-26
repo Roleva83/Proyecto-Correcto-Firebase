@@ -1,5 +1,4 @@
-// PostCSS configuration for Next.js
-export default {
+module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
