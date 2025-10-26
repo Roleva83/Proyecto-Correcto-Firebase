@@ -1,7 +1,7 @@
 runConfig:
   runtime: nodejs20
   buildCommand: npm run build
-  startCommand: npm start
+  startCommand: node server.js
   concurrency: 80
   cpu: 1
   memoryMiB: 512
@@ -11,3 +11,5 @@ runConfig:
 env:
   - variable: NODE_ENV
     value: production
+  - variable: PORT
+    value: "8080"
