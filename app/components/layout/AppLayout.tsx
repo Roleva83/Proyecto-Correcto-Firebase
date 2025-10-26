@@ -1,3 +1,15 @@
 "use client"
 
-// components/layout/AppLayout.tsx - Layout principal de la aplicación
+import React from 'react'
+
+interface AppLayoutProps {
+  children: React.ReactNode
+}
+
+export default function AppLayout({ children }: AppLayoutProps) {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {children}
+    </div>
+  )
+}
