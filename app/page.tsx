@@ -38,7 +38,7 @@ export default function Landing() {
             <a href="#pricing" className="font-medium text-foreground transition-colors hover:text-primary">
               Precios
             </a>
-             <a href="#sobre-mi" className="font-medium text-foreground transition-colors hover:text-primary">
+             <a href="/sobre-mi" className="font-medium text-foreground transition-colors hover:text-primary">
               Sobre mí
             </a>
             <a href="#contact" className="font-medium text-foreground transition-colors hover:text-primary">
@@ -340,36 +340,39 @@ export default function Landing() {
       {/* Results Section */}
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-[1200px] px-4">
-            <div className="mb-12 text-center">
-                <h2 className="mb-4 text-4xl font-bold">Resultados que marcan la diferencia</h2>
-                <p className="mx-auto max-w-3xl text-lg text-secondary">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-4xl font-bold">Resultados que marcan la diferencia</h2>
+            <p className="mx-auto max-w-3xl text-lg text-secondary">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {/* Metric 1 */}
+            <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
+              <Star className="mx-auto mb-4 h-10 w-10 text-primary" />
+              <p className="mb-2 text-5xl font-bold text-primary">+65%</p>
+              <p className="text-lg text-muted-foreground">más reseñas positivas</p>
             </div>
-            <div className="grid gap-8 text-center md:grid-cols-3">
-                <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
-                    <Star className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <p className="mb-2 text-5xl font-bold text-primary">+65%</p>
-                    <p className="text-lg text-muted-foreground">más reseñas positivas</p>
-                </div>
-                <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
-                    <TrendingUp className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <p className="mb-2 text-5xl font-bold text-primary">+0.5</p>
-                    <p className="text-lg text-muted-foreground">puntos en valoración media</p>
-                </div>
-                <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
-                    <Clock className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <p className="mb-2 text-5xl font-bold text-primary">10h</p>
-                    <p className="text-lg text-muted-foreground">ahorradas por semana</p>
-                </div>
+            {/* Metric 2 */}
+            <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
+              <TrendingUp className="mx-auto mb-4 h-10 w-10 text-primary" />
+              <p className="mb-2 text-5xl font-bold text-primary">+0.5</p>
+              <p className="text-lg text-muted-foreground">puntos en valoración media</p>
             </div>
-            <div className="mt-16">
-              <div className="rounded-2xl border border-border bg-card p-8 shadow-soft max-w-4xl mx-auto">
-                <Image src="https://picsum.photos/seed/testimonial1/80/80" alt="Avatar Cliente" width={80} height={80} className="mx-auto rounded-full -mt-16 border-4 border-white" />
-                <p className="text-center text-xl text-foreground mt-6 italic">
-                  "Desde que usamos Caña y Reseña, hemos ahorrado horas en la gestión de reseñas y nuestra puntuación en Google ha subido 0.7 puntos."
-                </p>
-                <p className="text-right text-primary font-semibold mt-6">— Carlos R.</p>
-              </div>
+            {/* Metric 3 */}
+            <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
+              <Clock className="mx-auto mb-4 h-10 w-10 text-primary" />
+              <p className="mb-2 text-5xl font-bold text-primary">10h</p>
+              <p className="text-lg text-muted-foreground">ahorradas por semana</p>
             </div>
+          </div>
+          <div className="mt-16">
+            <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-card p-8 shadow-soft">
+              <Image src="https://picsum.photos/seed/testimonial1/80/80" alt="Avatar Cliente" width={80} height={80} className="mx-auto -mt-16 rounded-full border-4 border-white" />
+              <p className="mt-6 text-center text-xl italic text-foreground">
+                "Desde que usamos Caña y Reseña, hemos ahorrado horas en la gestión de reseñas y nuestra puntuación en Google ha subido 0.7 puntos."
+              </p>
+              <p className="mt-6 text-right font-semibold text-primary">— Carlos R.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -487,21 +490,21 @@ export default function Landing() {
           </div>
           <div className="grid gap-8 md:grid-cols-3">
             {/* Testimonial 1 */}
-            <div className="flex flex-col items-center text-center rounded-lg border bg-card p-8 shadow-md">
+            <div className="flex flex-col items-center rounded-lg border bg-card p-8 text-center shadow-md">
               <Image src="https://picsum.photos/seed/client1/80/80" alt="Avatar Ana S." width={80} height={80} className="mb-6 rounded-full" />
-              <p className="text-foreground italic mb-6 flex-grow">"La automatización de respuestas a reseñas nos ha ahorrado horas y ha mejorado nuestra puntuación media increíblemente rápido."</p>
+              <p className="mb-6 flex-grow italic text-foreground">"La automatización de respuestas a reseñas nos ha ahorrado horas y ha mejorado nuestra puntuación media increíblemente rápido."</p>
               <p className="font-semibold text-foreground">– Ana S.</p>
             </div>
             {/* Testimonial 2 */}
-            <div className="flex flex-col items-center text-center rounded-lg border bg-card p-8 shadow-md">
+            <div className="flex flex-col items-center rounded-lg border bg-card p-8 text-center shadow-md">
               <Image src="https://picsum.photos/seed/client2/80/80" alt="Avatar Carlos R." width={80} height={80} className="mb-6 rounded-full" />
-              <p className="text-foreground italic mb-6 flex-grow">"Gestionar 5 locales era un caos. Ahora tengo una visión centralizada del rendimiento de cada uno. Imprescindible."</p>
+              <p className="mb-6 flex-grow italic text-foreground">"Gestionar 5 locales era un caos. Ahora tengo una visión centralizada del rendimiento de cada uno. Imprescindible."</p>
               <p className="font-semibold text-foreground">– Carlos R.</p>
             </div>
             {/* Testimonial 3 */}
-            <div className="flex flex-col items-center text-center rounded-lg border bg-card p-8 shadow-md">
+            <div className="flex flex-col items-center rounded-lg border bg-card p-8 text-center shadow-md">
               <Image src="https://picsum.photos/seed/client3/80/80" alt="Avatar Laura M." width={80} height={80} className="mb-6 rounded-full" />
-              <p className="text-foreground italic mb-6 flex-grow">"Gracias a Lola IA, por fin entiendo qué platos son rentables y cuáles no. He ajustado el menú y los beneficios han subido un 15%."</p>
+              <p className="mb-6 flex-grow italic text-foreground">"Gracias a Lola IA, por fin entiendo qué platos son rentables y cuáles no. He ajustado el menú y los beneficios han subido un 15%."</p>
               <p className="font-semibold text-foreground">– Laura M.</p>
             </div>
           </div>
@@ -511,7 +514,7 @@ export default function Landing() {
       {/* Contact Form Section */}
       <section className="bg-white py-20">
         <div className="container mx-auto max-w-3xl px-4">
-          <div className="text-center mb-12">
+          <div className="mb-12 text-center">
             <h2 className="text-4xl font-bold text-foreground">¿Listo para transformar tu negocio?</h2>
             <p className="mt-4 text-lg text-muted-foreground">Agenda una demo personalizada con Lola IA y descubre cómo optimizar tu restaurante.</p>
           </div>
@@ -564,7 +567,7 @@ export default function Landing() {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><a href="#features" className="transition-colors hover:text-foreground">Funcionalidades</a></li>
                 <li><a href="#pricing" className="transition-colors hover:text-foreground">Precios</a></li>
-                 <li><a href="#sobre-mi" className="transition-colors hover:text-foreground">Sobre mí</a></li>
+                 <li><a href="/sobre-mi" className="transition-colors hover:text-foreground">Sobre mí</a></li>
                 <li><a href="#contact" className="transition-colors hover:text-foreground">Contacto</a></li>
               </ul>
             </div>
