@@ -59,16 +59,16 @@ export default function SobreMi() {
               <div className="absolute -inset-4 rounded-full bg-primary/10 blur-2xl"></div>
               <Image
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Fro%20oficina.png?alt=media&token=55f3ac84-cfb7-4fd6-aa87-fb83b60ca6bf"
-                alt="Foto del fundador Ro"
+                alt="Foto de la fundadora Rocío"
                 width={280}
                 height={280}
-                className="relative h-64 w-64 rounded-full object-cover border-4 border-white shadow-xl"
+                className="relative h-64 w-64 rounded-full object-contain border-4 border-white shadow-xl"
               />
             </div>
             <div className="text-center md:text-left lg:col-span-3">
               <p className="font-medium text-primary">De la barra al SaaS</p>
               <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-                Hola, soy Ro, el fundador de Caña y Reseña.
+                Hola, soy Rocío, la fundadora de Caña y Reseña.
               </h1>
               <p className="mt-6 text-lg leading-8 text-secondary">
                 Mi historia no empieza en una oficina, sino detrás de una barra. Durante años, he vivido en primera línea los desafíos de la hostelería: la gestión de equipos, la locura de los servicios y, sobre todo, la lucha constante por mantener una buena reputación.
