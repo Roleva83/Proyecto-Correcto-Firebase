@@ -372,6 +372,50 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* All in one place Section */}
+      <section className="bg-accent py-20">
+        <div className="container mx-auto max-w-[1200px] px-4">
+          <div className="mb-12 text-center">
+            <h2 className="text-4xl font-bold text-foreground">
+              Todo lo que necesitas, en un solo lugar
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+            <div className="flex items-center justify-center">
+              <Image
+                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20IA.png?alt=media&token=5057c323-0d30-43b8-82b4-e1111b1475bc"
+                alt="Lola IA con portátil"
+                width={400}
+                height={400}
+                className="object-contain"
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Gestión de Reputación Online con IA</h3>
+                <p className="text-sm text-muted-foreground">Centraliza, analiza y responde a todas tus reseñas con la ayuda de la IA.</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Marketing y Fidelización Automática</h3>
+                <p className="text-sm text-muted-foreground">Crea campañas, recupera clientes y premia la lealtad sin mover un dedo.</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Gestión de Horarios Inteligente</h3>
+                <p className="text-sm text-muted-foreground">Optimiza turnos y personal según la demanda prevista por la IA.</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Reservas y TPV Conectados</h3>
+                <p className="text-sm text-muted-foreground">Unifica tus canales de venta y gestión de mesas en una sola plataforma.</p>
+              </div>
+              <div className="col-span-1 sm:col-span-2 rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Análisis Inteligente con Lola IA</h3>
+                <p className="text-sm text-muted-foreground">Recibe informes proactivos y alertas sobre lo que de verdad importa en tu negocio.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section className="bg-background py-20">
         <div className="container mx-auto max-w-[1200px] px-4">
