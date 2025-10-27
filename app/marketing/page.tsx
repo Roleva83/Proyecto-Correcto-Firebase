@@ -5,9 +5,11 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardContent } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
-import { Download, Calendar, Award, BookOpen, Mail, Users, Lightbulb, Home, Bot, BarChart2, CircleDollarSign, Megaphone, Settings, Users as TeamIcon, TrendingUp, Award as AwardIcon } from 'lucide-react'
+import { Download, Calendar, Award, Mail, Users, Lightbulb, Home, Bot, BarChart2, CircleDollarSign, Megaphone, Settings } from 'lucide-react'
 import Link from 'next/link'
 import EmailTemplatesModal from '../components/marketing/EmailTemplatesModal'
+import TrainingCapsulesModal from '../components/marketing/TrainingCapsulesModal'
+import NewStrategiesModal from '../components/marketing/NewStrategiesModal'
 
 
 // Custom SVG Icons for Marketing Page
@@ -33,6 +35,8 @@ const FomentarResenasIcon = () => (
 export default function MarketingPage() {
   const user = { name: 'Restaurante Ejemplo' };
   const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
+  const [isTrainingModalOpen, setIsTrainingModalOpen] = useState(false);
+  const [isStrategiesModalOpen, setIsStrategiesModalOpen] = useState(false);
   
   return (
     <>
@@ -119,7 +123,7 @@ export default function MarketingPage() {
                             </div>
                             <h4 className="font-semibold text-foreground mb-1">Formación Equipo</h4>
                             <p className="text-xs text-muted-foreground mb-4">Cápsulas formativas para tu personal.</p>
-                            <Button variant="secondary" className="w-full">Ver Consejos</Button>
+                            <Button variant="secondary" className="w-full" onClick={() => setIsTrainingModalOpen(true)}>Ver Consejos</Button>
                         </Card>
                          <Card className="p-6 text-center hover:shadow-lg transition-shadow">
                             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100 mx-auto mb-4">
@@ -127,7 +131,7 @@ export default function MarketingPage() {
                             </div>
                             <h4 className="font-semibold text-foreground mb-1">Nuevas Estrategias</h4>
                             <p className="text-xs text-muted-foreground mb-4">Ideas innovadoras para captar reseñas.</p>
-                            <Button variant="secondary" className="w-full">Descubrir</Button>
+                            <Button variant="secondary" className="w-full" onClick={() => setIsStrategiesModalOpen(true)}>Descubrir</Button>
                         </Card>
                     </div>
                 </CardContent>
@@ -137,6 +141,8 @@ export default function MarketingPage() {
       </div>
     </div>
     <EmailTemplatesModal isOpen={isTemplatesModalOpen} onClose={() => setIsTemplatesModalOpen(false)} />
+    <TrainingCapsulesModal isOpen={isTrainingModalOpen} onClose={() => setIsTrainingModalOpen(false)} />
+    <NewStrategiesModal isOpen={isStrategiesModalOpen} onClose={() => setIsStrategiesModalOpen(false)} />
     </>
   )
 }
