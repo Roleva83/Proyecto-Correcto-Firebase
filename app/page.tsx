@@ -7,7 +7,7 @@ import { User, Mail, Phone, Building } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const Landing: React.FC = () => {
+export default function Landing() {
   return (
     <div className={`bg-background text-foreground ${inter.className}`}>
       {/* Header/Navigation */}
@@ -284,9 +284,4 @@ const Landing: React.FC = () => {
       </footer>
     </div>
   );
-};
-
-export default function Home() {
-  return <Landing />;
 }
-
