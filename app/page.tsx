@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check } from 'lucide-react';
+import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check, Sparkles } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -503,6 +503,36 @@ export default function Landing() {
               <p className="text-foreground italic mb-6 flex-grow">"Gracias a Lola IA, por fin entiendo qué platos son rentables y cuáles no. He ajustado el menú y los beneficios han subido un 15%."</p>
               <p className="font-semibold text-foreground">– Laura M.</p>
             </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Contact Form Section */}
+      <section className="bg-white py-20">
+        <div className="container mx-auto max-w-3xl px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-foreground">¿Listo para transformar tu negocio?</h2>
+            <p className="mt-4 text-lg text-muted-foreground">Agenda una demo personalizada con Lola IA y descubre cómo optimizar tu restaurante.</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <input type="text" placeholder="Nombre" className="h-12 w-full rounded-xl border border-border bg-background py-2 px-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+                <input type="email" placeholder="Email" className="h-12 w-full rounded-xl border border-border bg-background py-2 px-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+              </div>
+              <div>
+                <input type="text" placeholder="Nombre del negocio" className="h-12 w-full rounded-xl border border-border bg-background py-2 px-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+              </div>
+              <div>
+                <textarea placeholder="Cuéntanos tu caso" rows={5} className="w-full rounded-xl border border-border bg-background py-3 px-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring"></textarea>
+              </div>
+              <div>
+                <button type="submit" className="flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-primary font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring">
+                  <Sparkles className="h-5 w-5" />
+                  <span>Hablar con Lola</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </section>
