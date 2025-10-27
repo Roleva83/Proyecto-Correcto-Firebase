@@ -21,3 +21,6 @@ yarn-error.log*
 Thumbs.db
 # Next.js build output
 .next/
+
+# Next.js build output
+.next/
