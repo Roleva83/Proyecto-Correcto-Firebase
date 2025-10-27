@@ -180,32 +180,15 @@ export default function Landing() {
               <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
                 <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
                 <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
-                <div className="mt-auto flex h-[200px] w-full items-center justify-center">
-                  <div className="relative h-40 w-40">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-3xl font-bold">48%</span>
+                <div className="mx-auto mt-auto flex h-[200px] w-[200px] items-center justify-center">
+                    <div
+                        className="relative flex h-40 w-40 items-center justify-center rounded-full"
+                        style={{ background: 'conic-gradient(#fecaca 48%, #fde68a 0)'}}
+                    >
+                        <div className="absolute flex h-[130px] w-[130px] items-center justify-center rounded-full bg-card">
+                            <span className="text-3xl font-bold">48%</span>
+                        </div>
                     </div>
-                    <svg className="h-full w-full" viewBox="0 0 36 36">
-                      <path
-                        className="stroke-current text-pink-200"
-                        d="M18 2.0845
-                          a 15.9155 15.9155 0 0 1 0 31.831
-                          a 15.9155 15.9155 0 0 1 0 -31.831"
-                        fill="none"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="stroke-current text-yellow-400"
-                        strokeDasharray="48, 100"
-                        d="M18 2.0845
-                          a 15.9155 15.9155 0 0 1 0 31.831
-                          a 15.9155 15.9155 0 0 1 0 -31.831"
-                        fill="none"
-                        strokeWidth="4"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </div>
                 </div>
               </div>
 
@@ -242,18 +225,16 @@ export default function Landing() {
               <div className="my-4">
                 <p className="text-center text-sm font-semibold text-muted-foreground">ÚLTIMO TRIMESTRE</p>
                 <div className="flex items-center justify-center gap-6 p-4">
-                    <div className="relative h-32 w-32">
-                        <div className="absolute inset-0 flex items-center justify-center">
+                    <div
+                        className="relative flex h-32 w-32 items-center justify-center rounded-full"
+                        style={{ background: 'conic-gradient(hsl(var(--primary)) 65%, #9ca3af 0 90%, #4b5563 0)' }}
+                    >
+                        <div className="absolute flex h-[100px] w-[100px] items-center justify-center rounded-full bg-card">
                             <span className="text-2xl font-bold">65%</span>
                         </div>
-                        <svg className="h-full w-full rotate-[200deg]" viewBox="0 0 36 36">
-                            <path className="stroke-current text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" strokeWidth="4" />
-                            <path className="stroke-current text-yellow-500" strokeDasharray="65, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" strokeWidth="4" strokeLinecap="round" />
-                            <path className="stroke-current text-gray-400" strokeDasharray="25, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" strokeWidth="4" strokeLinecap="round" transform="rotate(234, 18, 18)" />
-                        </svg>
                     </div>
                     <div className="flex flex-col gap-2 text-sm">
-                        <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-yellow-500"></span><span>Positivo</span><span className="ml-auto font-semibold">65%</span></div>
+                        <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-primary"></span><span>Positivo</span><span className="ml-auto font-semibold">65%</span></div>
                         <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-gray-400"></span><span>Neutral</span><span className="ml-auto font-semibold">25%</span></div>
                         <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-gray-700"></span><span>Negativo</span><span className="ml-auto font-semibold">10%</span></div>
                     </div>
@@ -299,6 +280,57 @@ export default function Landing() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* New AI Features Section */}
+      <section className="bg-white py-20">
+        <div className="container mx-auto max-w-[1200px] px-4">
+          <div className="mb-12 text-center">
+            <h2 className="text-4xl font-bold text-foreground">
+              Diseñado para la hostelería, impulsado por IA
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+            {/* Columna Izquierda: Features */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {/* Feature 1 */}
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Gestión de Reseñas Inteligente</h3>
+                <p className="text-sm text-muted-foreground">Centraliza y responde a todas tus reseñas (Google, TripAdvisor, TheFork) con respuestas generadas por IA que mantienen tu tono de voz.</p>
+              </div>
+              {/* Feature 2 */}
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Análisis de Sentimiento y Datos</h3>
+                <p className="text-sm text-muted-foreground">Lola lee cada reseña, la clasifica y extrae insights clave sobre tus platos, servicio, ambiente y precios.</p>
+              </div>
+              {/* Feature 3 */}
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Automatización de Marketing</h3>
+                <p className="text-sm text-muted-foreground">Crea campañas de email y SMS, fideliza a tus clientes y recupera a los que no han vuelto, todo de forma automática.</p>
+              </div>
+              {/* Feature 4 */}
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <h3 className="mb-2 text-lg font-semibold">Informes y Alertas Proactivas</h3>
+                <p className="text-sm text-muted-foreground">Recibe informes semanales con tu progreso y alertas en tiempo real sobre reseñas negativas o tendencias importantes.</p>
+              </div>
+              {/* Feature 5 */}
+              <div className="col-span-1 rounded-2xl border border-border bg-card p-6 shadow-soft sm:col-span-2">
+                <h3 className="mb-2 text-lg font-semibold">Optimización de Menú y Precios</h3>
+                <p className="text-sm text-muted-foreground">Descubre qué platos son más rentables y cuáles necesitan mejorar basándose en datos reales de ventas y opiniones de tus clientes.</p>
+              </div>
+            </div>
+            {/* Columna Derecha: Imagen */}
+            <div className="flex items-center justify-center">
+              <Image
+                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20IA.png?alt=media&token=5057c323-0d30-43b8-82b4-e1111b1475bc"
+                alt="Lola IA Assistant"
+                width={450}
+                height={450}
+                className="object-contain"
+              />
             </div>
           </div>
         </div>
@@ -434,5 +466,3 @@ export default function Landing() {
     </div>
   );
 }
-
-    
