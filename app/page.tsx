@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
+import { User, Mail, Phone, Building } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,92 +12,108 @@ const Landing: React.FC = () => {
     <div className={`bg-background text-foreground ${inter.className}`}>
       {/* Header/Navigation */}
       <header className="sticky top-0 z-50 h-[72px] bg-white shadow-soft">
-        <div className="container mx-auto px-4 h-full max-w-[1200px]">
-          <div className="flex items-center justify-between h-full">
-            {/* Logo */}
-            <div className="flex items-center">
-              <span className="text-xl font-semibold text-foreground">Caña y Reseña</span>
+        <div className="container mx-auto flex h-full max-w-[1200px] items-center justify-between px-4">
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <div className="relative h-8 w-8">
+              {/* Placeholder for logo icon */}
+              <div className="h-full w-full rounded-full bg-gray-200"></div>
             </div>
+            <span className="text-xl font-semibold text-foreground">Caña y Reseña</span>
+          </div>
 
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="#" className="font-medium text-foreground hover:text-primary transition-colors">
-                Inicio
-              </a>
-              <a href="#features" className="font-medium text-foreground hover:text-primary transition-colors">
-                Funcionalidades
-              </a>
-              <a href="#" className="font-medium text-foreground hover:text-primary transition-colors">
-                Sobre mí
-              </a>
-              <a href="#pricing" className="font-medium text-foreground hover:text-primary transition-colors">
-                Precios
-              </a>
-              <a href="#contact" className="font-medium text-foreground hover:text-primary transition-colors">
-                Contacto
-              </a>
-            </nav>
+          {/* Navigation */}
+          <nav className="hidden items-center space-x-8 md:flex">
+            <a href="#" className="font-medium text-foreground transition-colors hover:text-primary">
+              Inicio
+            </a>
+            <a href="#features" className="font-medium text-foreground transition-colors hover:text-primary">
+              Funcionalidades
+            </a>
+            <a href="#" className="font-medium text-foreground transition-colors hover:text-primary">
+              Sobre mí
+            </a>
+            <a href="#pricing" className="font-medium text-foreground transition-colors hover:text-primary">
+              Precios
+            </a>
+            <a href="#contact" className="font-medium text-foreground transition-colors hover:text-primary">
+              Contacto
+            </a>
+          </nav>
 
-            {/* CTA Buttons */}
-            <div className="flex items-center space-x-4">
-              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-white border border-border rounded-xl hover:bg-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring">
-                Iniciar Sesión
-              </a>
-              <a
-                href="/auth/register"
-                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring"
-              >
-                Registrarse
-              </a>
-            </div>
+          {/* CTA Buttons */}
+          <div className="flex items-center space-x-4">
+            <a href="/auth/login" className="rounded-xl border border-border bg-white px-5 py-2.5 text-sm font-semibold text-foreground duration-200 hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring">
+              Iniciar Sesión
+            </a>
+            <a
+              href="/auth/register"
+              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              Registrarse
+            </a>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-white pt-[72px] pb-[88px] overflow-hidden radial-gradient-hero">
-        <div className="container mx-auto px-4 max-w-[1200px] relative z-10">
-          <div className="text-center lg:text-left mb-10">
-            <h1 className="text-5xl md:text-[56px] font-black text-foreground" style={{ lineHeight: 1.1 }}>
-              La gestión inteligente que impulsa tu negocio de hostelería
-            </h1>
-          </div>
-          <div className="grid lg:grid-cols-2 lg:gap-12 items-center lg:items-end">
+      <section className="relative overflow-hidden bg-white pb-[88px] pt-[72px] radial-gradient-hero">
+        <div className="container relative z-10 mx-auto max-w-[1200px] px-4">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:items-end">
             {/* Columna Izquierda: Texto y Formulario */}
             <div className="text-center lg:text-left">
-              <p className="text-lg text-secondary mb-6 max-w-lg mx-auto lg:mx-0">
+              <h1 className="mb-4 text-5xl font-black text-foreground md:text-[56px]" style={{ lineHeight: 1.1 }}>
+                La gestión inteligente que impulsa tu negocio de hostelería
+              </h1>
+              <p className="mx-auto mb-6 max-w-lg text-lg text-secondary lg:mx-0">
                 Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
               </p>
               
               {/* Formulario */}
-              <div className="bg-card p-6 rounded-2xl shadow-xl border border-border max-w-md mx-auto lg:mx-0" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
-                  <h2 className="text-xl font-semibold text-center mb-6">Pide tu demo</h2>
+              <div className="mx-auto max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl lg:mx-0" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
+                  <h2 className="mb-6 text-center text-xl font-semibold">Pide tu demo</h2>
                   <form className="space-y-3">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <input type="text" placeholder="Nombre" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
-                      <input type="text" placeholder="Apellidos" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input type="text" placeholder="Nombre" className="h-12 w-full rounded-xl border border-border py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+                      </div>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input type="text" placeholder="Apellidos" className="h-12 w-full rounded-xl border border-border py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+                      </div>
                     </div>
-                    <input type="email" placeholder="Email" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <input type="tel" placeholder="Teléfono" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
-                      <input type="text" placeholder="Nombre del negocio" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                      <input type="email" placeholder="Email" className="h-12 w-full rounded-xl border border-border py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
                     </div>
-                    <button type="submit" className="w-full h-[50px] bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input type="tel" placeholder="Teléfono" className="h-12 w-full rounded-xl border border-border py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+                      </div>
+                      <div className="relative">
+                        <Building className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input type="text" placeholder="Nombre del negocio" className="h-12 w-full rounded-xl border border-border py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
+                      </div>
+                    </div>
+                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-ring">
                       Empezar ahora
                     </button>
                   </form>
-                  <p className="text-center text-sm text-secondary mt-4">Confiado por más de 100 negocios hosteleros</p>
+                  <p className="mt-4 text-center text-sm text-secondary">Confiado por más de 100 negocios hosteleros</p>
               </div>
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="hidden lg:flex justify-center -mb-4 mr-8">
+            <div className="mr-8 hidden justify-center lg:flex">
               <Image 
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
                 alt="Asistente virtual Lola" 
                 width={380} 
                 height={460}
                 className="object-contain"
+                priority
               />
             </div>
           </div>
@@ -104,30 +121,30 @@ const Landing: React.FC = () => {
       </section>
       
       {/* How it works Section */}
-      <section id="features" className="py-20 bg-card">
-        <div className="container mx-auto px-4 max-w-[1200px]">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
+      <section id="features" className="bg-card py-20">
+        <div className="container mx-auto max-w-[1200px] px-4">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-4xl font-bold text-foreground">
               Así de fácil funciona Lola IA
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
               Automatiza la gestión de tu restaurante y toma el control de tus finanzas y reputación.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 text-center">
+          <div className="grid gap-8 text-center md:grid-cols-3">
             <div>
-              <Image data-ai-hint="waitress illustration" src="https://picsum.photos/seed/step1/400/300" alt="Paso 1" width={400} height={300} className="rounded-lg mx-auto mb-6 shadow-md" />
-              <h3 className="text-xl font-semibold mb-2">1. Conecta tus datos</h3>
+              <Image data-ai-hint="waitress illustration" src="https://picsum.photos/seed/step1/400/300" alt="Paso 1" width={400} height={300} className="mx-auto mb-6 rounded-lg shadow-md" />
+              <h3 className="mb-2 text-xl font-semibold">1. Conecta tus datos</h3>
               <p className="text-muted-foreground">Integra tus plataformas de reseñas, sistema TPV y programa de reservas en un solo lugar.</p>
             </div>
             <div>
-              <Image data-ai-hint="woman phone illustration" src="https://picsum.photos/seed/step2/400/300" alt="Paso 2" width={400} height={300} className="rounded-lg mx-auto mb-6 shadow-md" />
-              <h3 className="text-xl font-semibold mb-2">2. Lola IA entra en acción</h3>
+              <Image data-ai-hint="woman phone illustration" src="https://picsum.photos/seed/step2/400/300" alt="Paso 2" width={400} height={300} className="mx-auto mb-6 rounded-lg shadow-md" />
+              <h3 className="mb-2 text-xl font-semibold">2. Lola IA entra en acción</h3>
               <p className="text-muted-foreground">Nuestra IA analiza tus reseñas, ventas y reservas para darte una visión 360º de tu negocio.</p>
             </div>
             <div>
-              <Image data-ai-hint="businesswoman illustration" src="https://picsum.photos/seed/step3/400/300" alt="Paso 3" width={400} height={300} className="rounded-lg mx-auto mb-6 shadow-md" />
-              <h3 className="text-xl font-semibold mb-2">3. Recibe insights y actúa</h3>
+              <Image data-ai-hint="businesswoman illustration" src="https://picsum.photos/seed/step3/400/300" alt="Paso 3" width={400} height={300} className="mx-auto mb-6 rounded-lg shadow-md" />
+              <h3 className="mb-2 text-xl font-semibold">3. Recibe insights y actúa</h3>
               <p className="text-muted-foreground">Obtén recomendaciones claras, automatiza respuestas y optimiza tus operaciones diarias.</p>
             </div>
           </div>
@@ -135,23 +152,23 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Results Section */}
-      <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 max-w-[1200px]">
-            <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4">Resultados que marcan la diferencia</h2>
-                <p className="text-xl opacity-90 max-w-3xl mx-auto">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
+      <section className="bg-primary py-20 text-primary-foreground">
+        <div className="container mx-auto max-w-[1200px] px-4">
+            <div className="mb-12 text-center">
+                <h2 className="mb-4 text-4xl font-bold">Resultados que marcan la diferencia</h2>
+                <p className="mx-auto max-w-3xl text-xl opacity-90">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="grid gap-8 text-center md:grid-cols-3">
                 <div>
-                    <p className="text-6xl font-bold mb-2">+85%</p>
+                    <p className="mb-2 text-6xl font-bold">+85%</p>
                     <p className="text-lg opacity-90">De respuestas a reseñas automatizadas con un 99% de acierto.</p>
                 </div>
                 <div>
-                    <p className="text-6xl font-bold mb-2">+0.5</p>
+                    <p className="mb-2 text-6xl font-bold">+0.5</p>
                     <p className="text-lg opacity-90">Puntos de mejora en la valoración media de las principales plataformas.</p>
                 </div>
                 <div>
-                    <p className="text-6xl font-bold mb-2">10h</p>
+                    <p className="mb-2 text-6xl font-bold">10h</p>
                     <p className="text-lg opacity-90">Ahorradas a la semana en tareas de gestión y administración.</p>
                 </div>
             </div>
@@ -159,18 +176,18 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 max-w-[1200px]">
-          <div className="text-center mb-16">
+      <section className="bg-background py-20">
+        <div className="container mx-auto max-w-[1200px] px-4">
+          <div className="mb-16 text-center">
             <h2 className="text-4xl font-bold text-foreground">
               Lo que dicen nuestros clientes
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {/* Testimonial 1 */}
-            <div className="bg-card p-6 rounded-lg shadow-md border">
-              <div className="flex items-center mb-4">
-                <Image src="https://picsum.photos/seed/avatar1/48/48" alt="Avatar" width={48} height={48} className="rounded-full mr-4" />
+            <div className="rounded-lg border bg-card p-6 shadow-md">
+              <div className="mb-4 flex items-center">
+                <Image src="https://picsum.photos/seed/avatar1/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
                 <div>
                   <p className="font-semibold">Carlos Pérez</p>
                   <p className="text-sm text-muted-foreground">Restaurante La Cuchara</p>
@@ -179,9 +196,9 @@ const Landing: React.FC = () => {
               <p className="text-foreground">"Desde que usamos Caña y Reseña, hemos ahorrado horas en la gestión de reseñas y nuestra puntuación en Google ha subido 0.7 puntos."</p>
             </div>
             {/* Testimonial 2 */}
-            <div className="bg-card p-6 rounded-lg shadow-md border">
-              <div className="flex items-center mb-4">
-                <Image src="https://picsum.photos/seed/avatar2/48/48" alt="Avatar" width={48} height={48} className="rounded-full mr-4" />
+            <div className="rounded-lg border bg-card p-6 shadow-md">
+              <div className="mb-4 flex items-center">
+                <Image src="https://picsum.photos/seed/avatar2/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
                 <div>
                   <p className="font-semibold">Ana García</p>
                   <p className="text-sm text-muted-foreground">Tapas y Vinos</p>
@@ -190,9 +207,9 @@ const Landing: React.FC = () => {
               <p className="text-foreground">"Lola IA es increíble. Nos da insights que no habíamos visto y nos ayuda a responder a los clientes de forma casi instantánea. ¡Imprescindible!"</p>
             </div>
             {/* Testimonial 3 */}
-            <div className="bg-card p-6 rounded-lg shadow-md border">
-              <div className="flex items-center mb-4">
-                <Image src="https://picsum.photos/seed/avatar3/48/48" alt="Avatar" width={48} height={48} className="rounded-full mr-4" />
+            <div className="rounded-lg border bg-card p-6 shadow-md">
+              <div className="mb-4 flex items-center">
+                <Image src="https://picsum.photos/seed/avatar3/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
                 <div>
                   <p className="font-semibold">Javier Rodríguez</p>
                   <p className="text-sm text-muted-foreground">Asador El Fuego</p>
@@ -205,12 +222,12 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-foreground text-background py-12">
-        <div className="container mx-auto px-4 max-w-[1200px]">
-          <div className="grid md:grid-cols-4 gap-8">
+      <footer id="contact" className="bg-foreground py-12 text-background">
+        <div className="container mx-auto max-w-[1200px] px-4">
+          <div className="grid gap-8 md:grid-cols-4">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 relative">
+              <div className="mb-4 flex items-center space-x-2">
+                <div className="relative h-8 w-8">
                    <Image 
                     src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
                     alt="Logo Caña y Reseña"
@@ -226,37 +243,37 @@ const Landing: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Producto</h4>
+              <h4 className="mb-4 text-lg font-semibold">Producto</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#features" className="hover:text-background transition-colors">Funcionalidades</a></li>
-                <li><a href="#pricing" className="hover:text-background transition-colors">Precios</a></li>
-                <li><a href="/auth/register" className="hover:text-background transition-colors">Registro</a></li>
-                <li><a href="/auth/login" className="hover:text-background transition-colors">Login</a></li>
+                <li><a href="#features" className="transition-colors hover:text-background">Funcionalidades</a></li>
+                <li><a href="#pricing" className="transition-colors hover:text-background">Precios</a></li>
+                <li><a href="/auth/register" className="transition-colors hover:text-background">Registro</a></li>
+                <li><a href="/auth/login" className="transition-colors hover:text-background">Login</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Soporte</h4>
+              <h4 className="mb-4 text-lg font-semibold">Soporte</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#contact" className="hover:text-background transition-colors">Contacto</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">Documentación</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">Soporte</a></li>
+                <li><a href="#contact" className="transition-colors hover:text-background">Contacto</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">Documentación</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">FAQ</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">Soporte</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Legal</h4>
+              <h4 className="mb-4 text-lg font-semibold">Legal</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-background transition-colors">Términos de Servicio</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">Política de Privacidad</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">Cookies</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">GDPR</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">Términos de Servicio</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">Política de Privacidad</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">Cookies</a></li>
+                <li><a href="#" className="transition-colors hover:text-background">GDPR</a></li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-muted mt-8 pt-8 text-center text-muted-foreground">
+          <div className="mt-8 border-t border-muted pt-8 text-center text-muted-foreground">
             <p>&copy; 2024 Caña y Reseña. Todos los derechos reservados.</p>
           </div>
         </div>
@@ -268,3 +285,5 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
+
+    
