@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock } from 'lucide-react';
+import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -411,6 +411,66 @@ export default function Landing() {
                 <h3 className="mb-2 text-lg font-semibold">Análisis Inteligente con Lola IA</h3>
                 <p className="text-sm text-muted-foreground">Recibe informes proactivos y alertas sobre lo que de verdad importa en tu negocio.</p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="bg-background py-20">
+        <div className="container mx-auto max-w-5xl px-4">
+          <div className="mb-16 text-center">
+            <h2 className="text-4xl font-bold text-foreground">Planes para cada tipo de negocio</h2>
+          </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* Básico */}
+            <div className="flex flex-col rounded-lg border bg-card p-8 shadow-soft">
+              <h3 className="mb-2 text-2xl font-semibold">Básico</h3>
+              <p className="mb-6 text-muted-foreground">Ideal para negocios que empiezan a digitalizar su reputación.</p>
+              <p className="mb-6 text-4xl font-bold">XX€<span className="text-lg font-normal text-muted-foreground">/mes</span></p>
+              <ul className="mb-8 space-y-4 text-muted-foreground">
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Gestión de Reseñas (1 Perfil)</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Respuestas con IA (10/mes)</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Análisis Básico</span></li>
+              </ul>
+              <a href="#" className="mt-auto block w-full rounded-lg border border-primary py-3 text-center font-semibold text-primary transition-colors hover:bg-primary/10">
+                Elegir Plan
+              </a>
+            </div>
+
+            {/* Profesional */}
+            <div className="relative flex flex-col rounded-lg border-2 border-primary bg-card p-8 shadow-xl">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-sm font-semibold text-primary-foreground">
+                Recomendado
+              </div>
+              <h3 className="mb-2 text-2xl font-semibold">Profesional</h3>
+              <p className="mb-6 text-muted-foreground">La solución completa para optimizar y crecer.</p>
+              <p className="mb-6 text-4xl font-bold">XX€<span className="text-lg font-normal text-muted-foreground">/mes</span></p>
+              <ul className="mb-8 space-y-4 text-muted-foreground">
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Todo lo del plan Básico</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Conexión TPV y Reservas</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Marketing y Fidelización</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Análisis Avanzado con Lola IA</span></li>
+              </ul>
+              <a href="#" className="mt-auto block w-full rounded-lg bg-primary py-3 text-center font-semibold text-primary-foreground transition-colors hover:bg-amber-600">
+                Elegir Plan
+              </a>
+            </div>
+
+            {/* Empresa */}
+            <div className="flex flex-col rounded-lg border bg-card p-8 shadow-soft">
+              <h3 className="mb-2 text-2xl font-semibold">Empresa</h3>
+              <p className="mb-6 text-muted-foreground">Soluciones a medida para cadenas y grandes operaciones.</p>
+              <p className="mb-6 text-4xl font-bold">Consultar</p>
+              <ul className="mb-8 space-y-4 text-muted-foreground">
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Soporte dedicado</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Integraciones personalizadas</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Funciones multi-local</span></li>
+                <li className="flex items-center gap-3"><Check className="h-5 w-5 text-green-500" /><span>Formación a medida</span></li>
+              </ul>
+              <a href="#" className="mt-auto block w-full rounded-lg border border-primary py-3 text-center font-semibold text-primary transition-colors hover:bg-primary/10">
+                Contactar
+              </a>
             </div>
           </div>
         </div>
