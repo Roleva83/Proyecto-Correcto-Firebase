@@ -59,6 +59,10 @@ const Landing: React.FC = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white pb-[88px] pt-[72px] radial-gradient-hero">
         <div className="container relative z-10 mx-auto max-w-[1200px] px-4">
+          {/* Nuevo contenedor solicitado */}
+          <div>
+            {/* Aquí irá el contenido del nuevo contenedor */}
+          </div>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:items-end">
             {/* Columna Izquierda: Texto y Formulario */}
             <div className="text-center lg:text-left">
