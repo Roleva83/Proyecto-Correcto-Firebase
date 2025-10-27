@@ -287,5 +287,3 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
-
-    
