@@ -63,7 +63,7 @@ export default function SobreMi() {
                 width={280}
                 height={280}
                 className="relative h-64 w-64 rounded-full object-cover shadow-xl"
-                style={{ objectPosition: 'center 30%' }}
+                style={{ objectPosition: 'center 20%' }}
               />
             </div>
             <div className="text-center md:text-left lg:col-span-3">
