@@ -35,11 +35,11 @@ export default function Landing() {
             <a href="#features" className="font-medium text-foreground transition-colors hover:text-primary">
               Funcionalidades
             </a>
+            <a href="/sobre-mi" className="font-medium text-foreground transition-colors hover:text-primary">
+              Sobre mí
+            </a>
             <a href="#pricing" className="font-medium text-foreground transition-colors hover:text-primary">
               Precios
-            </a>
-             <a href="/sobre-mi" className="font-medium text-foreground transition-colors hover:text-primary">
-              Sobre mí
             </a>
             <a href="#contact" className="font-medium text-foreground transition-colors hover:text-primary">
               Contacto
@@ -602,5 +602,3 @@ export default function Landing() {
     </div>
   );
 }
-
-    
