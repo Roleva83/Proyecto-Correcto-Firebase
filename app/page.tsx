@@ -575,6 +575,7 @@ export default function Landing() {
                 <li><a href="#" className="transition-colors hover:text-foreground">Política de Privacidad</a></li>
                 <li><a href="#" className="transition-colors hover:text-foreground">Política de Cookies</a></li>
                 <li><a href="#" className="transition-colors hover:text-foreground">Aviso Legal</a></li>
+                <li><a href="#" className="transition-colors hover:text-foreground">Términos y condiciones</a></li>
               </ul>
             </div>
             
