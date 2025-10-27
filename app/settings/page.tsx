@@ -32,7 +32,7 @@ const IntegrationCard = ({ icon, title, description, status, syncDate, syncStatu
                  {syncDate && <p className="text-xs text-muted-foreground">Sinc.: {syncDate}</p>}
                  {syncStatus && <p className="text-xs text-muted-foreground">{syncStatus}</p>}
             </div>
-             <Button variant={status === 'Conectado' ? 'destructive' : 'default'} size="sm">
+             <Button variant={status === 'Conectado' ? 'destructive' : 'primary'}>
                 {status === 'Conectado' ? 'Desconectar' : 'Conectar'}
             </Button>
         </div>
@@ -114,7 +114,7 @@ export default function SettingsPage() {
                                 <div className="relative h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center text-xs text-muted-foreground">
                                     <Image src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05" alt="Logo" layout="fill" className="rounded-full object-cover"/>
                                 </div>
-                                <Button variant="outline">
+                                <Button variant="ghost">
                                     <Upload className="mr-2 h-4 w-4" />
                                     Cambiar Logo
                                 </Button>

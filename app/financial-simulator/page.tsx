@@ -97,9 +97,9 @@ export default function FinancialSimulator() {
                      <div>
                         <label className="text-sm font-medium text-foreground">Días de Apertura / Mes</label>
                         <div className="flex gap-2 mt-2">
-                            <Button variant="outline" size="sm">Cierra 2 días/sem (22)</Button>
-                            <Button variant="secondary" size="sm">Cierra 1 día/sem (26)</Button>
-                            <Button variant="outline" size="sm">Abre todos (30)</Button>
+                            <Button variant="ghost">Cierra 2 días/sem (22)</Button>
+                            <Button variant="secondary">Cierra 1 día/sem (26)</Button>
+                            <Button variant="ghost">Abre todos (30)</Button>
                         </div>
                      </div>
                   </div>
@@ -198,7 +198,7 @@ export default function FinancialSimulator() {
                 </div>
               </div>
               <div className="mt-6 border-t pt-6">
-                <Button variant="outline" className="w-full">
+                <Button variant="ghost" className="w-full">
                   <Bot className="mr-2 h-4 w-4" />
                   Solicitar análisis personalizado a Lola
                 </Button>

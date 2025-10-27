@@ -72,9 +72,9 @@ export default function EmailTemplatesModal({ isOpen, onClose }: EmailTemplatesM
                                             <p className="font-semibold text-sm mb-1">Cuerpo del mensaje:</p>
                                             <p className="text-sm text-muted-foreground whitespace-pre-wrap">{template.body}</p>
                                             <div className="flex justify-end gap-2 mt-4">
-                                                <Button variant="secondary" size="sm"><Copy className="mr-2 h-4 w-4" /> Copiar</Button>
-                                                <Button variant="secondary" size="sm"><Edit className="mr-2 h-4 w-4" /> Editar</Button>
-                                                <Button size="sm"><Send className="mr-2 h-4 w-4" /> Enviar</Button>
+                                                <Button variant="secondary"><Copy className="mr-2 h-4 w-4" /> Copiar</Button>
+                                                <Button variant="secondary"><Edit className="mr-2 h-4 w-4" /> Editar</Button>
+                                                <Button><Send className="mr-2 h-4 w-4" /> Enviar</Button>
                                             </div>
                                         </div>
                                     </AccordionContent>

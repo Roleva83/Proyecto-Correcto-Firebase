@@ -41,10 +41,10 @@ export default function NewStrategiesModal({ isOpen, onClose }: NewStrategiesMod
                     </p>
                 </div>
 
-                <Button variant="outline" size="icon" className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 bg-card/80 backdrop-blur-sm">
+                <Button variant="secondary" className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 bg-card/80 backdrop-blur-sm">
                     <ArrowLeft className="h-4 w-4" />
                 </Button>
-                 <Button variant="outline" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 bg-card/80 backdrop-blur-sm">
+                 <Button variant="secondary" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 bg-card/80 backdrop-blur-sm">
                     <ArrowRight className="h-4 w-4" />
                 </Button>
             </div>

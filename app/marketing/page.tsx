@@ -73,7 +73,7 @@ export default function MarketingPage() {
                                 <h3 className="text-lg font-semibold text-foreground">Fidelización de Clientes</h3>
                                 <p className="text-sm text-muted-foreground mt-1 mb-4">Crea programas para premiar a tus clientes más leales.</p>
                                 <p className="text-sm text-secondary mb-6">Gestiona tus clientes leales, asigna puntos, canjea recompensas y mide el impacto de tu programa de fidelización.</p>
-                                <Button asChild variant="secondary">
+                                <Button variant="secondary">
                                   <Link href="/marketing/loyalty">Gestionar Programa de Fidelización</Link>
                                 </Button>
                             </div>

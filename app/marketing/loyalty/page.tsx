@@ -106,10 +106,10 @@ export default function LoyaltyProgramPage() {
                                     <p className="text-sm text-muted-foreground mb-4">Genera enlaces únicos para asociar reseñas a clientes específicos.</p>
                                     <div className="flex items-center gap-2 mb-4">
                                         <span className="text-sm font-medium">Filtrar:</span>
-                                        <Button size="sm">Todos</Button>
-                                        <Button size="sm" variant="outline">Google</Button>
-                                        <Button size="sm" variant="outline">TripAdvisor</Button>
-                                        <Button size="sm" variant="outline">TheFork</Button>
+                                        <Button>Todos</Button>
+                                        <Button variant="ghost">Google</Button>
+                                        <Button variant="ghost">TripAdvisor</Button>
+                                        <Button variant="ghost">TheFork</Button>
                                     </div>
                                     <table className="w-full">
                                         <thead>
@@ -141,13 +141,13 @@ export default function LoyaltyProgramPage() {
                                                         </div>
                                                     </td>
                                                     <td className="py-4 text-right">
-                                                        <Button variant="ghost" size="sm"><Link2 className="mr-1 h-4 w-4"/> Generar Enlace</Button>
+                                                        <Button variant="ghost"><Link2 className="mr-1 h-4 w-4"/> Generar Enlace</Button>
                                                     </td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
-                                    <Button variant="outline" className="mt-4">Añadir Cliente</Button>
+                                    <Button variant="ghost" className="mt-4">Añadir Cliente</Button>
                                 </CardContent>
                             </Card>
 
@@ -172,14 +172,14 @@ export default function LoyaltyProgramPage() {
                                                     <td className="py-3 font-semibold">{r.name}</td>
                                                     <td className="py-3">{r.points}</td>
                                                     <td className="py-3 text-right">
-                                                        <Button variant="ghost" size="icon"><Edit className="h-4 w-4" /></Button>
-                                                        <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-red-500" /></Button>
+                                                        <Button variant="ghost"><Edit className="h-4 w-4" /></Button>
+                                                        <Button variant="ghost"><Trash2 className="h-4 w-4 text-red-500" /></Button>
                                                     </td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                      </table>
-                                     <Button variant="outline" className="mt-4">Añadir Recompensa</Button>
+                                     <Button variant="ghost" className="mt-4">Añadir Recompensa</Button>
                                 </CardContent>
                             </Card>
                         </div>
