@@ -5,7 +5,8 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardContent } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
-import { Download, Calendar, Award, BookOpen, Mail, Users, Lightbulb, Home, Bot, BarChart2, CircleDollarSign, Megaphone, Settings } from 'lucide-react'
+import { Download, Calendar, Award, BookOpen, Mail, Users, Lightbulb, Home, Bot, BarChart2, CircleDollarSign, Megaphone, Settings, Users as TeamIcon, TrendingUp, Award as AwardIcon } from 'lucide-react'
+import Link from 'next/link'
 
 // Custom SVG Icons for Marketing Page
 const CalendarIcon = () => (
@@ -64,7 +65,9 @@ export default function MarketingPage() {
                                 <h3 className="text-lg font-semibold text-foreground">Fidelización de Clientes</h3>
                                 <p className="text-sm text-muted-foreground mt-1 mb-4">Crea programas para premiar a tus clientes más leales.</p>
                                 <p className="text-sm text-secondary mb-6">Gestiona tus clientes leales, asigna puntos, canjea recompensas y mide el impacto de tu programa de fidelización.</p>
-                                <Button variant="secondary">Gestionar Programa de Fidelización</Button>
+                                <Button asChild variant="secondary">
+                                  <Link href="/marketing/loyalty">Gestionar Programa de Fidelización</Link>
+                                </Button>
                             </div>
                         </div>
                     </CardContent>
