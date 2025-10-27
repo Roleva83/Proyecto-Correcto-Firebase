@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import { User, Mail, Phone, Building } from 'lucide-react';
+import { User, Mail, Phone, Building, Search } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -122,6 +122,43 @@ export default function Landing() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* New Free Analysis Section */}
+      <section className="bg-accent py-20">
+        <div className="container mx-auto max-w-[1200px] px-4 text-center">
+          <h2 className="mb-4 text-4xl font-black text-foreground">
+            Descubre tu Potencial, Gratis.
+          </h2>
+          <p className="mx-auto mb-8 max-w-3xl text-lg text-secondary">
+            Analiza tu reputación online en segundos. Simplemente pega la URL de tu perfil de Google My Business y deja que Lola IA te muestre cómo puedes mejorar.
+          </p>
+
+          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border border-border bg-card p-6 shadow-soft">
+            <div className="flex items-center justify-center space-x-4">
+              <div className="relative w-[70%]">
+                <input
+                  type="text"
+                  placeholder="Pega aquí la URL de tu perfil de Google My Business"
+                  className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-4 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <button className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 font-semibold text-primary-foreground duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring">
+                <Search className="h-5 w-5" />
+                <span>Analizar reputación</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-4">
+            <a href="#" className="rounded-xl bg-primary px-5 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring">
+              Solicitar demo gratuita
+            </a>
+            <a href="#" className="rounded-xl border border-border bg-card px-5 py-3.5 text-sm font-semibold text-foreground duration-200 hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring">
+              Ver cómo funciona
+            </a>
           </div>
         </div>
       </section>
