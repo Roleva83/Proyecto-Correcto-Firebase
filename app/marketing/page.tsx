@@ -5,7 +5,7 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardContent } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
-import { Download, Calendar, Award, BookOpen, Mail, Users, Lightbulb } from 'lucide-react'
+import { Download, Calendar, Award, BookOpen, Mail, Users, Lightbulb, Home, Bot, BarChart2, CircleDollarSign, Megaphone, Settings } from 'lucide-react'
 
 // Custom SVG Icons for Marketing Page
 const CalendarIcon = () => (
@@ -29,52 +29,10 @@ const FomentarResenasIcon = () => (
 
 export default function MarketingPage() {
   const user = { name: 'Restaurante Ejemplo' };
-  const activePath = "/marketing"
-
+  
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className={`bg-card text-card-foreground border-r transition-all duration-300 w-64 flex flex-col`}>
-        <div className="p-4 border-b">
-          <h2 className="text-2xl font-bold">Caña y Reseña</h2>
-        </div>
-        <nav className="flex-1 p-4 space-y-2">
-            {[
-                { href: "/dashboard", icon: <Home className="h-5 w-5" />, label: "Inicio" },
-                { href: "/lola", icon: <Bot className="h-5 w-5" />, label: "Lola: Reseñas y Acción" },
-                { href: "/menu-analysis", icon: <BarChart2 className="h-5 w-5" />, label: "Análisis de Menú" },
-                { href: "/team", icon: <Users className="h-5 w-5" />, label: "Equipo y Rendimiento" },
-                { href: "/mis-metas-y-medallas", icon: <Award className="h-5 w-5" />, label: "Mis Metas y Medallas" },
-                { href: "/financial-simulator", icon: <CircleDollarSign className="h-5 w-5" />, label: "Simulador Financiero" },
-                { href: "/marketing", icon: <Megaphone className="h-5 w-5" />, label: "Marketing y Clientes" },
-            ].map((item) => (
-            <a
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
-                activePath === item.href
-                    ? 'bg-primary text-primary-foreground'
-                    : 'hover:bg-accent hover:text-accent-foreground'
-                }`}
-            >
-                {item.icon}
-                <span className="font-medium">{item.label}</span>
-            </a>
-            ))}
-        </nav>
-        <div className="p-4 border-t">
-          <a
-              href="/settings"
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
-                activePath === "/settings"
-                  ? 'bg-primary text-primary-foreground'
-                  : 'hover:bg-accent hover:text-accent-foreground'
-              }`}
-            >
-              <Settings className="h-5 w-5" />
-              <span className="font-medium">Configuración</span>
-          </a>
-        </div>
-      </aside>
+      <Sidebar/>
       <div className="flex-1 flex flex-col">
         <Header user={user} />
         <main className="flex-1 p-8 bg-gray-50">
@@ -84,7 +42,7 @@ export default function MarketingPage() {
                   <p className="text-muted-foreground">Herramientas para captar más reseñas, fidelizar clientes y lanzar campañas.</p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button variant="outline">
+                    <Button variant="secondary">
                         <Download className="mr-2 h-4 w-4" />
                         Descargar Informe
                     </Button>
@@ -106,7 +64,7 @@ export default function MarketingPage() {
                                 <h3 className="text-lg font-semibold text-foreground">Fidelización de Clientes</h3>
                                 <p className="text-sm text-muted-foreground mt-1 mb-4">Crea programas para premiar a tus clientes más leales.</p>
                                 <p className="text-sm text-secondary mb-6">Gestiona tus clientes leales, asigna puntos, canjea recompensas y mide el impacto de tu programa de fidelización.</p>
-                                <Button variant="outline">Gestionar Programa de Fidelización</Button>
+                                <Button variant="secondary">Gestionar Programa de Fidelización</Button>
                             </div>
                         </div>
                     </CardContent>
@@ -121,7 +79,7 @@ export default function MarketingPage() {
                                 <h3 className="text-lg font-semibold text-foreground">Campañas y Contenidos</h3>
                                 <p className="text-sm text-muted-foreground mt-1 mb-4">Planifica tus posts y genera ideas con IA.</p>
                                 <p className="text-sm text-secondary mb-6">Genera copys para redes sociales, planifica tu calendario de contenidos y analiza el rendimiento de tus publicaciones.</p>
-                                <Button variant="outline">Ir al Calendario de Contenidos</Button>
+                                <Button variant="secondary">Ir al Calendario de Contenidos</Button>
                             </div>
                         </div>
                     </CardContent>
@@ -173,5 +131,3 @@ export default function MarketingPage() {
     </div>
   )
 }
-
-    
