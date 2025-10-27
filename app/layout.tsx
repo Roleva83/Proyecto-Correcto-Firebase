@@ -1,4 +1,7 @@
 import './globals.css'
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Caña y Reseña - Lola AI',
@@ -11,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className={inter.className}>
       <body>{children}</body>
     </html>
   )
