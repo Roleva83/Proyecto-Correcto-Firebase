@@ -175,7 +175,7 @@ export default function Landing() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
-            <div className="space-y-8 lg:col-span-2">
+            <div className="space-y-8 lg:col-span-3">
               {/* Card 1 */}
               <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
                 <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
@@ -235,7 +235,7 @@ export default function Landing() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-3">
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
               <h3 className="mb-1 text-center text-xl font-semibold">3. Recibe acciones, no solo datos</h3>
               <p className="mb-4 text-center text-muted-foreground">Recibe recomendaciones automáticas, respuestas optimizadas y acciones concretas para mejorar.</p>
               
@@ -435,3 +435,4 @@ export default function Landing() {
   );
 }
 
+    
