@@ -59,10 +59,10 @@ const Landing: React.FC = () => {
       {/* Hero Section */}
       <section className="relative bg-white pt-[72px] pb-[88px] overflow-hidden radial-gradient-hero">
         <div className="container mx-auto px-4 max-w-[1200px] relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 lg:gap-12 items-center lg:items-end">
             {/* Columna Izquierda: Texto y Formulario */}
             <div className="text-center lg:text-left">
-              <h1 className="text-5xl md:text-[56px] font-black text-foreground mb-6 leading-tight" style={{ lineHeight: 1.1 }}>
+              <h1 className="text-5xl md:text-[56px] font-black text-foreground mb-6" style={{ lineHeight: 1.1 }}>
                 La gestión inteligente que impulsa tu negocio de hostelería
               </h1>
               <p className="text-lg text-secondary mb-6 max-w-lg mx-auto lg:mx-0">
@@ -91,14 +91,13 @@ const Landing: React.FC = () => {
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="hidden lg:flex justify-center">
+            <div className="hidden lg:flex justify-center -mb-4 mr-8">
               <Image 
-                data-ai-hint="restaurant manager tablet"
-                src="https://picsum.photos/seed/hero/500/600" 
-                alt="Gerente de restaurante usando tablet" 
-                width={500} 
-                height={600} 
-                className="rounded-xl shadow-2xl object-cover"
+                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera.png?alt=media&token=98795323-53a2-4c7a-9be4-ce041e8b8964" 
+                alt="Asistente virtual Lola" 
+                width={380} 
+                height={460}
+                className="object-contain"
               />
             </div>
           </div>
@@ -270,5 +269,3 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
-
-    

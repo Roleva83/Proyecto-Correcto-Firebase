@@ -677,6 +677,12 @@ video {
 .mt-8 {
   margin-top: 2rem;
 }
+.-mb-4 {
+  margin-bottom: -1rem;
+}
+.mr-8 {
+  margin-right: 2rem;
+}
 .block {
   display: block;
 }
@@ -1361,8 +1367,16 @@ video {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .lg\:items-end {
+    align-items: flex-end;
+  }
+
   .lg\:justify-start {
     justify-content: flex-start;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
   }
 
   .lg\:px-8 {
