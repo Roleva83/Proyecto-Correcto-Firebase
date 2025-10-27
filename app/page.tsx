@@ -10,7 +10,7 @@ const Landing: React.FC = () => {
   return (
     <div className={`bg-background text-foreground ${inter.className}`}>
       {/* Header/Navigation */}
-      <header className="sticky top-0 left-0 right-0 z-50 h-[72px] bg-white shadow-soft">
+      <header className="sticky top-0 z-50 h-[72px] bg-white shadow-soft">
         <div className="container mx-auto px-4 h-full max-w-[1200px]">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
@@ -39,12 +39,12 @@ const Landing: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-white border border-border rounded-xl hover:bg-accent transition-colors duration-200 focus:ring-2 focus:ring-ring">
+              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-white border border-border rounded-xl hover:bg-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring">
                 Iniciar Sesión
               </a>
               <a
                 href="/auth/register"
-                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:ring-2 focus:ring-ring"
+                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 Registrarse
               </a>
@@ -59,7 +59,7 @@ const Landing: React.FC = () => {
           <div className="grid lg:grid-cols-2 lg:gap-12 items-center lg:items-end">
             {/* Columna Izquierda: Texto y Formulario */}
             <div className="text-center lg:text-left">
-              <h1 className="text-5xl md:text-[56px] font-black text-foreground mb-6" style={{ lineHeight: 1.1 }}>
+              <h1 className="text-5xl md:text-[56px] font-black text-foreground mb-4" style={{ lineHeight: 1.1 }}>
                 La gestión inteligente que impulsa tu negocio de hostelería
               </h1>
               <p className="text-lg text-secondary mb-6 max-w-lg mx-auto lg:mx-0">
@@ -69,17 +69,17 @@ const Landing: React.FC = () => {
               {/* Formulario */}
               <div className="bg-card p-6 rounded-2xl shadow-xl border border-border max-w-md mx-auto lg:mx-0" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
                   <h2 className="text-xl font-semibold text-center mb-6">Pide tu demo</h2>
-                  <form className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input type="text" placeholder="Nombre" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
-                      <input type="text" placeholder="Apellidos" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
+                  <form className="space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input type="text" placeholder="Nombre" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
+                      <input type="text" placeholder="Apellidos" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
                     </div>
-                    <input type="email" placeholder="Email" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input type="tel" placeholder="Teléfono" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
-                      <input type="text" placeholder="Nombre del negocio" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
+                    <input type="email" placeholder="Email" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input type="tel" placeholder="Teléfono" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
+                      <input type="text" placeholder="Nombre del negocio" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-150" />
                     </div>
-                    <button type="submit" className="w-full h-[50px] bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:ring-2 focus:ring-ring">
+                    <button type="submit" className="w-full h-[50px] bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring">
                       Empezar ahora
                     </button>
                   </form>
@@ -103,7 +103,7 @@ const Landing: React.FC = () => {
       
       {/* How it works Section */}
       <section id="features" className="py-20 bg-card">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Así de fácil funciona Lola IA
@@ -134,7 +134,7 @@ const Landing: React.FC = () => {
 
       {/* Results Section */}
       <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-[1200px]">
             <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold mb-4">Resultados que marcan la diferencia</h2>
                 <p className="text-xl opacity-90 max-w-3xl mx-auto">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
@@ -158,7 +158,7 @@ const Landing: React.FC = () => {
 
       {/* Testimonials Section */}
       <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-foreground">
               Lo que dicen nuestros clientes
@@ -204,7 +204,7 @@ const Landing: React.FC = () => {
 
       {/* Footer */}
       <footer id="contact" className="bg-foreground text-background py-12">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
@@ -254,7 +254,7 @@ const Landing: React.FC = () => {
             </div>
           </div>
 
-          <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+          <div className="border-t border-muted mt-8 pt-8 text-center text-muted-foreground">
             <p>&copy; 2024 Caña y Reseña. Todos los derechos reservados.</p>
           </div>
         </div>
@@ -266,5 +266,3 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
-
-    
