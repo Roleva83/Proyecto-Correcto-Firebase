@@ -18,9 +18,6 @@ const ScrollToTopButton = () => {
 
     window.addEventListener('scroll', toggleVisibility);
 
-    // Call it once to set initial state
-    toggleVisibility();
-
     return () => {
       window.removeEventListener('scroll', toggleVisibility);
     };
