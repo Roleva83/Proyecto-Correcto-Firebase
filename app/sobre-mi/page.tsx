@@ -62,7 +62,8 @@ export default function SobreMi() {
                 alt="Foto de la fundadora Rocío"
                 width={280}
                 height={280}
-                className="relative h-64 w-64 rounded-full object-cover object-center border-4 border-white shadow-xl"
+                className="relative h-64 w-64 rounded-full object-cover shadow-xl"
+                style={{ objectPosition: 'center 30%' }}
               />
             </div>
             <div className="text-center md:text-left lg:col-span-3">
