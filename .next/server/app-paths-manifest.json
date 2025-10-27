@@ -4,5 +4,6 @@
   "/auth/register/page": "app/auth/register/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/lola/page": "app/lola/page.js",
-  "/menu-analysis/page": "app/menu-analysis/page.js"
+  "/menu-analysis/page": "app/menu-analysis/page.js",
+  "/team/page": "app/team/page.js"
 }
