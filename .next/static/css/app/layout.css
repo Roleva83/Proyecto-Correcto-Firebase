@@ -908,6 +908,9 @@ video {
 .flex {
   display: flex;
 }
+.inline-flex {
+  display: inline-flex;
+}
 .table {
   display: table;
 }
@@ -1121,6 +1124,10 @@ video {
 }
 .gap-y-10 {
   row-gap: 2.5rem;
+}
+.gap-x-2 {
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
 }
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -1428,6 +1435,9 @@ video {
 }
 .pt-\[72px\] {
   padding-top: 72px;
+}
+.text-left {
+  text-align: left;
 }
 .text-center {
   text-align: center;
@@ -1764,6 +1774,11 @@ video {
   .sm\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 }
 

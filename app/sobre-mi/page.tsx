@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { UtensilsCrossed, AreaChart, BrainCircuit } from 'lucide-react';
+import { UtensilsCrossed, AreaChart, BrainCircuit, ArrowRight } from 'lucide-react';
 
 export default function SobreMi() {
   return (
@@ -62,6 +62,7 @@ export default function SobreMi() {
                   alt="Foto de la fundadora Rocío"
                   layout="fill"
                   className="rounded-2xl object-cover shadow-xl"
+                  style={{ objectPosition: 'center 40%' }}
                 />
               </div>
             </div>
@@ -81,22 +82,22 @@ export default function SobreMi() {
 
           {/* Features Section */}
           <div className="mt-24 sm:mt-32">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-10 text-center md:grid-cols-3 lg:text-left">
-              <div className="flex flex-col items-center lg:items-start">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-3">
+              <div className="flex flex-col items-start text-left">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                   <UtensilsCrossed className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-foreground">Pasión por la Hostelería</h3>
                 <p className="mt-2 text-base text-secondary">Conozco el sector desde dentro, entiendo tus dolores y hablo tu mismo idioma.</p>
               </div>
-              <div className="flex flex-col items-center lg:items-start">
+              <div className="flex flex-col items-start text-left">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                   <AreaChart className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-foreground">Visión Analítica</h3>
                 <p className="mt-2 text-base text-secondary">Convierto datos complejos en acciones sencillas para que tomes mejores decisiones.</p>
               </div>
-              <div className="flex flex-col items-center lg:items-start">
+              <div className="flex flex-col items-start text-left">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                   <BrainCircuit className="h-6 w-6 text-primary" />
                 </div>
@@ -105,6 +106,24 @@ export default function SobreMi() {
               </div>
             </div>
           </div>
+          
+          {/* CTA Section */}
+          <div className="mt-24 rounded-2xl bg-white p-12 text-center shadow-soft sm:mt-32">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">¿Quieres ver cómo funciona?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-secondary">
+              Descubre en una demo personalizada cómo Lola IA puede transformar la gestión de tu negocio. Sin compromisos.
+            </p>
+            <div className="mt-8">
+              <a
+                href="/#contact"
+                className="inline-flex items-center gap-x-2 rounded-xl bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                Pide tu demo ahora
+                <ArrowRight className="h-5 w-5" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+
         </div>
       </main>
     </div>
