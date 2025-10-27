@@ -7,43 +7,41 @@ const Landing: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Header/Navigation */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-white shadow-sm">
+        <div className="container mx-auto px-4 h-full max-w-[1200px]">
+          <div className="flex items-center justify-between h-full">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 relative">
-                 <Image 
-                  src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
-                  alt="Logo Caña y Reseña"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-2xl font-bold text-gray-800">Caña y Reseña</span>
+            <div className="flex items-center">
+              <span className="text-xl font-semibold text-[#0F0F10]">Caña y Reseña</span>
             </div>
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-orange-600 transition-colors">
+              <a href="#" className="font-medium text-[#0F0F10] hover:text-amber-600 transition-colors">
+                Inicio
+              </a>
+              <a href="#features" className="font-medium text-[#0F0F10] hover:text-amber-600 transition-colors">
                 Funcionalidades
               </a>
-              <a href="#pricing" className="text-gray-600 hover:text-orange-600 transition-colors">
+              <a href="#" className="font-medium text-[#0F0F10] hover:text-amber-600 transition-colors">
+                Sobre mí
+              </a>
+              <a href="#pricing" className="font-medium text-[#0F0F10] hover:text-amber-600 transition-colors">
                 Precios
               </a>
-              <a href="#contact" className="text-gray-600 hover:text-orange-600 transition-colors">
+              <a href="#contact" className="font-medium text-[#0F0F10] hover:text-amber-600 transition-colors">
                 Contacto
               </a>
             </nav>
 
             {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <a href="/auth/login" className="text-gray-600 hover:text-orange-600 transition-colors font-semibold">
+              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-gray-800 bg-white border border-[#E5E7EB] rounded-xl hover:bg-gray-50 transition-colors">
                 Iniciar Sesión
               </a>
               <a
                 href="/auth/register"
-                className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-all duration-200 shadow-md hover:shadow-lg"
+                className="px-5 py-2.5 text-sm font-semibold text-white bg-[#F59E0B] rounded-xl hover:bg-[#D97706] transition-colors"
               >
                 Registrarse
               </a>
@@ -51,6 +49,9 @@ const Landing: React.FC = () => {
           </div>
         </div>
       </header>
+
+      {/* Spacer for fixed header */}
+      <div className="h-[72px]"></div>
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 md:py-24">
