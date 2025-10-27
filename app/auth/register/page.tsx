@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Mail, Lock, Building } from 'lucide-react'
+import { Mail, Lock, Building, Phone } from 'lucide-react'
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -74,6 +74,20 @@ export default function Register() {
                                 id="restaurant-name" 
                                 type="text" 
                                 placeholder="El nombre de tu negocio" 
+                                required
+                                className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label htmlFor="phone" className="mb-2 block text-sm font-medium text-foreground">Teléfono de contacto</label>
+                        <div className="relative">
+                            <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                            <input 
+                                id="phone" 
+                                type="tel" 
+                                placeholder="Tu número de teléfono" 
                                 required
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
