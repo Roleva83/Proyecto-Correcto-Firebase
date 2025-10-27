@@ -383,7 +383,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
             <div className="flex items-center justify-center">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20IA.png?alt=media&token=5057c323-0d30-43b8-82b4-e1111b1475bc"
+                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Asesora.png?alt=media&token=c1e28067-4758-4e74-9f6c-36c5388af73a"
                 alt="Lola IA con portátil"
                 width={400}
                 height={400}
