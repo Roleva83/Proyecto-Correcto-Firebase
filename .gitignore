@@ -19,3 +19,5 @@ yarn-error.log*
 # sistema
 .DS_Store
 Thumbs.db
+# Next.js build output
+.next/
