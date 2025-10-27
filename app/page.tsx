@@ -4,9 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import { User, Mail, Phone, Building, Search, Star } from 'lucide-react';
-import DonutChart from './components/charts/DonutChart';
-import BarChartComponent from './components/charts/BarChart';
-import SentimentChart from './components/charts/SentimentChart';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -184,7 +181,31 @@ export default function Landing() {
                 <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
                 <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
                 <div className="mt-auto flex h-[200px] w-full items-center justify-center">
-                  <DonutChart />
+                  <div className="relative h-40 w-40">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-3xl font-bold">48%</span>
+                    </div>
+                    <svg className="h-full w-full" viewBox="0 0 36 36">
+                      <path
+                        className="stroke-current text-pink-200"
+                        d="M18 2.0845
+                          a 15.9155 15.9155 0 0 1 0 31.831
+                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="stroke-current text-yellow-400"
+                        strokeDasharray="48, 100"
+                        d="M18 2.0845
+                          a 15.9155 15.9155 0 0 1 0 31.831
+                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
@@ -192,8 +213,23 @@ export default function Landing() {
               <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
                 <h3 className="mb-2 text-xl font-semibold">2. Lola analiza en tiempo real</h3>
                 <p className="mb-6 text-muted-foreground">Nuestra IA procesa cada dato: ventas, opiniones, reservas y menciones.</p>
-                <div className="mt-auto flex h-[200px] w-full items-center justify-center">
-                  <BarChartComponent />
+                <div className="mt-auto flex h-[200px] w-full items-end justify-around px-4">
+                    <div className="flex flex-col items-center">
+                        <div className="w-10 rounded-t-lg bg-pink-400" style={{height: '93px'}}></div>
+                        <span className="mt-2 text-sm">Serv.</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="w-10 rounded-t-lg bg-purple-400" style={{height: '152px'}}></div>
+                        <span className="mt-2 text-sm">Comida</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="w-10 rounded-t-lg bg-green-400" style={{height: '118px'}}></div>
+                        <span className="mt-2 text-sm">Amb.</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="w-10 rounded-t-lg bg-yellow-400" style={{height: '36px'}}></div>
+                        <span className="mt-2 text-sm">Precio</span>
+                    </div>
                 </div>
               </div>
             </div>
@@ -205,7 +241,23 @@ export default function Landing() {
               
               <div className="my-4">
                 <p className="text-center text-sm font-semibold text-muted-foreground">ÚLTIMO TRIMESTRE</p>
-                <SentimentChart />
+                <div className="flex items-center justify-center gap-6 p-4">
+                    <div className="relative h-32 w-32">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-2xl font-bold">65%</span>
+                        </div>
+                        <svg className="h-full w-full rotate-[200deg]" viewBox="0 0 36 36">
+                            <path className="stroke-current text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" strokeWidth="4" />
+                            <path className="stroke-current text-yellow-500" strokeDasharray="65, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" strokeWidth="4" strokeLinecap="round" />
+                            <path className="stroke-current text-gray-400" strokeDasharray="25, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" strokeWidth="4" strokeLinecap="round" transform="rotate(234, 18, 18)" />
+                        </svg>
+                    </div>
+                    <div className="flex flex-col gap-2 text-sm">
+                        <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-yellow-500"></span><span>Positivo</span><span className="ml-auto font-semibold">65%</span></div>
+                        <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-gray-400"></span><span>Neutral</span><span className="ml-auto font-semibold">25%</span></div>
+                        <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-gray-700"></span><span>Negativo</span><span className="ml-auto font-semibold">10%</span></div>
+                    </div>
+                </div>
               </div>
 
               <div className="mt-4 space-y-4">
@@ -383,4 +435,3 @@ export default function Landing() {
   );
 }
 
-    
