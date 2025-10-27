@@ -3,7 +3,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { Home, Bot, BarChart2, Users, TrendingUp, CircleDollarSign, Megaphone, Settings } from 'lucide-react'
+import { Home, Bot, BarChart2, Users, TrendingUp, CircleDollarSign, Megaphone, Settings, Award } from 'lucide-react'
 
 interface SidebarProps {
   isOpen?: boolean
@@ -14,13 +14,13 @@ const navItems = [
     { href: "/lola", icon: <Bot className="h-5 w-5" />, label: "Lola: Reseñas y Acción" },
     { href: "/menu-analysis", icon: <BarChart2 className="h-5 w-5" />, label: "Análisis de Menú" },
     { href: "/team", icon: <Users className="h-5 w-5" />, label: "Equipo y Rendimiento" },
-    { href: "/growth", icon: <TrendingUp className="h-5 w-5" />, label: "Crecimiento y Recompensas" },
+    { href: "/mis-metas-y-medallas", icon: <Award className="h-5 w-5" />, label: "Mis Metas y Medallas" },
     { href: "/financial-simulator", icon: <CircleDollarSign className="h-5 w-5" />, label: "Simulador Financiero" },
     { href: "/marketing", icon: <Megaphone className="h-5 w-5" />, label: "Marketing y Clientes" },
 ]
 
 export default function Sidebar({ isOpen = true }: SidebarProps) {
-  const activePath = "/dashboard" // Placeholder for active path logic
+  const activePath = "/mis-metas-y-medallas" // Placeholder for active path logic
 
   return (
     <aside className={`bg-card text-card-foreground border-r transition-all duration-300 ${isOpen ? 'w-64' : 'w-0'} flex flex-col`}>
