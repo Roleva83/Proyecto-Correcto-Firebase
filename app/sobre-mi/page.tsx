@@ -56,15 +56,14 @@ export default function SobreMi() {
           {/* Intro Section */}
           <div className="grid items-center gap-12 md:grid-cols-2 lg:grid-cols-5">
             <div className="relative flex justify-center lg:col-span-2">
-              <div className="absolute -inset-4 rounded-full bg-primary/10 blur-2xl"></div>
-              <Image
-                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Fro%20oficina.png?alt=media&token=55f3ac84-cfb7-4fd6-aa87-fb83b60ca6bf"
-                alt="Foto de la fundadora Rocío"
-                width={280}
-                height={280}
-                className="relative h-64 w-64 rounded-full object-cover shadow-xl"
-                style={{ objectPosition: 'center 40%' }}
-              />
+              <div className="relative h-80 w-64">
+                <Image
+                  src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Fro%20oficina.png?alt=media&token=55f3ac84-cfb7-4fd6-aa87-fb83b60ca6bf"
+                  alt="Foto de la fundadora Rocío"
+                  layout="fill"
+                  className="rounded-2xl object-cover shadow-xl"
+                />
+              </div>
             </div>
             <div className="text-center md:text-left lg:col-span-3">
               <p className="font-medium text-primary">De la barra al SaaS</p>
