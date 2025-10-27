@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import { User, Mail, Phone, Building, Search, Star } from 'lucide-react';
+import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -177,7 +177,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
             <div className="space-y-8 lg:col-span-3">
               {/* Card 1 */}
-              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft" style={{backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)', padding: '24px'}}>
+              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
                 <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
                 <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
                 <div className="mx-auto mt-auto flex h-[200px] w-[200px] items-center justify-center">
@@ -193,7 +193,7 @@ export default function Landing() {
               </div>
 
               {/* Card 2 */}
-              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft" style={{backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)', padding: '24px'}}>
+              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
                 <h3 className="mb-2 text-xl font-semibold">2. Lola analiza en tiempo real</h3>
                 <p className="mb-6 text-muted-foreground">Nuestra IA procesa cada dato: ventas, opiniones, reservas y menciones.</p>
                 <div className="mt-auto flex h-[200px] w-full items-end justify-around px-4">
@@ -218,7 +218,7 @@ export default function Landing() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2" style={{backgroundColor: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)', padding: '24px'}}>
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
               <h3 className="mb-1 text-center text-xl font-semibold">3. Recibe acciones, no solo datos</h3>
               <p className="mb-4 text-center text-muted-foreground">Recibe recomendaciones automáticas basadas en IA, respuestas optimizadas y acciones concretas para mejorar tus resultados.</p>
               
@@ -337,25 +337,37 @@ export default function Landing() {
       </section>
 
       {/* Results Section */}
-      <section className="bg-primary py-20 text-primary-foreground">
+      <section className="bg-white py-20">
         <div className="container mx-auto max-w-[1200px] px-4">
             <div className="mb-12 text-center">
                 <h2 className="mb-4 text-4xl font-bold">Resultados que marcan la diferencia</h2>
-                <p className="mx-auto max-w-3xl text-xl opacity-90">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
+                <p className="mx-auto max-w-3xl text-lg text-secondary">Nuestros clientes ven mejoras tangibles en menos de 3 meses.</p>
             </div>
             <div className="grid gap-8 text-center md:grid-cols-3">
-                <div>
-                    <p className="mb-2 text-6xl font-bold">+85%</p>
-                    <p className="text-lg opacity-90">De respuestas a reseñas automatizadas con un 99% de acierto.</p>
+                <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
+                    <Star className="h-10 w-10 mx-auto text-primary mb-4" />
+                    <p className="mb-2 text-5xl font-bold text-primary">+65%</p>
+                    <p className="text-lg text-muted-foreground">más reseñas positivas</p>
                 </div>
-                <div>
-                    <p className="mb-2 text-6xl font-bold">+0.5</p>
-                    <p className="text-lg opacity-90">Puntos de mejora en la valoración media de las principales plataformas.</p>
+                <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
+                    <TrendingUp className="h-10 w-10 mx-auto text-primary mb-4" />
+                    <p className="mb-2 text-5xl font-bold text-primary">+0.5</p>
+                    <p className="text-lg text-muted-foreground">puntos en valoración media</p>
                 </div>
-                <div>
-                    <p className="mb-2 text-6xl font-bold">10h</p>
-                    <p className="text-lg opacity-90">Ahorradas a la semana en tareas de gestión y administración.</p>
+                <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
+                    <Clock className="h-10 w-10 mx-auto text-primary mb-4" />
+                    <p className="mb-2 text-5xl font-bold text-primary">10h</p>
+                    <p className="text-lg text-muted-foreground">ahorradas por semana</p>
                 </div>
+            </div>
+            <div className="mt-16">
+              <div className="rounded-2xl border border-border bg-card p-8 shadow-soft max-w-4xl mx-auto">
+                <Image src="https://picsum.photos/seed/testimonial1/80/80" alt="Avatar Cliente" width={80} height={80} className="mx-auto rounded-full -mt-16 border-4 border-white" />
+                <p className="text-center text-xl text-foreground mt-6 italic">
+                  "Desde que usamos Caña y Reseña, hemos ahorrado horas en la gestión de reseñas y nuestra puntuación en Google ha subido 0.7 puntos."
+                </p>
+                <p className="text-right text-primary font-semibold mt-6">— Carlos R.</p>
+              </div>
             </div>
         </div>
       </section>
@@ -466,5 +478,3 @@ export default function Landing() {
     </div>
   );
 }
-
-    
