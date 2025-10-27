@@ -4,8 +4,8 @@ import React from 'react'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/app/components/ui/button'
+import { Input } from '@/app/components/ui/input'
 import { Search, Star } from 'lucide-react'
 import Image from 'next/image'
 
@@ -195,5 +195,3 @@ export default function Lola() {
     </div>
   )
 }
-
-    
