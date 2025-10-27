@@ -541,7 +541,7 @@ export default function Landing() {
       {/* Footer */}
       <footer id="contact" className="bg-accent py-12 text-foreground">
         <div className="container mx-auto max-w-[1200px] px-4">
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="mb-4 flex items-center space-x-2">
                 <div className="relative h-10 w-10">
@@ -573,18 +573,24 @@ export default function Landing() {
               <h4 className="mb-4 text-lg font-semibold">Legal</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><a href="#" className="transition-colors hover:text-foreground">Política de Privacidad</a></li>
-                <li><a href="#" className="transition-colors hover:text-foreground">Términos de Servicio</a></li>
+                <li><a href="#" className="transition-colors hover:text-foreground">Política de Cookies</a></li>
+                <li><a href="#" className="transition-colors hover:text-foreground">Aviso Legal</a></li>
               </ul>
             </div>
-          </div>
-
-          <div className="mt-8 border-t border-border pt-8 flex items-center justify-between text-sm text-muted-foreground">
-            <p>&copy; 2024 Caña y Reseña. Todos los derechos reservados.</p>
-            <div className="flex items-center space-x-4">
+            
+            <div>
+              <h4 className="mb-4 text-lg font-semibold">Social</h4>
+              <div className="flex items-center space-x-4">
                 <a href="#" className="transition-colors hover:text-foreground"><Instagram className="h-5 w-5" /></a>
                 <a href="#" className="transition-colors hover:text-foreground"><Facebook className="h-5 w-5" /></a>
                 <a href="#" className="transition-colors hover:text-foreground"><Linkedin className="h-5 w-5" /></a>
+              </div>
             </div>
+
+          </div>
+
+          <div className="mt-8 border-t border-border pt-8 flex items-center justify-between text-sm text-muted-foreground">
+            <p>&copy; 2025 Caña y Reseña. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>
@@ -592,5 +598,3 @@ export default function Landing() {
     </div>
   );
 }
-
-    
