@@ -4,7 +4,7 @@ import React from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import MetricsWidget from '../components/dashboard/widgets/MetricsWidget'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
 import { BarChart, Users, Calendar, Euro } from 'lucide-react'
 
 export default function Dashboard() {
