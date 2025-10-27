@@ -15,7 +15,7 @@ export default function Landing() {
       <header className="sticky top-0 z-50 h-[72px] bg-white shadow-soft">
         <div className="container mx-auto flex h-full max-w-[1200px] items-center justify-between px-4">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <a href="/" className="flex items-center space-x-2">
             <div className="relative h-10 w-10">
               <Image 
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
@@ -25,7 +25,7 @@ export default function Landing() {
               />
             </div>
             <span className="text-xl font-semibold text-foreground">Caña y Reseña</span>
-          </div>
+          </a>
 
           {/* Navigation */}
           <nav className="hidden items-center space-x-8 md:flex">
@@ -246,7 +246,7 @@ export default function Landing() {
                 <p className="font-semibold text-foreground">Reseñas clasificadas</p>
                 {/* Review 1 */}
                 <div className="flex items-start space-x-4">
-                  <Image src="https://picsum.photos/seed/avatar1/40/40" alt="Avatar" width={40} height={40} className="rounded-full" />
+                  <Image data-ai-hint="woman smiling" src="https://picsum.photos/seed/avatar1/40/40" alt="Avatar" width={40} height={40} className="rounded-full" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold">Carlos Pérez</p>
@@ -264,7 +264,7 @@ export default function Landing() {
                 </div>
                 {/* Review 2 */}
                 <div className="flex items-start space-x-4">
-                  <Image src="https://picsum.photos/seed/avatar2/40/40" alt="Avatar" width={40} height={40} className="rounded-full" />
+                  <Image data-ai-hint="man serious" src="https://picsum.photos/seed/avatar2/40/40" alt="Avatar" width={40} height={40} className="rounded-full" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <p className="font-semibold">Ana García</p>
@@ -366,7 +366,7 @@ export default function Landing() {
           </div>
           <div className="mt-16">
             <div className="mx-auto max-w-4xl rounded-2xl border border-border bg-card p-8 shadow-soft">
-              <Image src="https://picsum.photos/seed/testimonial1/80/80" alt="Avatar Cliente" width={80} height={80} className="mx-auto -mt-16 rounded-full border-4 border-white" />
+              <Image data-ai-hint="man smiling" src="https://picsum.photos/seed/testimonial1/80/80" alt="Avatar Cliente" width={80} height={80} className="mx-auto -mt-16 rounded-full border-4 border-white" />
               <p className="mt-6 text-center text-xl italic text-foreground">
                 "Desde que usamos Caña y Reseña, hemos ahorrado horas en la gestión de reseñas y nuestra puntuación en Google ha subido 0.7 puntos."
               </p>
@@ -491,19 +491,19 @@ export default function Landing() {
           <div className="grid gap-8 md:grid-cols-3">
             {/* Testimonial 1 */}
             <div className="flex flex-col items-center rounded-lg border bg-card p-8 text-center shadow-md">
-              <Image src="https://picsum.photos/seed/client1/80/80" alt="Avatar Ana S." width={80} height={80} className="mb-6 rounded-full" />
+              <Image data-ai-hint="woman smiling" src="https://picsum.photos/seed/client1/80/80" alt="Avatar Ana S." width={80} height={80} className="mb-6 rounded-full" />
               <p className="mb-6 flex-grow italic text-foreground">"La automatización de respuestas a reseñas nos ha ahorrado horas y ha mejorado nuestra puntuación media increíblemente rápido."</p>
               <p className="font-semibold text-foreground">– Ana S.</p>
             </div>
             {/* Testimonial 2 */}
             <div className="flex flex-col items-center rounded-lg border bg-card p-8 text-center shadow-md">
-              <Image src="https://picsum.photos/seed/client2/80/80" alt="Avatar Carlos R." width={80} height={80} className="mb-6 rounded-full" />
+              <Image data-ai-hint="man serious" src="https://picsum.photos/seed/client2/80/80" alt="Avatar Carlos R." width={80} height={80} className="mb-6 rounded-full" />
               <p className="mb-6 flex-grow italic text-foreground">"Gestionar 5 locales era un caos. Ahora tengo una visión centralizada del rendimiento de cada uno. Imprescindible."</p>
               <p className="font-semibold text-foreground">– Carlos R.</p>
             </div>
             {/* Testimonial 3 */}
             <div className="flex flex-col items-center rounded-lg border bg-card p-8 text-center shadow-md">
-              <Image src="https://picsum.photos/seed/client3/80/80" alt="Avatar Laura M." width={80} height={80} className="mb-6 rounded-full" />
+              <Image data-ai-hint="woman happy" src="https://picsum.photos/seed/client3/80/80" alt="Avatar Laura M." width={80} height={80} className="mb-6 rounded-full" />
               <p className="mb-6 flex-grow italic text-foreground">"Gracias a Lola IA, por fin entiendo qué platos son rentables y cuáles no. He ajustado el menú y los beneficios han subido un 15%."</p>
               <p className="font-semibold text-foreground">– Laura M.</p>
             </div>
@@ -602,3 +602,5 @@ export default function Landing() {
     </div>
   );
 }
+
+    
