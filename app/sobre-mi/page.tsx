@@ -83,25 +83,25 @@ export default function SobreMi() {
           {/* Features Section */}
           <div className="mt-24 sm:mt-32">
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-3">
-              <div className="flex flex-col items-start text-left">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <UtensilsCrossed className="h-6 w-6 text-primary" />
+              <div className="flex flex-col items-center rounded-2xl border border-border bg-card p-8 text-center shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <UtensilsCrossed className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-foreground">Pasión por la Hostelería</h3>
+                <h3 className="mt-4 text-xl font-semibold text-foreground">Pasión por la Hostelería</h3>
                 <p className="mt-2 text-base text-secondary">Conozco el sector desde dentro, entiendo tus dolores y hablo tu mismo idioma.</p>
               </div>
-              <div className="flex flex-col items-start text-left">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <AreaChart className="h-6 w-6 text-primary" />
+              <div className="flex flex-col items-center rounded-2xl border border-border bg-card p-8 text-center shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <AreaChart className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-foreground">Visión Analítica</h3>
+                <h3 className="mt-4 text-xl font-semibold text-foreground">Visión Analítica</h3>
                 <p className="mt-2 text-base text-secondary">Convierto datos complejos en acciones sencillas para que tomes mejores decisiones.</p>
               </div>
-              <div className="flex flex-col items-start text-left">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <BrainCircuit className="h-6 w-6 text-primary" />
+              <div className="flex flex-col items-center rounded-2xl border border-border bg-card p-8 text-center shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <BrainCircuit className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-foreground">Foco en IA</h3>
+                <h3 className="mt-4 text-xl font-semibold text-foreground">Foco en IA</h3>
                 <p className="mt-2 text-base text-secondary">Aplico la última tecnología para automatizar tareas y potenciar tu crecimiento.</p>
               </div>
             </div>
