@@ -68,10 +68,10 @@ export default function Landing() {
             </p>
           </div>
           
-          <div className="flex flex-wrap items-end justify-center gap-12">
+          <div className="flex flex-wrap items-stretch justify-center gap-12">
             {/* Columna Izquierda: Formulario */}
             <div className="w-full max-w-md shrink-0 lg:w-auto">
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-xl" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
+              <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-xl" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
                   <h2 className="mb-6 text-center text-xl font-semibold">Pide tu demo</h2>
                   <form className="space-y-3">
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -102,20 +102,21 @@ export default function Landing() {
                       Empezar ahora
                     </button>
                   </form>
-                  <p className="mt-4 text-center text-sm text-secondary">Confiado por más de 100 negocios hosteleros</p>
+                  <p className="mt-auto pt-4 text-center text-sm text-secondary">Confiado por más de 100 negocios hosteleros</p>
               </div>
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="hidden lg:block">
-              <Image 
-                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
-                alt="Asistente virtual Lola" 
-                width={330} 
-                height={400}
-                className="object-contain"
-                priority
-              />
+            <div className="hidden w-[330px] shrink-0 lg:block">
+              <div className="relative h-full w-full">
+                <Image 
+                  src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
+                  alt="Asistente virtual Lola" 
+                  fill
+                  className="object-contain object-bottom"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
