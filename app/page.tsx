@@ -48,7 +48,7 @@ export default function Landing() {
             </a>
             <a
               href="/auth/register"
-              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-ring"
+              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring"
             >
               Registrarse
             </a>
@@ -58,15 +58,11 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white pb-[88px] pt-[72px] radial-gradient-hero">
-        <div className="container relative z-10 mx-auto max-w-[1200px] px-4">
-          {/* Nuevo contenedor solicitado */}
-          <div>
-            {/* Aquí irá el contenido del nuevo contenedor */}
-          </div>
+        <div className="container relative z-10 mx-auto max-w-[1200px] px-20">
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:items-end">
             {/* Columna Izquierda: Texto y Formulario */}
             <div className="text-center lg:text-left">
-              <h1 className="mb-4 text-5xl font-black text-foreground md:text-[56px]" style={{ lineHeight: 1.1 }}>
+              <h1 className="mb-4 text-5xl font-black text-foreground md:text-[52px]" style={{ lineHeight: 1.1 }}>
                 La gestión inteligente que impulsa tu negocio de hostelería
               </h1>
               <p className="mx-auto mb-6 max-w-lg text-lg text-secondary lg:mx-0">
@@ -101,7 +97,7 @@ export default function Landing() {
                         <input type="text" placeholder="Nombre del negocio" className="h-12 w-full rounded-xl border border-border py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" />
                       </div>
                     </div>
-                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-ring">
+                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring">
                       Empezar ahora
                     </button>
                   </form>
@@ -110,7 +106,7 @@ export default function Landing() {
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="mr-8 hidden justify-center lg:flex">
+            <div className="mr-10 hidden justify-center lg:flex">
               <Image 
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
                 alt="Asistente virtual Lola" 
