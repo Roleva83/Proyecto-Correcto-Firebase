@@ -56,12 +56,14 @@ const Landing: React.FC = () => {
       {/* Hero Section */}
       <section className="relative bg-white pt-[72px] pb-[88px] overflow-hidden radial-gradient-hero">
         <div className="container mx-auto px-4 max-w-[1200px] relative z-10">
+          <div className="text-center lg:text-left mb-10">
+            <h1 className="text-5xl md:text-[56px] font-black text-foreground" style={{ lineHeight: 1.1 }}>
+              La gestión inteligente que impulsa tu negocio de hostelería
+            </h1>
+          </div>
           <div className="grid lg:grid-cols-2 lg:gap-12 items-center lg:items-end">
             {/* Columna Izquierda: Texto y Formulario */}
             <div className="text-center lg:text-left">
-              <h1 className="text-5xl md:text-[56px] font-black text-foreground mb-4" style={{ lineHeight: 1.1 }}>
-                La gestión inteligente que impulsa tu negocio de hostelería
-              </h1>
               <p className="text-lg text-secondary mb-6 max-w-lg mx-auto lg:mx-0">
                 Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
               </p>
