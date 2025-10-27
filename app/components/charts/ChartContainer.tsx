@@ -94,7 +94,7 @@ const ChartContainer = ({
       >
         {children}
       </div>
-    </Chart-Context.Provider>
+    </ChartContext.Provider>
   )
 }
  
