@@ -56,15 +56,16 @@ const Landing: React.FC = () => {
       {/* Hero Section */}
       <section className="relative bg-white pt-[72px] pb-[88px] overflow-hidden radial-gradient-hero">
         <div className="container mx-auto px-4 max-w-[1200px] relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="text-center md:text-left">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Columna Izquierda: Texto y Formulario */}
+            <div className="text-center lg:text-left">
               <h1 className="text-4xl md:text-5xl font-black text-foreground mb-6 leading-tight">
                 La gestión inteligente que impulsa tu negocio de hostelería
               </h1>
               <p className="text-lg text-secondary mb-8">
                 Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
               </p>
-              <div className="flex items-center justify-center md:justify-start space-x-4">
+              <div className="flex items-center justify-center lg:justify-start space-x-4 mb-12">
                   <a
                       href="/auth/register"
                       className="bg-primary text-primary-foreground px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl"
@@ -79,8 +80,9 @@ const Landing: React.FC = () => {
                       <span>Ver vídeo</span>
                     </a>
               </div>
-            </div>
-            <div className="bg-card p-6 rounded-lg shadow-xl border border-border">
+              
+              {/* Formulario */}
+              <div className="bg-card p-6 rounded-lg shadow-xl border border-border max-w-md mx-auto lg:mx-0">
                   <div className="flex border-b mb-4">
                       <button className="flex-1 py-2 text-center font-semibold text-primary border-b-2 border-primary">Facturas</button>
                       <button className="flex-1 py-2 text-center font-semibold text-muted-foreground hover:text-primary">Nóminas</button>
@@ -102,6 +104,19 @@ const Landing: React.FC = () => {
                       </div>
                       <button type="button" className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">Empezar ahora</button>
                   </form>
+              </div>
+            </div>
+
+            {/* Columna Derecha: Imagen */}
+            <div className="hidden lg:flex justify-center">
+              <Image 
+                data-ai-hint="restaurant manager tablet"
+                src="https://picsum.photos/seed/hero/500/600" 
+                alt="Gerente de restaurante usando tablet" 
+                width={500} 
+                height={600} 
+                className="rounded-xl shadow-2xl object-cover"
+              />
             </div>
           </div>
         </div>
@@ -272,3 +287,5 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
+
+    
