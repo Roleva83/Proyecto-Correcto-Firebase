@@ -288,7 +288,7 @@ export default function Landing() {
             {/* Testimonial 1 */}
             <div className="rounded-lg border bg-card p-6 shadow-md">
               <div className="mb-4 flex items-center">
-                <Image src="https://picsum.photos/seed/avatar1/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
+                <Image src="https://picsum.photos/seed/client1/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
                 <div>
                   <p className="font-semibold">Carlos Pérez</p>
                   <p className="text-sm text-muted-foreground">Restaurante La Cuchara</p>
@@ -299,7 +299,7 @@ export default function Landing() {
             {/* Testimonial 2 */}
             <div className="rounded-lg border bg-card p-6 shadow-md">
               <div className="mb-4 flex items-center">
-                <Image src="https://picsum.photos/seed/avatar2/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
+                <Image src="https://picsum.photos/seed/client2/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
                 <div>
                   <p className="font-semibold">Ana García</p>
                   <p className="text-sm text-muted-foreground">Tapas y Vinos</p>
@@ -310,7 +310,7 @@ export default function Landing() {
             {/* Testimonial 3 */}
             <div className="rounded-lg border bg-card p-6 shadow-md">
               <div className="mb-4 flex items-center">
-                <Image src="https://picsum.photos/seed/avatar3/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
+                <Image src="https://picsum.photos/seed/client3/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
                 <div>
                   <p className="font-semibold">Javier Rodríguez</p>
                   <p className="text-sm text-muted-foreground">Asador El Fuego</p>
