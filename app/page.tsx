@@ -3,7 +3,10 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import { User, Mail, Phone, Building, Search } from 'lucide-react';
+import { User, Mail, Phone, Building, Search, Star } from 'lucide-react';
+import DonutChart from './components/charts/DonutChart';
+import BarChartComponent from './components/charts/BarChart';
+import SentimentChart from './components/charts/SentimentChart';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -111,7 +114,7 @@ export default function Landing() {
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="hidden w-[330px] shrink-0 lg:block">
+            <div className="relative hidden w-[330px] shrink-0 lg:block">
               <div className="relative h-full w-full">
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
@@ -164,31 +167,66 @@ export default function Landing() {
       </section>
       
       {/* How it works Section */}
-      <section id="features" className="bg-card py-20">
+      <section id="features" className="bg-background py-20">
         <div className="container mx-auto max-w-[1200px] px-4">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-4xl font-bold text-foreground">
               Así de fácil funciona Lola IA
             </h2>
             <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
-              Automatiza la gestión de tu restaurante y toma el control de tus finanzas y reputación.
+              Desde la conexión inicial hasta la acción automatizada, Lola transforma tus datos en crecimiento.
             </p>
           </div>
-          <div className="grid gap-8 text-center md:grid-cols-3">
-            <div>
-              <Image data-ai-hint="waitress illustration" src="https://picsum.photos/seed/step1/400/300" alt="Paso 1" width={400} height={300} className="mx-auto mb-6 rounded-lg shadow-md" />
-              <h3 className="mb-2 text-xl font-semibold">1. Conecta tus datos</h3>
-              <p className="text-muted-foreground">Integra tus plataformas de reseñas, sistema TPV y programa de reservas en un solo lugar.</p>
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* Card 1 */}
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+              <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
+              <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
+              <div className="mt-auto flex h-[200px] w-full items-center justify-center">
+                <DonutChart />
+              </div>
             </div>
-            <div>
-              <Image data-ai-hint="woman phone illustration" src="https://picsum.photos/seed/step2/400/300" alt="Paso 2" width={400} height={300} className="mx-auto mb-6 rounded-lg shadow-md" />
-              <h3 className="mb-2 text-xl font-semibold">2. Lola IA entra en acción</h3>
-              <p className="text-muted-foreground">Nuestra IA analiza tus reseñas, ventas y reservas para darte una visión 360º de tu negocio.</p>
+
+            {/* Card 2 */}
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+              <h3 className="mb-2 text-xl font-semibold">2. Lola analiza en tiempo real</h3>
+              <p className="mb-6 text-muted-foreground">Nuestra IA procesa cada dato: ventas, opiniones, reservas y menciones.</p>
+              <div className="mt-auto flex h-[200px] w-full items-center justify-center">
+                <BarChartComponent />
+              </div>
             </div>
-            <div>
-              <Image data-ai-hint="businesswoman illustration" src="https://picsum.photos/seed/step3/400/300" alt="Paso 3" width={400} height={300} className="mx-auto mb-6 rounded-lg shadow-md" />
-              <h3 className="mb-2 text-xl font-semibold">3. Recibe insights y actúa</h3>
-              <p className="text-muted-foreground">Obtén recomendaciones claras, automatiza respuestas y optimiza tus operaciones diarias.</p>
+
+            {/* Card 3 */}
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+              <h3 className="mb-2 text-xl font-semibold">3. Recibe acciones, no solo datos</h3>
+              <p className="mb-4 text-muted-foreground">Recibe recomendaciones automáticas, respuestas optimizadas y acciones concretas para mejorar.</p>
+              <div className="mt-auto flex h-[150px] w-full items-center justify-center">
+                <SentimentChart />
+              </div>
+              <div className="mt-4 space-y-2 text-left">
+                <div className="text-sm">
+                  <p className="font-semibold">Google</p>
+                  <div className="flex items-center">
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-muted text-muted" />
+                  </div>
+                  <p className="text-muted-foreground">"El servicio fue un poco lento, pero la comida excelente."</p>
+                </div>
+                <div className="text-sm">
+                  <p className="font-semibold">TripAdvisor</p>
+                  <div className="flex items-center">
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                    <Star className="h-4 w-4 fill-primary text-primary" />
+                  </div>
+                  <p className="text-muted-foreground">"¡Una experiencia increíble! Volveremos seguro."</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
