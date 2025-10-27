@@ -7,7 +7,7 @@ const Landing: React.FC = () => {
   return (
     <div className="bg-background text-foreground">
       {/* Header/Navigation */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-card shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-white shadow-soft">
         <div className="container mx-auto px-4 h-full max-w-[1200px]">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
@@ -36,12 +36,12 @@ const Landing: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-card border border-border rounded-xl hover:bg-accent transition-colors">
+              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-white border border-border rounded-xl hover:bg-accent transition-colors">
                 Iniciar Sesión
               </a>
               <a
                 href="/auth/register"
-                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-primary/90 transition-colors"
+                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-orange-600 transition-colors"
               >
                 Registrarse
               </a>
@@ -54,53 +54,55 @@ const Landing: React.FC = () => {
       <div className="h-[72px]"></div>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
-              La gestión inteligente que impulsa tu negocio de hostelería
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
-            </p>
-            <div className="flex items-center justify-center md:justify-start space-x-4">
-                 <a
-                    href="/auth/register"
-                    className="bg-primary text-primary-foreground px-8 py-3 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    Prueba 15 días gratis
-                  </a>
+      <section className="relative bg-white pt-[72px] pb-[88px] overflow-hidden radial-gradient-hero">
+        <div className="container mx-auto px-4 max-w-[1200px] relative z-10">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl md:text-5xl font-black text-foreground mb-6 leading-tight">
+                La gestión inteligente que impulsa tu negocio de hostelería
+              </h1>
+              <p className="text-lg text-secondary mb-8">
+                Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
+              </p>
+              <div className="flex items-center justify-center md:justify-start space-x-4">
                   <a
-                    href="#video"
-                    className="text-primary font-semibold flex items-center space-x-2"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    <span>Ver vídeo</span>
-                  </a>
+                      href="/auth/register"
+                      className="bg-primary text-primary-foreground px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      Prueba 15 días gratis
+                    </a>
+                    <a
+                      href="#video"
+                      className="text-primary font-semibold flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      <span>Ver vídeo</span>
+                    </a>
+              </div>
             </div>
-          </div>
-          <div className="bg-card p-6 rounded-lg shadow-xl border border-border">
-                <div className="flex border-b mb-4">
-                    <button className="flex-1 py-2 text-center font-semibold text-primary border-b-2 border-primary">Facturas</button>
-                    <button className="flex-1 py-2 text-center font-semibold text-muted-foreground hover:text-primary">Nóminas</button>
-                </div>
-                <form className="space-y-4">
-                    <div>
-                        <label className="text-sm font-medium text-foreground">Sube aquí tu factura</label>
-                        <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-border border-dashed rounded-md">
-                            <div className="space-y-1 text-center">
-                                <svg className="mx-auto h-12 w-12 text-muted-foreground" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <div className="flex text-sm text-muted-foreground justify-center">
-                                    <p className="pl-1">o arrastra y suelta</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground">PNG, JPG, PDF hasta 10MB</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">Empezar ahora</button>
-                </form>
+            <div className="bg-card p-6 rounded-lg shadow-xl border border-border">
+                  <div className="flex border-b mb-4">
+                      <button className="flex-1 py-2 text-center font-semibold text-primary border-b-2 border-primary">Facturas</button>
+                      <button className="flex-1 py-2 text-center font-semibold text-muted-foreground hover:text-primary">Nóminas</button>
+                  </div>
+                  <form className="space-y-4">
+                      <div>
+                          <label className="text-sm font-medium text-foreground">Sube aquí tu factura</label>
+                          <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-border border-dashed rounded-md">
+                              <div className="space-y-1 text-center">
+                                  <svg className="mx-auto h-12 w-12 text-muted-foreground" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                      <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                  </svg>
+                                  <div className="flex text-sm text-muted-foreground justify-center">
+                                      <p className="pl-1">o arrastra y suelta</p>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground">PNG, JPG, PDF hasta 10MB</p>
+                              </div>
+                          </div>
+                      </div>
+                      <button type="button" className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">Empezar ahora</button>
+                  </form>
+            </div>
           </div>
         </div>
       </section>
