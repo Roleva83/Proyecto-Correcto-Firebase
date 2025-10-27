@@ -75,7 +75,7 @@ export default function Landing() {
             </p>
           </div>
           
-          <div className="flex flex-wrap items-stretch justify-center gap-12">
+          <div className="flex flex-wrap items-stretch justify-center gap-8">
             {/* Columna Izquierda: Formulario */}
             <div className="w-full max-w-md shrink-0 lg:w-auto">
               <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-xl" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
@@ -167,64 +167,84 @@ export default function Landing() {
       </section>
       
       {/* How it works Section */}
-      <section id="features" className="bg-background py-20">
+      <section id="features" className="bg-accent py-20">
         <div className="container mx-auto max-w-[1200px] px-4">
-          <div className="mb-16 text-center">
+          <div className="mb-12 text-center">
             <h2 className="mb-4 text-4xl font-bold text-foreground">
               Así de fácil funciona Lola IA
             </h2>
-            <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
+            <p className="mx-auto max-w-3xl text-lg text-secondary">
               Desde la conexión inicial hasta la acción automatizada, Lola transforma tus datos en crecimiento.
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {/* Card 1 */}
-            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
-              <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
-              <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
-              <div className="mt-auto flex h-[200px] w-full items-center justify-center">
-                <DonutChart />
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
+            <div className="space-y-8 lg:col-span-2">
+              {/* Card 1 */}
+              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+                <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
+                <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
+                <div className="mt-auto flex h-[200px] w-full items-center justify-center">
+                  <DonutChart />
+                </div>
               </div>
-            </div>
 
-            {/* Card 2 */}
-            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
-              <h3 className="mb-2 text-xl font-semibold">2. Lola analiza en tiempo real</h3>
-              <p className="mb-6 text-muted-foreground">Nuestra IA procesa cada dato: ventas, opiniones, reservas y menciones.</p>
-              <div className="mt-auto flex h-[200px] w-full items-center justify-center">
-                <BarChartComponent />
+              {/* Card 2 */}
+              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+                <h3 className="mb-2 text-xl font-semibold">2. Lola analiza en tiempo real</h3>
+                <p className="mb-6 text-muted-foreground">Nuestra IA procesa cada dato: ventas, opiniones, reservas y menciones.</p>
+                <div className="mt-auto flex h-[200px] w-full items-center justify-center">
+                  <BarChartComponent />
+                </div>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
-              <h3 className="mb-2 text-xl font-semibold">3. Recibe acciones, no solo datos</h3>
-              <p className="mb-4 text-muted-foreground">Recibe recomendaciones automáticas, respuestas optimizadas y acciones concretas para mejorar.</p>
-              <div className="mt-auto flex h-[150px] w-full items-center justify-center">
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-3">
+              <h3 className="mb-1 text-center text-xl font-semibold">3. Recibe acciones, no solo datos</h3>
+              <p className="mb-4 text-center text-muted-foreground">Recibe recomendaciones automáticas, respuestas optimizadas y acciones concretas para mejorar.</p>
+              
+              <div className="my-4">
+                <p className="text-center text-sm font-semibold text-muted-foreground">ÚLTIMO TRIMESTRE</p>
                 <SentimentChart />
               </div>
-              <div className="mt-4 space-y-2 text-left">
-                <div className="text-sm">
-                  <p className="font-semibold">Google</p>
-                  <div className="flex items-center">
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-muted text-muted" />
+
+              <div className="mt-4 space-y-4">
+                <p className="font-semibold text-foreground">Reseñas clasificadas</p>
+                {/* Review 1 */}
+                <div className="flex items-start space-x-4">
+                  <Image src="https://picsum.photos/seed/avatar1/40/40" alt="Avatar" width={40} height={40} className="rounded-full" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="font-semibold">Carlos Pérez</p>
+                      <p className="text-xs text-muted-foreground">Google</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-muted text-muted" />
+                    </div>
+                    <p className="text-sm text-muted-foreground">"El servicio fue un poco lento, pero la comida excelente."</p>
                   </div>
-                  <p className="text-muted-foreground">"El servicio fue un poco lento, pero la comida excelente."</p>
                 </div>
-                <div className="text-sm">
-                  <p className="font-semibold">TripAdvisor</p>
-                  <div className="flex items-center">
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
-                    <Star className="h-4 w-4 fill-primary text-primary" />
+                {/* Review 2 */}
+                <div className="flex items-start space-x-4">
+                  <Image src="https://picsum.photos/seed/avatar2/40/40" alt="Avatar" width={40} height={40} className="rounded-full" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="font-semibold">Ana García</p>
+                      <p className="text-xs text-muted-foreground">TripAdvisor</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                      <Star className="h-4 w-4 fill-primary text-primary" />
+                    </div>
+                    <p className="text-sm text-muted-foreground">"¡Una experiencia increíble! Volveremos seguro."</p>
                   </div>
-                  <p className="text-muted-foreground">"¡Una experiencia increíble! Volveremos seguro."</p>
                 </div>
               </div>
             </div>
@@ -362,3 +382,5 @@ export default function Landing() {
     </div>
   );
 }
+
+    

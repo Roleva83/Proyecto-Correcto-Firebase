@@ -1,6 +1,6 @@
 
 'use client';
-import { Label, Pie, PieChart } from "recharts"
+import { Label, Pie, PieChart, Cell } from "recharts"
  
 import {
   ChartContainer,
@@ -10,76 +10,66 @@ import {
  
 export default function SentimentChart() {
     const chartData = [
-        { browser: "chrome", visitors: 275, fill: "hsl(var(--primary))" },
-        { browser: "safari", visitors: 200, fill: "hsl(var(--secondary))" },
-        { browser: "firefox", visitors: 187, fill: "hsl(var(--muted))" },
+        { sentiment: "Positivo", value: 65, fill: "#16a34a" },
+        { sentiment: "Neutral", value: 25, fill: "#facc15" },
+        { sentiment: "Negativo", value: 10, fill: "#ef4444" },
       ]
        
       const chartConfig = {
-        visitors: {
-          label: "Visitors",
+        value: {
+          label: "Porcentaje",
         },
-        chrome: {
-          label: "Chrome",
-          color: "hsl(var(--primary))",
+        Positivo: {
+          label: "Positivo",
+          color: "#16a34a",
         },
-        safari: {
-          label: "Safari",
-          color: "hsl(var(--secondary))",
+        Neutral: {
+          label: "Neutral",
+          color: "#facc15",
         },
-        firefox: {
-          label: "Firefox",
-          color: "hsl(var(--muted))",
+        Negativo: {
+          label: "Negativo",
+          color: "#ef4444",
         },
       }
   return (
-    <ChartContainer
-      config={chartConfig}
-      className="mx-auto aspect-square max-h-[250px]"
-    >
-      <PieChart>
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
-        <Pie
-          data={chartData}
-          dataKey="visitors"
-          nameKey="browser"
-          innerRadius="60%"
-          strokeWidth={5}
-        >
-          <Label
-            content={({ viewBox }) => {
-              if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                return (
-                  <text
-                    x={viewBox.cx}
-                    y={viewBox.cy}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                  >
-                    <tspan
-                      x={viewBox.cx}
-                      y={viewBox.cy}
-                      className="fill-foreground text-3xl font-bold"
-                    >
-                      {chartData.reduce((acc, curr) => acc + curr.visitors, 0).toLocaleString()}
-                    </tspan>
-                    <tspan
-                      x={viewBox.cx}
-                      y={(viewBox.cy || 0) + 24}
-                      className="fill-muted-foreground"
-                    >
-                      Visitors
-                    </tspan>
-                  </text>
-                )
-              }
-            }}
+    <div className="flex items-center">
+      <ChartContainer
+        config={chartConfig}
+        className="mx-auto aspect-square max-h-[200px]"
+      >
+        <PieChart>
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
           />
-        </Pie>
-      </PieChart>
-    </ChartContainer>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            nameKey="sentiment"
+            innerRadius="60%"
+            strokeWidth={5}
+          >
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.fill} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ChartContainer>
+      <div className="ml-4 flex flex-col gap-2 text-sm">
+        {chartData.map((entry) => (
+          <div key={entry.sentiment} className="flex items-center gap-2">
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              style={{ backgroundColor: entry.fill }}
+            />
+            <span>{entry.sentiment}</span>
+            <span className="ml-auto font-semibold">{entry.value}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
+
+    

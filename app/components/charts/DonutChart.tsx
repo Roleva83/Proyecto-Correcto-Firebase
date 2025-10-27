@@ -1,27 +1,31 @@
 
 'use client';
-import { TrendingUp } from "lucide-react"
 import {
-  Label,
-  PolarGrid,
-  PolarRadiusAxis,
-  RadialBar,
-  RadialBarChart,
+  Pie,
+  PieChart,
 } from "recharts"
  
 import {
   ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
 } from "./ChartContainer"
  
 export default function DonutChart() {
-    const chartData = [{ month: " august", desktop: 186, mobile: 80 }];
+    const chartData = [
+      { name: 'Used', value: 48, fill: 'hsl(var(--primary))' },
+      { name: 'Remaining', value: 52, fill: 'hsl(var(--secondary))' },
+    ];
     const chartConfig = {
-      desktop: {
-        label: "Desktop",
+      value: {
+        label: "Value",
+      },
+      Used: {
+        label: "Used",
         color: "hsl(var(--primary))",
       },
-      mobile: {
-        label: "Mobile",
+      Remaining: {
+        label: "Remaining",
         color: "hsl(var(--secondary))",
       },
     };
@@ -30,53 +34,33 @@ export default function DonutChart() {
       config={chartConfig}
       className="mx-auto aspect-square max-h-[250px]"
     >
-      <RadialBarChart
-        data={chartData}
-        startAngle={-90}
-        endAngle={270}
-        innerRadius="50%"
-        outerRadius="80%"
-      >
-        <PolarGrid
-          gridType="circle"
-          radialLines={false}
-          stroke="none"
-          className="first:fill-muted last:fill-background"
-          polarRadius={[10, 10]}
+      <PieChart>
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent hideLabel />}
         />
-        <RadialBar dataKey="desktop" background cornerRadius={10} />
-        <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-          <Label
-            content={({ viewBox }) => {
-              if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                return (
-                  <text
-                    x={viewBox.cx}
-                    y={viewBox.cy}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                  >
-                    <tspan
-                      x={viewBox.cx}
-                      y={viewBox.cy}
-                      className="fill-foreground text-4xl font-bold"
-                    >
-                      {chartData[0].desktop.toLocaleString()}
-                    </tspan>
-                    <tspan
-                      x={viewBox.cx}
-                      y={(viewBox.cy || 0) + 24}
-                      className="fill-muted-foreground"
-                    >
-                      Visitors
-                    </tspan>
-                  </text>
-                )
-              }
-            }}
-          />
-        </PolarRadiusAxis>
-      </RadialBarChart>
+        <Pie
+          data={chartData}
+          dataKey="value"
+          nameKey="name"
+          innerRadius="60%"
+          strokeWidth={5}
+          startAngle={90}
+          endAngle={450}
+        >
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className="fill-foreground text-2xl font-bold"
+          >
+            48%
+          </text>
+        </Pie>
+      </PieChart>
     </ChartContainer>
   )
 }
+
+    
