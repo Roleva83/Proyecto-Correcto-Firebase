@@ -29,14 +29,11 @@ export default function Landing() {
 
           {/* Navigation */}
           <nav className="hidden items-center space-x-8 md:flex">
-            <a href="#" className="font-medium text-foreground transition-colors hover:text-primary">
+            <a href="/" className="font-medium text-foreground transition-colors hover:text-primary">
               Inicio
             </a>
             <a href="#features" className="font-medium text-foreground transition-colors hover:text-primary">
               Funcionalidades
-            </a>
-            <a href="#" className="font-medium text-foreground transition-colors hover:text-primary">
-              Sobre mí
             </a>
             <a href="#pricing" className="font-medium text-foreground transition-colors hover:text-primary">
               Precios
@@ -565,7 +562,6 @@ export default function Landing() {
                 <li><a href="#features" className="transition-colors hover:text-foreground">Funcionalidades</a></li>
                 <li><a href="#pricing" className="transition-colors hover:text-foreground">Precios</a></li>
                 <li><a href="#contact" className="transition-colors hover:text-foreground">Contacto</a></li>
-                <li><a href="#" className="transition-colors hover:text-foreground">Sobre mí</a></li>
               </ul>
             </div>
 
@@ -599,3 +595,5 @@ export default function Landing() {
     </div>
   );
 }
+
+    
