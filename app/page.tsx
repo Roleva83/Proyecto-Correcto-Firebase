@@ -477,46 +477,31 @@ export default function Landing() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-background py-20">
+      <section className="bg-accent py-20">
         <div className="container mx-auto max-w-[1200px] px-4">
           <div className="mb-16 text-center">
             <h2 className="text-4xl font-bold text-foreground">
               Lo que dicen nuestros clientes
             </h2>
           </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {/* Testimonial 1 */}
-            <div className="rounded-lg border bg-card p-6 shadow-md">
-              <div className="mb-4 flex items-center">
-                <Image src="https://picsum.photos/seed/client1/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
-                <div>
-                  <p className="font-semibold">Carlos Pérez</p>
-                  <p className="text-sm text-muted-foreground">Restaurante La Cuchara</p>
-                </div>
-              </div>
-              <p className="text-foreground">"Desde que usamos Caña y Reseña, hemos ahorrado horas en la gestión de reseñas y nuestra puntuación en Google ha subido 0.7 puntos."</p>
+            <div className="flex flex-col items-center text-center rounded-lg border bg-card p-8 shadow-md">
+              <Image src="https://picsum.photos/seed/client1/80/80" alt="Avatar Ana S." width={80} height={80} className="mb-6 rounded-full" />
+              <p className="text-foreground italic mb-6 flex-grow">"La automatización de respuestas a reseñas nos ha ahorrado horas y ha mejorado nuestra puntuación media increíblemente rápido."</p>
+              <p className="font-semibold text-foreground">– Ana S.</p>
             </div>
             {/* Testimonial 2 */}
-            <div className="rounded-lg border bg-card p-6 shadow-md">
-              <div className="mb-4 flex items-center">
-                <Image src="https://picsum.photos/seed/client2/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
-                <div>
-                  <p className="font-semibold">Ana García</p>
-                  <p className="text-sm text-muted-foreground">Tapas y Vinos</p>
-                </div>
-              </div>
-              <p className="text-foreground">"Lola IA es increíble. Nos da insights que no habíamos visto y nos ayuda a responder a los clientes de forma casi instantánea. ¡Imprescindible!"</p>
+            <div className="flex flex-col items-center text-center rounded-lg border bg-card p-8 shadow-md">
+              <Image src="https://picsum.photos/seed/client2/80/80" alt="Avatar Carlos R." width={80} height={80} className="mb-6 rounded-full" />
+              <p className="text-foreground italic mb-6 flex-grow">"Gestionar 5 locales era un caos. Ahora tengo una visión centralizada del rendimiento de cada uno. Imprescindible."</p>
+              <p className="font-semibold text-foreground">– Carlos R.</p>
             </div>
             {/* Testimonial 3 */}
-            <div className="rounded-lg border bg-card p-6 shadow-md">
-              <div className="mb-4 flex items-center">
-                <Image src="https://picsum.photos/seed/client3/48/48" alt="Avatar" width={48} height={48} className="mr-4 rounded-full" />
-                <div>
-                  <p className="font-semibold">Javier Rodríguez</p>
-                  <p className="text-sm text-muted-foreground">Asador El Fuego</p>
-                </div>
-              </div>
-              <p className="text-foreground">"La automatización de facturas y nóminas nos ha quitado un peso de encima. Ahora podemos centrarnos en lo que importa: nuestros clientes."</p>
+            <div className="flex flex-col items-center text-center rounded-lg border bg-card p-8 shadow-md">
+              <Image src="https://picsum.photos/seed/client3/80/80" alt="Avatar Laura M." width={80} height={80} className="mb-6 rounded-full" />
+              <p className="text-foreground italic mb-6 flex-grow">"Gracias a Lola IA, por fin entiendo qué platos son rentables y cuáles no. He ajustado el menú y los beneficios han subido un 15%."</p>
+              <p className="font-semibold text-foreground">– Laura M.</p>
             </div>
           </div>
         </div>
