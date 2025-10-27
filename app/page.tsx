@@ -1,4 +1,5 @@
 
+'use client';
 import React from 'react';
 import Image from 'next/image';
 
@@ -10,9 +11,14 @@ const Landing: React.FC = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">🍺</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 relative">
+                 <Image 
+                  src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
+                  alt="Logo Caña y Reseña"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <span className="text-2xl font-bold text-gray-800">Caña y Reseña</span>
             </div>
@@ -32,7 +38,7 @@ const Landing: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <a href="/auth/login" className="text-gray-600 hover:text-orange-600 transition-colors">
+              <a href="/auth/login" className="text-gray-600 hover:text-orange-600 transition-colors font-semibold">
                 Iniciar Sesión
               </a>
               <a
@@ -85,7 +91,7 @@ const Landing: React.FC = () => {
                                 <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                                <div className="flex text-sm text-gray-600">
+                                <div className="flex text-sm text-gray-600 justify-center">
                                     <p className="pl-1">o arrastra y suelta</p>
                                 </div>
                                 <p className="text-xs text-gray-500">PNG, JPG, PDF hasta 10MB</p>
@@ -99,7 +105,7 @@ const Landing: React.FC = () => {
       </section>
       
       {/* How it works Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="features" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -111,17 +117,17 @@ const Landing: React.FC = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <Image data-ai-hint="waitress illustration" src="https://picsum.photos/seed/step1/400/300" alt="Paso 1" width={400} height={300} className="rounded-lg mx-auto mb-6" />
+              <Image data-ai-hint="waitress illustration" src="https://picsum.photos/seed/step1/400/300" alt="Paso 1" width={400} height={300} className="rounded-lg mx-auto mb-6 shadow-md" />
               <h3 className="text-xl font-semibold mb-2">1. Conecta tus datos</h3>
               <p className="text-gray-600">Integra tus plataformas de reseñas, sistema TPV y programa de reservas en un solo lugar.</p>
             </div>
             <div>
-              <Image data-ai-hint="woman phone illustration" src="https://picsum.photos/seed/step2/400/300" alt="Paso 2" width={400} height={300} className="rounded-lg mx-auto mb-6" />
+              <Image data-ai-hint="woman phone illustration" src="https://picsum.photos/seed/step2/400/300" alt="Paso 2" width={400} height={300} className="rounded-lg mx-auto mb-6 shadow-md" />
               <h3 className="text-xl font-semibold mb-2">2. Lola IA entra en acción</h3>
               <p className="text-gray-600">Nuestra IA analiza tus reseñas, ventas y reservas para darte una visión 360º de tu negocio.</p>
             </div>
             <div>
-              <Image data-ai-hint="businesswoman illustration" src="https://picsum.photos/seed/step3/400/300" alt="Paso 3" width={400} height={300} className="rounded-lg mx-auto mb-6" />
+              <Image data-ai-hint="businesswoman illustration" src="https://picsum.photos/seed/step3/400/300" alt="Paso 3" width={400} height={300} className="rounded-lg mx-auto mb-6 shadow-md" />
               <h3 className="text-xl font-semibold mb-2">3. Recibe insights y actúa</h3>
               <p className="text-gray-600">Obtén recomendaciones claras, automatiza respuestas y optimiza tus operaciones diarias.</p>
             </div>
@@ -200,13 +206,18 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
+      <footer id="contact" className="bg-gray-800 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold">🍺</span>
+                <div className="w-8 h-8 relative">
+                   <Image 
+                    src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
+                    alt="Logo Caña y Reseña"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
                 <span className="text-xl font-bold">Caña y Reseña</span>
               </div>
@@ -258,5 +269,3 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
-
-    
