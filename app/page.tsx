@@ -58,19 +58,20 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white pb-[88px] pt-[72px] radial-gradient-hero">
-        <div className="container relative z-10 mx-auto max-w-[1200px] px-20">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:items-end">
-            {/* Columna Izquierda: Texto y Formulario */}
-            <div className="text-center lg:text-left">
-              <h1 className="mb-4 text-5xl font-black text-foreground md:text-[52px]" style={{ lineHeight: 1.1 }}>
-                La gestión inteligente que impulsa tu negocio de hostelería
-              </h1>
-              <p className="mx-auto mb-6 max-w-lg text-lg text-secondary lg:mx-0">
-                Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
-              </p>
-              
-              {/* Formulario */}
-              <div className="mx-auto max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl lg:mx-0" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
+        <div className="container relative z-10 mx-auto max-w-[1200px] px-4">
+          <div className="text-center">
+            <h1 className="mb-4 text-5xl font-black text-foreground md:text-[52px]" style={{ lineHeight: 1.1 }}>
+              La gestión inteligente que impulsa tu negocio de hostelería
+            </h1>
+            <p className="mx-auto mb-10 max-w-2xl text-lg text-secondary">
+              Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap items-end justify-center gap-12">
+            {/* Columna Izquierda: Formulario */}
+            <div className="w-full max-w-md shrink-0 lg:w-auto">
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-xl" style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
                   <h2 className="mb-6 text-center text-xl font-semibold">Pide tu demo</h2>
                   <form className="space-y-3">
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -106,7 +107,7 @@ export default function Landing() {
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="mr-10 hidden justify-center lg:flex">
+            <div className="hidden lg:block">
               <Image 
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
                 alt="Asistente virtual Lola" 
@@ -281,3 +282,5 @@ export default function Landing() {
     </div>
   );
 }
+
+    
