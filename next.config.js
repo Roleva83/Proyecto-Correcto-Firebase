@@ -12,6 +12,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'picsum.photos',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.qrserver.com',
+      }
     ],
   },
   async headers() {
@@ -31,3 +35,5 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+    
