@@ -15,7 +15,7 @@ export default function Landing() {
         <div className="container mx-auto flex h-full max-w-[1200px] items-center justify-between px-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="relative h-8 w-8">
+            <div className="relative h-10 w-10">
               <Image 
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
                 alt="Logo Caña y Reseña"
@@ -63,7 +63,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white pb-[88px] pt-[72px] radial-gradient-hero">
         <div className="container relative z-10 mx-auto max-w-[1200px] px-4">
-          <div className="text-center">
+          <div className="mb-10 text-center">
             <h1 className="mb-4 text-5xl font-black text-foreground md:text-[52px]" style={{ lineHeight: 1.1 }}>
               La gestión inteligente que impulsa tu negocio de hostelería
             </h1>
@@ -233,7 +233,7 @@ export default function Landing() {
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="mb-4 flex items-center space-x-2">
-                <div className="relative h-8 w-8">
+                <div className="relative h-10 w-10">
                    <Image 
                     src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
                     alt="Logo Caña y Reseña"
