@@ -1,10 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/menu-analysis/page": "app/menu-analysis/page.js",
   "/team/page": "app/team/page.js",
   "/mis-metas-y-medallas/page": "app/mis-metas-y-medallas/page.js",
   "/financial-simulator/page": "app/financial-simulator/page.js",
-  "/page": "app/page.js",
   "/marketing/page": "app/marketing/page.js",
   "/marketing/loyalty/page": "app/marketing/loyalty/page.js"
 }

@@ -1,12 +1,14 @@
 
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardContent } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
 import { Download, Calendar, Award, BookOpen, Mail, Users, Lightbulb, Home, Bot, BarChart2, CircleDollarSign, Megaphone, Settings, Users as TeamIcon, TrendingUp, Award as AwardIcon } from 'lucide-react'
 import Link from 'next/link'
+import EmailTemplatesModal from '../components/marketing/EmailTemplatesModal'
+
 
 // Custom SVG Icons for Marketing Page
 const CalendarIcon = () => (
@@ -30,8 +32,10 @@ const FomentarResenasIcon = () => (
 
 export default function MarketingPage() {
   const user = { name: 'Restaurante Ejemplo' };
+  const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
   
   return (
+    <>
     <div className="flex min-h-screen bg-background">
       <Sidebar/>
       <div className="flex-1 flex flex-col">
@@ -107,7 +111,7 @@ export default function MarketingPage() {
                             </div>
                             <h4 className="font-semibold text-foreground mb-1">Plantillas Email/SMS</h4>
                             <p className="text-xs text-muted-foreground mb-4">Envía recordatorios amables post-visita.</p>
-                            <Button variant="secondary" className="w-full">Ver Plantillas</Button>
+                            <Button variant="secondary" className="w-full" onClick={() => setIsTemplatesModalOpen(true)}>Ver Plantillas</Button>
                         </Card>
                          <Card className="p-6 text-center hover:shadow-lg transition-shadow">
                             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto mb-4">
@@ -132,5 +136,7 @@ export default function MarketingPage() {
         </main>
       </div>
     </div>
+    <EmailTemplatesModal isOpen={isTemplatesModalOpen} onClose={() => setIsTemplatesModalOpen(false)} />
+    </>
   )
 }
