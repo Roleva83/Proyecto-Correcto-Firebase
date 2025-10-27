@@ -51,24 +51,19 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xl: `calc(var(--radius))`,
+        lg: `calc(var(--radius) - 2px)`,
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
       },
       boxShadow: {
-        soft: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -1px rgba(0,0,0,0.06)',
+        soft: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)',
       },
-      fontWeight: {
-        '900': '900',
-        '800': '800',
-        '700': '700',
-        '600': '600',
-        '500': '500',
-        '400': '400',
-      }
     },
   },
   plugins: [require("tailwindcss-animate")],
 };
 
 export default config;
+
+    

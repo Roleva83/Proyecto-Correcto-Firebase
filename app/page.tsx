@@ -10,7 +10,7 @@ const Landing: React.FC = () => {
   return (
     <div className={`bg-background text-foreground ${inter.className}`}>
       {/* Header/Navigation */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-white shadow-soft">
+      <header className="sticky top-0 left-0 right-0 z-50 h-[72px] bg-white shadow-soft">
         <div className="container mx-auto px-4 h-full max-w-[1200px]">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
@@ -39,12 +39,12 @@ const Landing: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-white border border-border rounded-xl hover:bg-accent transition-colors">
+              <a href="/auth/login" className="px-5 py-2.5 text-sm font-semibold text-foreground bg-white border border-border rounded-xl hover:bg-accent transition-colors duration-200 focus:ring-2 focus:ring-ring">
                 Iniciar Sesión
               </a>
               <a
                 href="/auth/register"
-                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-orange-600 transition-colors"
+                className="px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:ring-2 focus:ring-ring"
               >
                 Registrarse
               </a>
@@ -52,9 +52,6 @@ const Landing: React.FC = () => {
           </div>
         </div>
       </header>
-
-      {/* Spacer for fixed header */}
-      <div className="h-[72px]"></div>
 
       {/* Hero Section */}
       <section className="relative bg-white pt-[72px] pb-[88px] overflow-hidden radial-gradient-hero">
@@ -74,15 +71,15 @@ const Landing: React.FC = () => {
                   <h2 className="text-xl font-semibold text-center mb-6">Pide tu demo</h2>
                   <form className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input type="text" placeholder="Nombre" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-primary focus:border-primary" />
-                      <input type="text" placeholder="Apellidos" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-primary focus:border-primary" />
+                      <input type="text" placeholder="Nombre" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
+                      <input type="text" placeholder="Apellidos" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
                     </div>
-                    <input type="email" placeholder="Email" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-primary focus:border-primary" />
+                    <input type="email" placeholder="Email" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input type="tel" placeholder="Teléfono" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-primary focus:border-primary" />
-                      <input type="text" placeholder="Nombre del negocio" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-primary focus:border-primary" />
+                      <input type="tel" placeholder="Teléfono" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
+                      <input type="text" placeholder="Nombre del negocio" className="h-12 w-full px-4 border border-border rounded-xl placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-ring transition-all duration-200" />
                     </div>
-                    <button type="submit" className="w-full h-[50px] bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-orange-600 transition-colors">
+                    <button type="submit" className="w-full h-[50px] bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-orange-600 transition-colors duration-200 focus:ring-2 focus:ring-ring">
                       Empezar ahora
                     </button>
                   </form>
@@ -269,3 +266,5 @@ const Landing: React.FC = () => {
 export default function Home() {
   return <Landing />;
 }
+
+    
