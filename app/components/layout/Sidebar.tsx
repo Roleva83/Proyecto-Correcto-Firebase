@@ -20,7 +20,9 @@ const navItems = [
 ]
 
 export default function Sidebar({ isOpen = true }: SidebarProps) {
-  const activePath = "/mis-metas-y-medallas" // Placeholder for active path logic
+  // This is a placeholder for path detection logic.
+  // In a real app, you'd use something like `usePathname` from `next/navigation`.
+  const activePath = typeof window !== 'undefined' ? window.location.pathname : '';
 
   return (
     <aside className={`bg-card text-card-foreground border-r transition-all duration-300 ${isOpen ? 'w-64' : 'w-0'} flex flex-col`}>
@@ -59,3 +61,5 @@ export default function Sidebar({ isOpen = true }: SidebarProps) {
     </aside>
   )
 }
+
+    

@@ -46,6 +46,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/mis-metas-y-medallas/page.js"
+    ],
+    "/financial-simulator/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/financial-simulator/page.js"
     ]
   }
 }
