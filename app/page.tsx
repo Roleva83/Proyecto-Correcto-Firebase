@@ -3,7 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check, Sparkles } from 'lucide-react';
+import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check, Sparkles, Instagram, Facebook, Linkedin } from 'lucide-react';
+import ScrollToTopButton from './components/ui/ScrollToTopButton';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -538,9 +539,9 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-foreground py-12 text-background">
+      <footer id="contact" className="bg-accent py-12 text-foreground">
         <div className="container mx-auto max-w-[1200px] px-4">
-          <div className="grid gap-8 md:grid-cols-4">
+          <div className="grid gap-8 md:grid-cols-3">
             <div>
               <div className="mb-4 flex items-center space-x-2">
                 <div className="relative h-10 w-10">
@@ -553,47 +554,43 @@ export default function Landing() {
                 </div>
                 <span className="text-xl font-bold">Caña y Reseña</span>
               </div>
-              <p className="text-muted-foreground">
-                Plataforma SaaS integral para la gestión de reputación y automatización de restaurantes y negocios gastronómicos.
+              <p className="text-sm text-muted-foreground">
+                La gestión inteligente que impulsa tu negocio de hostelería. Centraliza tu reputación, reservas, TPV, marketing y fidelización con ayuda de Lola IA.
               </p>
             </div>
 
             <div>
-              <h4 className="mb-4 text-lg font-semibold">Producto</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#features" className="transition-colors hover:text-background">Funcionalidades</a></li>
-                <li><a href="#pricing" className="transition-colors hover:text-background">Precios</a></li>
-                <li><a href="/auth/register" className="transition-colors hover:text-background">Registro</a></li>
-                <li><a href="/auth/login" className="transition-colors hover:text-background">Login</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="mb-4 text-lg font-semibold">Soporte</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#contact" className="transition-colors hover:text-background">Contacto</a></li>
-                <li><a href="#" className="transition-colors hover:text-background">Documentación</a></li>
-                <li><a href="#" className="transition-colors hover:text-background">FAQ</a></li>
-                <li><a href="#" className="transition-colors hover:text-background">Soporte</a></li>
+              <h4 className="mb-4 text-lg font-semibold">Navegación</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#features" className="transition-colors hover:text-foreground">Funcionalidades</a></li>
+                <li><a href="#pricing" className="transition-colors hover:text-foreground">Precios</a></li>
+                <li><a href="#contact" className="transition-colors hover:text-foreground">Contacto</a></li>
+                <li><a href="#" className="transition-colors hover:text-foreground">Sobre mí</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="mb-4 text-lg font-semibold">Legal</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="transition-colors hover:text-background">Términos de Servicio</a></li>
-                <li><a href="#" className="transition-colors hover:text-background">Política de Privacidad</a></li>
-                <li><a href="#" className="transition-colors hover:text-background">Cookies</a></li>
-                <li><a href="#" className="transition-colors hover:text-background">GDPR</a></li>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="transition-colors hover:text-foreground">Política de Privacidad</a></li>
+                <li><a href="#" className="transition-colors hover:text-foreground">Términos de Servicio</a></li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-8 border-t border-muted pt-8 text-center text-muted-foreground">
+          <div className="mt-8 border-t border-border pt-8 flex items-center justify-between text-sm text-muted-foreground">
             <p>&copy; 2024 Caña y Reseña. Todos los derechos reservados.</p>
+            <div className="flex items-center space-x-4">
+                <a href="#" className="transition-colors hover:text-foreground"><Instagram className="h-5 w-5" /></a>
+                <a href="#" className="transition-colors hover:text-foreground"><Facebook className="h-5 w-5" /></a>
+                <a href="#" className="transition-colors hover:text-foreground"><Linkedin className="h-5 w-5" /></a>
+            </div>
           </div>
         </div>
       </footer>
+      <ScrollToTopButton />
     </div>
   );
 }
+
+    
