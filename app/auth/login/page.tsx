@@ -1,9 +1,10 @@
 
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Lock } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -33,6 +34,17 @@ const FacebookIcon = () => (
 );
 
 export default function Login() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // TODO: Implement actual Firebase login
+    console.log('Logging in with:', { email, password });
+    router.push('/dashboard');
+  };
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-50 to-white px-4">
         <div className="w-full max-w-md">
@@ -51,7 +63,7 @@ export default function Login() {
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-8 shadow-xl">
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">Email</label>
                         <div className="relative">
@@ -61,6 +73,8 @@ export default function Login() {
                                 type="email" 
                                 placeholder="tu@email.com" 
                                 required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
@@ -78,6 +92,8 @@ export default function Login() {
                                 type="password" 
                                 placeholder="••••••••" 
                                 required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
