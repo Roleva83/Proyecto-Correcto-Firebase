@@ -93,7 +93,7 @@ const Landing: React.FC = () => {
             {/* Columna Derecha: Imagen */}
             <div className="hidden lg:flex justify-center -mb-4 mr-8">
               <Image 
-                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera.png?alt=media&token=98795323-53a2-4c7a-9be4-ce041e8b8964" 
+                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
                 alt="Asistente virtual Lola" 
                 width={380} 
                 height={460}
