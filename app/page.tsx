@@ -170,14 +170,14 @@ export default function Landing() {
             <h2 className="mb-4 text-4xl font-bold text-foreground">
               Así de fácil funciona Lola IA
             </h2>
-            <p className="mx-auto max-w-3xl text-lg text-secondary">
+            <p className="mx-auto max-w-3xl text-lg text-secondary" style={{color: '#6B7280', fontFamily: 'Inter', fontWeight: 500, marginBottom: '40px'}}>
               Desde la conexión inicial hasta la acción automatizada, Lola transforma tus datos en crecimiento.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
             <div className="space-y-8 lg:col-span-3">
               {/* Card 1 */}
-              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft" style={{backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)', padding: '24px'}}>
                 <h3 className="mb-2 text-xl font-semibold">1. Conecta tus herramientas</h3>
                 <p className="mb-6 text-muted-foreground">Integra en minutos tus perfiles de reseñas, sistema de reservas y TPV.</p>
                 <div className="mx-auto mt-auto flex h-[200px] w-[200px] items-center justify-center">
@@ -193,7 +193,7 @@ export default function Landing() {
               </div>
 
               {/* Card 2 */}
-              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
+              <div className="flex flex-col rounded-2xl border border-border bg-card p-6 text-center shadow-soft" style={{backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)', padding: '24px'}}>
                 <h3 className="mb-2 text-xl font-semibold">2. Lola analiza en tiempo real</h3>
                 <p className="mb-6 text-muted-foreground">Nuestra IA procesa cada dato: ventas, opiniones, reservas y menciones.</p>
                 <div className="mt-auto flex h-[200px] w-full items-end justify-around px-4">
@@ -218,9 +218,9 @@ export default function Landing() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
+            <div className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2" style={{backgroundColor: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06)', padding: '24px'}}>
               <h3 className="mb-1 text-center text-xl font-semibold">3. Recibe acciones, no solo datos</h3>
-              <p className="mb-4 text-center text-muted-foreground">Recibe recomendaciones automáticas, respuestas optimizadas y acciones concretas para mejorar.</p>
+              <p className="mb-4 text-center text-muted-foreground">Recibe recomendaciones automáticas basadas en IA, respuestas optimizadas y acciones concretas para mejorar tus resultados.</p>
               
               <div className="my-4">
                 <p className="text-center text-sm font-semibold text-muted-foreground">ÚLTIMO TRIMESTRE</p>
@@ -327,8 +327,8 @@ export default function Landing() {
               <Image
                 src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20IA.png?alt=media&token=5057c323-0d30-43b8-82b4-e1111b1475bc"
                 alt="Lola IA Assistant"
-                width={450}
-                height={450}
+                width={400}
+                height={400}
                 className="object-contain"
               />
             </div>
@@ -466,3 +466,5 @@ export default function Landing() {
     </div>
   );
 }
+
+    
