@@ -1,4 +1,3 @@
-
 'use client'
 import React, { useState } from 'react'
 import Sidebar from '../components/layout/Sidebar'
@@ -148,15 +147,17 @@ export default function Lola() {
                 </Card>
               </div>
 
-              {/* Gamification and Progress */}
-              <Card className="bg-amber-50 border-amber-200">
-                  <CardContent className="p-4 flex items-center justify-between">
-                      <div>
-                          <p className="font-bold text-amber-800">¡A por el día, campeón!</p>
-                          <p className="text-sm text-amber-700">Has respondido a 3 de 5 reseñas hoy.</p>
-                      </div>
-                      <div className="w-1/3">
-                          <p className="text-sm text-right font-semibold text-amber-800 mb-1">60%</p>
+              {/* Stats Card */}
+              <Card>
+                  <CardHeader>
+                      <CardTitle>Satisfacción del Cliente</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                      <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium">Promedio General</span>
+                              <span className="text-sm font-semibold">4.2 / 5</span>
+                          </div>
                           <div className="w-full bg-amber-200 rounded-full h-2.5">
                               <div className="bg-primary h-2.5 rounded-full" style={{width: '60%'}}></div>
                           </div>
@@ -299,5 +300,3 @@ export default function Lola() {
     </div>
   )
 }
-
-    

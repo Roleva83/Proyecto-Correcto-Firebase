@@ -105,14 +105,16 @@ export default function Landing() {
             </div>
 
             {/* Columna Derecha: Imagen */}
-            <div className="relative hidden h-[500px] w-[330px] shrink-0 lg:block">
-              <Image 
-                src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
-                alt="Asistente virtual Lola" 
-                fill
-                className="object-contain object-bottom"
-                priority
-              />
+            <div className="relative hidden w-[330px] shrink-0 lg:block">
+              <div className="relative h-full w-full">
+                <Image 
+                  src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2FLola%20Camarera%20Cerveza.png?alt=media&token=dc55f0d4-8160-4683-b923-67da50885e92" 
+                  alt="Asistente virtual Lola" 
+                  fill
+                  className="object-contain object-bottom"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
