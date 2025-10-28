@@ -41,6 +41,7 @@ export default function FinancialSimulator() {
   const beneficioActual = 35569;
 
   // --- Estados para las variables del simulador ---
+  const [facturacionProyectada, setFacturacionProyectada] = useState(facturacionActual);
   const [costesFijos, setCostesFijos] = useState(44164);
   const [diasApertura, setDiasApertura] = useState(26);
   const [ticketMedioGastrobar, setTicketMedioGastrobar] = useState(34);
@@ -51,7 +52,7 @@ export default function FinancialSimulator() {
 
   // --- Estados para los resultados calculados ---
   const [proyeccion, setProyeccion] = useState({
-    facturacion: 0,
+    comensalesProyectados: 0,
     comensalesGastrobar: 0,
     facturacionGastrobar: 0,
     comensalesRestaurante: 0,
@@ -61,23 +62,27 @@ export default function FinancialSimulator() {
 
   // --- Lógica de cálculo ---
   useEffect(() => {
-    const comensalesGastrobar = Math.round(comensalesActuales * (mixClientes / 100));
-    const comensalesRestaurante = comensalesActuales - comensalesGastrobar;
+    // 1. Calcular el ticket medio ponderado según el mix de clientes
+    const ticketMedioPonderado = (ticketMedioGastrobar * (mixClientes / 100)) + (ticketMedioRestaurante * ((100 - mixClientes) / 100));
 
+    // 2. Calcular el número total de comensales proyectados a partir de la facturación
+    const comensalesTotalesProyectados = ticketMedioPonderado > 0 ? Math.round(facturacionProyectada / ticketMedioPonderado) : 0;
+
+    // 3. Distribuir comensales y facturación por área
+    const comensalesGastrobar = Math.round(comensalesTotalesProyectados * (mixClientes / 100));
+    const comensalesRestaurante = comensalesTotalesProyectados - comensalesGastrobar;
     const facturacionGastrobar = comensalesGastrobar * ticketMedioGastrobar;
     const facturacionRestaurante = comensalesRestaurante * ticketMedioRestaurante;
-    const facturacionTotalProyectada = facturacionGastrobar + facturacionRestaurante;
 
+    // 4. Calcular costes y beneficio
     const costesVariablesGastrobar = comensalesGastrobar * costeVariableGastrobar;
     const costesVariablesRestaurante = comensalesRestaurante * costeVariableRestaurante;
     const costesVariablesTotales = costesVariablesGastrobar + costesVariablesRestaurante;
-    
     const costesTotalesProyectados = costesFijos + costesVariablesTotales;
-    
-    const beneficioProyectado = facturacionTotalProyectada - costesTotalesProyectados;
+    const beneficioProyectado = facturacionProyectada - costesTotalesProyectados;
 
     setProyeccion({
-      facturacion: facturacionTotalProyectada,
+      comensalesProyectados: comensalesTotalesProyectados,
       comensalesGastrobar,
       facturacionGastrobar,
       comensalesRestaurante,
@@ -85,6 +90,7 @@ export default function FinancialSimulator() {
       beneficio: beneficioProyectado,
     });
   }, [
+    facturacionProyectada,
     costesFijos, 
     ticketMedioGastrobar, 
     costeVariableGastrobar, 
@@ -154,8 +160,8 @@ export default function FinancialSimulator() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                   <div className="grid grid-cols-2 gap-x-8">
                      <div>
-                        <label className="text-sm font-medium text-foreground">Facturación Proyectada</label>
-                        <p className="text-2xl font-bold text-green-600 mt-1">{formatCurrency(proyeccion.facturacion)}</p>
+                        <label className="text-sm font-medium text-foreground">Facturación Proyectada (€)</label>
+                         <Input type="number" value={facturacionProyectada} onChange={(e) => setFacturacionProyectada(Number(e.target.value))} className="mt-1 font-bold text-green-600 text-lg" />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-foreground">Beneficio Proyectado</label>
@@ -170,9 +176,9 @@ export default function FinancialSimulator() {
                      <div>
                         <label className="text-sm font-medium text-foreground">Días de Apertura / Mes</label>
                         <div className="flex gap-2 mt-2">
-                            <Button variant={diasApertura === 22 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(22)}>Cierra 2 días/sem (22)</Button>
-                            <Button variant={diasApertura === 26 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(26)}>Cierra 1 día/sem (26)</Button>
-                            <Button variant={diasApertura === 30 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(30)}>Abre todos (30)</Button>
+                            <Button variant={diasApertura === 22 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(22)}>22</Button>
+                            <Button variant={diasApertura === 26 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(26)}>26</Button>
+                            <Button variant={diasApertura === 30 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(30)}>30</Button>
                         </div>
                      </div>
                   </div>
@@ -212,7 +218,7 @@ export default function FinancialSimulator() {
                           <div className="flex items-center gap-2 text-sm text-muted-foreground"><Users className="h-5 w-5"/> Gastrobar ({mixClientes}%)</div>
                           <div className="text-right">
                               <p className="text-xl font-bold text-foreground">{formatNumber(proyeccion.comensalesGastrobar)}</p>
-                              <p className="text-xs text-muted-foreground">Comensales/mes (~{formatNumber(Math.round(proyeccion.comensalesGastrobar / diasApertura))}/día)</p>
+                              <p className="text-xs text-muted-foreground">Comensales/mes (~{formatNumber(diasApertura > 0 ? Math.round(proyeccion.comensalesGastrobar / diasApertura) : 0)}/día)</p>
                           </div>
                            <div className="text-right">
                               <p className="text-xl font-bold text-green-600">{formatCurrency(proyeccion.facturacionGastrobar)}</p>
@@ -223,7 +229,7 @@ export default function FinancialSimulator() {
                           <div className="flex items-center gap-2 text-sm text-muted-foreground"><Utensils className="h-5 w-5"/> Restaurante ({100 - mixClientes}%)</div>
                            <div className="text-right">
                               <p className="text-xl font-bold text-foreground">{formatNumber(proyeccion.comensalesRestaurante)}</p>
-                              <p className="text-xs text-muted-foreground">Comensales/mes (~{formatNumber(Math.round(proyeccion.comensalesRestaurante / diasApertura))}/día)</p>
+                              <p className="text-xs text-muted-foreground">Comensales/mes (~{formatNumber(diasApertura > 0 ? Math.round(proyeccion.comensalesRestaurante / diasApertura) : 0)}/día)</p>
                           </div>
                            <div className="text-right">
                               <p className="text-xl font-bold text-green-600">{formatCurrency(proyeccion.facturacionRestaurante)}</p>
