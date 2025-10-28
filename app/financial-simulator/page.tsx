@@ -60,6 +60,8 @@ export default function FinancialSimulator() {
     beneficio: 0,
     puntoEquilibrioFacturacion: 0,
     comensalesPuntoEquilibrio: 0,
+    comensalesEquilibrioGastrobar: 0,
+    comensalesEquilibrioRestaurante: 0,
   });
 
   // --- Lógica de cálculo unificada ---
@@ -89,8 +91,11 @@ export default function FinancialSimulator() {
     // --- CÁLCULO DEL PUNTO DE EQUILIBRIO ---
     // 5. Calcular el margen de contribución y el punto de equilibrio
     const margenContribucionPonderado = ticketMedioPonderado - costeVariablePonderado;
-    const comensalesPuntoEquilibrio = margenContribucionPonderado > 0 ? costesFijos / margenContribucionPonderado : 0;
+    const comensalesPuntoEquilibrio = margenContribucionPonderado > 0 ? Math.round(costesFijos / margenContribucionPonderado) : 0;
     const puntoEquilibrioFacturacion = comensalesPuntoEquilibrio * ticketMedioPonderado;
+    const comensalesEquilibrioGastrobar = Math.round(comensalesPuntoEquilibrio * mixGastrobar);
+    const comensalesEquilibrioRestaurante = comensalesPuntoEquilibrio - comensalesEquilibrioGastrobar;
+
     
     setProyeccion({
       comensalesProyectados: comensalesTotalesProyectados,
@@ -100,7 +105,9 @@ export default function FinancialSimulator() {
       facturacionRestaurante,
       beneficio: beneficioProyectado,
       puntoEquilibrioFacturacion,
-      comensalesPuntoEquilibrio: Math.round(comensalesPuntoEquilibrio),
+      comensalesPuntoEquilibrio,
+      comensalesEquilibrioGastrobar,
+      comensalesEquilibrioRestaurante,
     });
   }, [
     facturacionProyectada,
@@ -255,23 +262,34 @@ export default function FinancialSimulator() {
                {/* Break-even Point */}
               <div className="border-t mt-8 pt-6">
                   <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Análisis de Rentabilidad</h3>
-                  <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
-                    <p className="text-sm text-blue-800 font-semibold">Punto de Equilibrio</p>
-                    <p className="text-xs text-blue-700 mb-4">La facturación mínima para cubrir costes</p>
-                    <div className="grid grid-cols-2 gap-4 mt-4 text-center">
-                        <div>
-                            <p className="text-sm text-muted-foreground">Facturación</p>
-                            <p className="text-xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrioFacturacion)}</p>
-                        </div>
-                          <div>
-                            <p className="text-sm text-muted-foreground">Comensales</p>
-                            <p className="text-xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
-                        </div>
-                    </div>
+                  <div className="grid grid-cols-1 gap-6">
+                      <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                          <p className="text-sm text-blue-800 font-semibold">Punto de Equilibrio</p>
+                          <p className="text-xs text-blue-700 mb-4">La facturación mínima para cubrir costes (Beneficio = 0€)</p>
+                          <div className="grid grid-cols-2 gap-4 mt-4 text-center">
+                              <div>
+                                  <p className="text-sm text-muted-foreground">Facturación Total</p>
+                                  <p className="text-xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrioFacturacion)}</p>
+                              </div>
+                                <div>
+                                  <p className="text-sm text-muted-foreground">Comensales Totales</p>
+                                  <p className="text-xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
+                              </div>
+                          </div>
+                          <div className="border-t border-blue-200 my-4"></div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                             <div className="text-left">
+                                <p className="font-semibold text-blue-800">Comensales Gastrobar:</p>
+                                <p className="font-bold text-blue-600">{formatNumber(proyeccion.comensalesEquilibrioGastrobar)}</p>
+                             </div>
+                              <div className="text-left">
+                                <p className="font-semibold text-blue-800">Comensales Restaurante:</p>
+                                <p className="font-bold text-blue-600">{formatNumber(proyeccion.comensalesEquilibrioRestaurante)}</p>
+                             </div>
+                          </div>
+                      </div>
                   </div>
               </div>
-
-
             </CardContent>
           </Card>
 
@@ -322,5 +340,3 @@ export default function FinancialSimulator() {
     </div>
   )
 }
-
-    
