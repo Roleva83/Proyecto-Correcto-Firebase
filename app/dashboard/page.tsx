@@ -294,17 +294,19 @@ export default function Dashboard() {
             {/* Lola's Suggestions and Alerts */}
             <div className="col-span-12">
               <Card>
-                <CardContent className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 rounded-full bg-blue-100">
+                <CardContent className="p-6 flex flex-col gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-full bg-blue-100">
                       <TrendingUp className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-foreground">Sugerencia Proactiva de Lola</h4>
-                      <p className="text-sm text-muted-foreground">Si reorganizas tu menú para destacar platos con mayor margen y renombras algunos para hacerlos más atractivos, puedes reducir costes en un 5% y aumentar el beneficio un 8%, lo que supone unos +1.200€/mes.</p>
+                      <p className="text-sm text-muted-foreground mt-1">Si reorganizas tu menú para destacar platos con mayor margen y renombras algunos para hacerlos más atractivos, puedes reducir costes en un 5% y aumentar el beneficio un 8%, lo que supone unos +1.200€/mes.</p>
                     </div>
                   </div>
-                  <Button>Analizar en profundidad</Button>
+                  <div className="flex justify-center">
+                    <Button>Analizar en profundidad</Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
