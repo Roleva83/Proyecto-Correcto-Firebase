@@ -4,6 +4,7 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import MetricsWidget from '../components/dashboard/widgets/MetricsWidget'
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
+import { Button } from '@/app/components/ui/button'
 import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight } from 'lucide-react'
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
