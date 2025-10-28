@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar'
 import { AreaChart, BarChart, Bot, Search, Star } from 'lucide-react'
 import { AreaChart as RechartsAreaChart, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Area, Bar, Cell } from 'recharts';
 import Image from 'next/image'
+import { Input } from '@/app/components/ui/input'
 
 const reviewsData = [
   {
@@ -233,5 +234,3 @@ export default function LolaPage() {
     </div>
   )
 }
-
-    
