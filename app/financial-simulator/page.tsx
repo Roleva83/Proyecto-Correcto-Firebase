@@ -1,6 +1,6 @@
 
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
@@ -31,8 +31,75 @@ const strategicScenarios = [
 ]
 
 export default function FinancialSimulator() {
-  const user = { name: 'Restaurante Ejemplo' }
-  const [mixValue, setMixValue] = useState(70);
+  const user = { name: 'Restaurante Ejemplo' };
+
+  // --- Datos de la Situación Actual (base para los cálculos) ---
+  const comensalesActuales = 2288;
+  const facturacionActual = 98660;
+  const ticketMedioActual = 43;
+  const costesTotalesActuales = 63091;
+  const beneficioActual = 35569;
+
+  // --- Estados para las variables del simulador ---
+  const [costesFijos, setCostesFijos] = useState(44164);
+  const [diasApertura, setDiasApertura] = useState(26);
+  const [ticketMedioGastrobar, setTicketMedioGastrobar] = useState(34);
+  const [costeVariableGastrobar, setCosteVariableGastrobar] = useState(6);
+  const [ticketMedioRestaurante, setTicketMedioRestaurante] = useState(56);
+  const [costeVariableRestaurante, setCosteVariableRestaurante] = useState(12);
+  const [mixClientes, setMixClientes] = useState(70); // Porcentaje de clientes de Gastrobar
+
+  // --- Estados para los resultados calculados ---
+  const [proyeccion, setProyeccion] = useState({
+    facturacion: 0,
+    comensalesGastrobar: 0,
+    facturacionGastrobar: 0,
+    comensalesRestaurante: 0,
+    facturacionRestaurante: 0,
+    beneficio: 0,
+  });
+
+  // --- Lógica de cálculo ---
+  useEffect(() => {
+    const comensalesGastrobar = Math.round(comensalesActuales * (mixClientes / 100));
+    const comensalesRestaurante = comensalesActuales - comensalesGastrobar;
+
+    const facturacionGastrobar = comensalesGastrobar * ticketMedioGastrobar;
+    const facturacionRestaurante = comensalesRestaurante * ticketMedioRestaurante;
+    const facturacionTotalProyectada = facturacionGastrobar + facturacionRestaurante;
+
+    const costesVariablesGastrobar = comensalesGastrobar * costeVariableGastrobar;
+    const costesVariablesRestaurante = comensalesRestaurante * costeVariableRestaurante;
+    const costesVariablesTotales = costesVariablesGastrobar + costesVariablesRestaurante;
+    
+    const costesTotalesProyectados = costesFijos + costesVariablesTotales;
+    
+    const beneficioProyectado = facturacionTotalProyectada - costesTotalesProyectados;
+
+    setProyeccion({
+      facturacion: facturacionTotalProyectada,
+      comensalesGastrobar,
+      facturacionGastrobar,
+      comensalesRestaurante,
+      facturacionRestaurante,
+      beneficio: beneficioProyectado,
+    });
+  }, [
+    costesFijos, 
+    ticketMedioGastrobar, 
+    costeVariableGastrobar, 
+    ticketMedioRestaurante, 
+    costeVariableRestaurante, 
+    mixClientes,
+  ]);
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(value);
+  }
+
+  const formatNumber = (value: number) => {
+    return new Intl.NumberFormat('es-ES').format(value);
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -61,23 +128,23 @@ export default function FinancialSimulator() {
                 <div className="grid grid-cols-5 gap-4 text-center">
                   <div>
                     <p className="text-sm text-muted-foreground">Facturación Actual</p>
-                    <p className="text-2xl font-bold text-green-600">98.660 €</p>
+                    <p className="text-2xl font-bold text-green-600">{formatCurrency(facturacionActual)}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Ticket Medio Actual</p>
-                    <p className="text-2xl font-bold text-blue-600">43 €</p>
+                    <p className="text-2xl font-bold text-blue-600">{formatCurrency(ticketMedioActual)}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Costes Totales Actuales</p>
-                    <p className="text-2xl font-bold text-red-600">63.091 €</p>
+                    <p className="text-2xl font-bold text-red-600">{formatCurrency(costesTotalesActuales)}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Comensales</p>
-                    <p className="text-2xl font-bold text-foreground">2288</p>
+                    <p className="text-2xl font-bold text-foreground">{formatNumber(comensalesActuales)}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Beneficio</p>
-                    <p className="text-2xl font-bold text-green-600">35.569 €</p>
+                    <p className="text-2xl font-bold text-green-600">{formatCurrency(beneficioActual)}</p>
                   </div>
                 </div>
               </div>
@@ -85,48 +152,54 @@ export default function FinancialSimulator() {
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold text-center mb-6 text-foreground">Escenario Proyectado</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-foreground">Facturación Proyectada (€)</label>
-                    <p className="text-2xl font-bold text-green-600 mt-1">108.526</p>
+                  <div className="grid grid-cols-2 gap-x-8">
+                     <div>
+                        <label className="text-sm font-medium text-foreground">Facturación Proyectada</label>
+                        <p className="text-2xl font-bold text-green-600 mt-1">{formatCurrency(proyeccion.facturacion)}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-foreground">Beneficio Proyectado</label>
+                        <p className={`text-2xl font-bold mt-1 ${proyeccion.beneficio >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(proyeccion.beneficio)}</p>
+                      </div>
                   </div>
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                      <div>
                         <label className="text-sm font-medium text-foreground">Costes Fijos Mensuales (€)</label>
-                        <Input type="number" defaultValue="44164" className="mt-1" />
+                        <Input type="number" value={costesFijos} onChange={(e) => setCostesFijos(Number(e.target.value))} className="mt-1" />
                      </div>
                      <div>
                         <label className="text-sm font-medium text-foreground">Días de Apertura / Mes</label>
                         <div className="flex gap-2 mt-2">
-                            <Button variant="ghost">Cierra 2 días/sem (22)</Button>
-                            <Button variant="secondary">Cierra 1 día/sem (26)</Button>
-                            <Button variant="ghost">Abre todos (30)</Button>
+                            <Button variant={diasApertura === 22 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(22)}>Cierra 2 días/sem (22)</Button>
+                            <Button variant={diasApertura === 26 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(26)}>Cierra 1 día/sem (26)</Button>
+                            <Button variant={diasApertura === 30 ? 'secondary' : 'ghost'} onClick={() => setDiasApertura(30)}>Abre todos (30)</Button>
                         </div>
                      </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
                      <div>
                         <label className="text-sm font-medium text-foreground">Ticket Medio Gastrobar (€)</label>
-                        <Input type="number" defaultValue="34" className="mt-1" />
+                        <Input type="number" value={ticketMedioGastrobar} onChange={(e) => setTicketMedioGastrobar(Number(e.target.value))} className="mt-1" />
                      </div>
                      <div>
                         <label className="text-sm font-medium text-foreground">Coste Variable Gastrobar (€)</label>
-                        <Input type="number" defaultValue="6" className="mt-1" />
+                        <Input type="number" value={costeVariableGastrobar} onChange={(e) => setCosteVariableGastrobar(Number(e.target.value))} className="mt-1" />
                      </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
                      <div>
                         <label className="text-sm font-medium text-foreground">Ticket Medio Restaurante (€)</label>
-                        <Input type="number" defaultValue="56" className="mt-1" />
+                        <Input type="number" value={ticketMedioRestaurante} onChange={(e) => setTicketMedioRestaurante(Number(e.target.value))} className="mt-1" />
                      </div>
                      <div>
                         <label className="text-sm font-medium text-foreground">Coste Variable Restaurante (€)</label>
-                        <Input type="number" defaultValue="12" className="mt-1" />
+                        <Input type="number" value={costeVariableRestaurante} onChange={(e) => setCosteVariableRestaurante(Number(e.target.value))} className="mt-1" />
                      </div>
                   </div>
                 </div>
                 <div className="mt-6">
-                    <label className="text-sm font-medium text-foreground">Mix de Clientes: {mixValue}% Gastrobar / {100 - mixValue}% Restaurante</label>
-                    <Slider defaultValue={[mixValue]} max={100} step={1} onValueChange={(value) => setMixValue(value[0])} className="mt-2" />
+                    <label className="text-sm font-medium text-foreground">Mix de Clientes: {mixClientes}% Gastrobar / {100 - mixClientes}% Restaurante</label>
+                    <Slider defaultValue={[mixClientes]} max={100} step={1} onValueChange={(value) => setMixClientes(value[0])} className="mt-2" />
                 </div>
 
               </div>
@@ -136,24 +209,24 @@ export default function FinancialSimulator() {
                   <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Análisis del Escenario Proyectado</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-accent p-4 rounded-lg flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground"><Users className="h-5 w-5"/> Gastrobar (70%)</div>
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground"><Users className="h-5 w-5"/> Gastrobar ({mixClientes}%)</div>
                           <div className="text-right">
-                              <p className="text-xl font-bold text-foreground">1872</p>
-                              <p className="text-xs text-muted-foreground">Comensales/mes (~72/día)</p>
+                              <p className="text-xl font-bold text-foreground">{formatNumber(proyeccion.comensalesGastrobar)}</p>
+                              <p className="text-xs text-muted-foreground">Comensales/mes (~{formatNumber(Math.round(proyeccion.comensalesGastrobar / diasApertura))}/día)</p>
                           </div>
                            <div className="text-right">
-                              <p className="text-xl font-bold text-green-600">63.619 €</p>
+                              <p className="text-xl font-bold text-green-600">{formatCurrency(proyeccion.facturacionGastrobar)}</p>
                               <p className="text-xs text-muted-foreground">Facturación/mes</p>
                           </div>
                       </div>
                       <div className="bg-accent p-4 rounded-lg flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground"><Utensils className="h-5 w-5"/> Restaurante (30%)</div>
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground"><Utensils className="h-5 w-5"/> Restaurante ({100 - mixClientes}%)</div>
                            <div className="text-right">
-                              <p className="text-xl font-bold text-foreground">802</p>
-                              <p className="text-xs text-muted-foreground">Comensales/mes (~31/día)</p>
+                              <p className="text-xl font-bold text-foreground">{formatNumber(proyeccion.comensalesRestaurante)}</p>
+                              <p className="text-xs text-muted-foreground">Comensales/mes (~{formatNumber(Math.round(proyeccion.comensalesRestaurante / diasApertura))}/día)</p>
                           </div>
                            <div className="text-right">
-                              <p className="text-xl font-bold text-green-600">44.907 €</p>
+                              <p className="text-xl font-bold text-green-600">{formatCurrency(proyeccion.facturacionRestaurante)}</p>
                               <p className="text-xs text-muted-foreground">Facturación/mes</p>
                           </div>
                       </div>
@@ -210,5 +283,3 @@ export default function FinancialSimulator() {
     </div>
   )
 }
-
-    
