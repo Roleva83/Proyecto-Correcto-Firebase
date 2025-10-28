@@ -100,7 +100,7 @@ export default function FinancialSimulator() {
       facturacionRestaurante,
       beneficio: beneficioProyectado,
       puntoEquilibrioFacturacion,
-      comensalesPuntoEquilibrio,
+      comensalesPuntoEquilibrio: Math.round(comensalesPuntoEquilibrio),
     });
   }, [
     facturacionProyectada,
@@ -119,9 +119,6 @@ export default function FinancialSimulator() {
   const formatNumber = (value: number) => {
     return new Intl.NumberFormat('es-ES').format(Math.round(value));
   }
-
-  const distanciaAlEquilibrio = proyeccion.beneficio;
-  const comensalesSobreEquilibrio = proyeccion.comensalesProyectados - proyeccion.comensalesPuntoEquilibrio;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -255,41 +252,22 @@ export default function FinancialSimulator() {
                   </div>
               </div>
 
-               {/* Break-even Point & Distance */}
+               {/* Break-even Point */}
               <div className="border-t mt-8 pt-6">
                   <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Análisis de Rentabilidad</h3>
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                     <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
-                        <p className="text-sm text-blue-800 font-semibold">Punto de Equilibrio</p>
-                        <p className="text-xs text-blue-700 mb-4">La facturación mínima para cubrir costes</p>
-                        <div className="grid grid-cols-2 gap-4 mt-4 text-center">
-                            <div>
-                                <p className="text-sm text-muted-foreground">Facturación</p>
-                                <p className="text-xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrioFacturacion)}</p>
-                            </div>
-                             <div>
-                                <p className="text-sm text-muted-foreground">Comensales</p>
-                                <p className="text-xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
-                            </div>
+                  <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                    <p className="text-sm text-blue-800 font-semibold">Punto de Equilibrio</p>
+                    <p className="text-xs text-blue-700 mb-4">La facturación mínima para cubrir costes</p>
+                    <div className="grid grid-cols-2 gap-4 mt-4 text-center">
+                        <div>
+                            <p className="text-sm text-muted-foreground">Facturación</p>
+                            <p className="text-xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrioFacturacion)}</p>
                         </div>
-                     </div>
-                     <div className={`p-6 rounded-lg text-center border ${distanciaAlEquilibrio >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-                        <p className={`text-sm font-semibold ${distanciaAlEquilibrio >= 0 ? 'text-green-800' : 'text-red-800'}`}>Distancia al Punto de Equilibrio</p>
-                        <p className={`text-xs ${distanciaAlEquilibrio >= 0 ? 'text-green-700' : 'text-red-700'}`}>El resultado de tu escenario proyectado</p>
-                         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
-                            <div>
-                                <p className="text-sm text-muted-foreground">Beneficio/Pérdida</p>
-                                <p className={`text-xl font-bold ${distanciaAlEquilibrio >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(distanciaAlEquilibrio)}</p>
-                            </div>
-                             <div>
-                                <p className="text-sm text-muted-foreground">Comensales sobre/bajo</p>
-                                <p className={`text-xl font-bold flex items-center justify-center ${comensalesSobreEquilibrio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                  {comensalesSobreEquilibrio >= 0 ? <TrendingUp className="h-5 w-5 mr-1"/> : <TrendingDown className="h-5 w-5 mr-1"/>}
-                                  {formatNumber(comensalesSobreEquilibrio)}
-                                </p>
-                            </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Comensales</p>
+                            <p className="text-xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
                         </div>
-                     </div>
+                    </div>
                   </div>
               </div>
 
@@ -344,3 +322,5 @@ export default function FinancialSimulator() {
     </div>
   )
 }
+
+    
