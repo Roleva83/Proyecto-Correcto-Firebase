@@ -10,7 +10,13 @@ export default function LegalNotice() {
         <div className="container mx-auto flex h-full max-w-[1200px] items-center justify-between px-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            
+            <Image 
+              src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
+              alt="Logo Caña y Reseña"
+              width={40}
+              height={40}
+              className="h-10 w-10"
+            />
             <span className="text-xl font-semibold text-foreground">Caña y Reseña</span>
           </Link>
 

@@ -38,7 +38,13 @@ export default function Register() {
         <div className="w-full max-w-md">
             <div className="mb-8 text-center">
                 <Link href="/" className="inline-block">
-                    
+                    <Image 
+                      src="https://firebasestorage.googleapis.com/v0/b/lola-ai-j1cmn.firebasestorage.app/o/Imagenes%2Flogo%20ca%C3%B1a%20y%20rese%C3%B1a.png?alt=media&token=971d742e-2192-49f3-b863-9b1d1ee2bd05"
+                      alt="Logo Caña y Reseña"
+                      width={64}
+                      height={64}
+                      className="mx-auto h-16 w-16"
+                    />
                 </Link>
                 <h1 className="mt-4 text-3xl font-extrabold text-foreground">Crea tu cuenta</h1>
                 <p className="mt-2 text-secondary">Empieza a transformar tu negocio hoy</p>
