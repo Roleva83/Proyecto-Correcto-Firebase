@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/ca
 import { Button } from '@/app/components/ui/button'
 import { Slider } from '@/app/components/ui/slider'
 import { Input } from '@/app/components/ui/input'
-import { Calculator, Utensils, Zap, Bot, Users } from 'lucide-react'
+import { Calculator, Utensils, Zap, Bot, Users, TrendingUp } from 'lucide-react'
 
 const strategicScenarios = [
   {
@@ -58,28 +58,36 @@ export default function FinancialSimulator() {
     comensalesRestaurante: 0,
     facturacionRestaurante: 0,
     beneficio: 0,
+    puntoEquilibrio: 0,
   });
 
   // --- Lógica de cálculo ---
   useEffect(() => {
-    // 1. Calcular el ticket medio ponderado según el mix de clientes
-    const ticketMedioPonderado = (ticketMedioGastrobar * (mixClientes / 100)) + (ticketMedioRestaurante * ((100 - mixClientes) / 100));
+    // 1. Calcular el ticket medio y coste variable ponderado según el mix de clientes
+    const mixGastrobar = mixClientes / 100;
+    const mixRestaurante = (100 - mixClientes) / 100;
 
+    const ticketMedioPonderado = (ticketMedioGastrobar * mixGastrobar) + (ticketMedioRestaurante * mixRestaurante);
+    const costeVariablePonderado = (costeVariableGastrobar * mixGastrobar) + (costeVariableRestaurante * mixRestaurante);
+    
     // 2. Calcular el número total de comensales proyectados a partir de la facturación
     const comensalesTotalesProyectados = ticketMedioPonderado > 0 ? Math.round(facturacionProyectada / ticketMedioPonderado) : 0;
 
     // 3. Distribuir comensales y facturación por área
-    const comensalesGastrobar = Math.round(comensalesTotalesProyectados * (mixClientes / 100));
+    const comensalesGastrobar = Math.round(comensalesTotalesProyectados * mixGastrobar);
     const comensalesRestaurante = comensalesTotalesProyectados - comensalesGastrobar;
     const facturacionGastrobar = comensalesGastrobar * ticketMedioGastrobar;
     const facturacionRestaurante = comensalesRestaurante * ticketMedioRestaurante;
 
     // 4. Calcular costes y beneficio
-    const costesVariablesGastrobar = comensalesGastrobar * costeVariableGastrobar;
-    const costesVariablesRestaurante = comensalesRestaurante * costeVariableRestaurante;
-    const costesVariablesTotales = costesVariablesGastrobar + costesVariablesRestaurante;
+    const costesVariablesTotales = comensalesTotalesProyectados * costeVariablePonderado;
     const costesTotalesProyectados = costesFijos + costesVariablesTotales;
     const beneficioProyectado = facturacionProyectada - costesTotalesProyectados;
+
+    // 5. Calcular el punto de equilibrio
+    const margenContribucionPonderado = ticketMedioPonderado - costeVariablePonderado;
+    const ratioMargenContribucion = ticketMedioPonderado > 0 ? margenContribucionPonderado / ticketMedioPonderado : 0;
+    const puntoEquilibrio = ratioMargenContribucion > 0 ? costesFijos / ratioMargenContribucion : 0;
 
     setProyeccion({
       comensalesProyectados: comensalesTotalesProyectados,
@@ -88,6 +96,7 @@ export default function FinancialSimulator() {
       comensalesRestaurante,
       facturacionRestaurante,
       beneficio: beneficioProyectado,
+      puntoEquilibrio,
     });
   }, [
     facturacionProyectada,
@@ -239,6 +248,26 @@ export default function FinancialSimulator() {
                   </div>
               </div>
 
+               {/* Break-even Point */}
+              <div className="border-t mt-8 pt-6">
+                  <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Punto de Equilibrio</h3>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-center">
+                        <p className="text-sm text-blue-800">Facturación Mínima para no Perder</p>
+                        <p className="text-3xl font-bold text-blue-600 mt-1">{formatCurrency(proyeccion.puntoEquilibrio)}</p>
+                        <p className="text-xs text-blue-700 mt-1">Esta es la facturación mensual que necesitas para cubrir todos tus costes.</p>
+                     </div>
+                     <div className="bg-green-50 border border-green-200 p-4 rounded-lg text-center">
+                        <p className="text-sm text-green-800">Distancia al Punto de Equilibrio</p>
+                        <p className={`text-3xl font-bold mt-1 ${facturacionProyectada - proyeccion.puntoEquilibrio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {formatCurrency(facturacionProyectada - proyeccion.puntoEquilibrio)}
+                        </p>
+                        <p className="text-xs text-green-700 mt-1">Esto es lo que te queda (o te falta) para empezar a tener beneficios.</p>
+                     </div>
+                  </div>
+              </div>
+
+
             </CardContent>
           </Card>
 
@@ -289,3 +318,5 @@ export default function FinancialSimulator() {
     </div>
   )
 }
+
+    
