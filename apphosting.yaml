@@ -12,3 +12,5 @@ env:
     availability:
       - BUILD
       - RUNTIME
+  - variable: GOOGLE_AI_API_KEY
+    secret: GOOGLE_AI_API_KEY
