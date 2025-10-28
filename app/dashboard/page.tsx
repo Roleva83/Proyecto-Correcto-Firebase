@@ -294,11 +294,17 @@ export default function Dashboard() {
             {/* Lola's Suggestions and Alerts */}
             <div className="col-span-12">
               <Card>
-                <CardHeader>
-                  <CardTitle>Sugerencia Proactiva de Lola</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Sugerencia de Lola aquí.</p>
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 rounded-full bg-blue-100">
+                      <TrendingUp className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground">Sugerencia Proactiva de Lola</h4>
+                      <p className="text-sm text-muted-foreground">Si reorganizas tu menú para destacar platos con mayor margen y renombras algunos para hacerlos más atractivos, puedes reducir costes en un 5% y aumentar el beneficio un 8%, lo que supone unos +1.200€/mes.</p>
+                    </div>
+                  </div>
+                  <Button>Analizar en profundidad</Button>
                 </CardContent>
               </Card>
             </div>
