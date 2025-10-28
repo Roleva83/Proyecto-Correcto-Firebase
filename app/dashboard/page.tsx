@@ -98,34 +98,9 @@ export default function Dashboard() {
                 <Card className="h-full flex flex-col">
                     <CardHeader>
                         <CardTitle>% Ingresos Totales</CardTitle>
-                        <p className="text-sm text-muted-foreground">Evolucion de los ingresos en el periodo seleccionado</p>
                     </CardHeader>
-                    <CardContent className="flex-grow flex flex-col">
-                        <div className="h-72 flex-grow">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <RechartsBarChart data={incomeData}>
-                                    <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                                    <YAxis tickFormatter={(value) => `${value / 1000}K`} tick={{ fontSize: 12 }} />
-                                    <Tooltip />
-                                    <Bar dataKey="income" fill="#E83E8C" name="Ingresos" radius={[4, 4, 0, 0]}/>
-                                    <Bar dataKey="cost" fill="#93C47D" name="Coste" radius={[4, 4, 0, 0]}/>
-                                </RechartsBarChart>
-                            </ResponsiveContainer>
-                        </div>
-                         <div className="grid grid-cols-3 gap-4 pt-4 mt-4 border-t">
-                            <div className="text-center">
-                                <p className="text-sm text-muted-foreground">Ingresos Totales</p>
-                                <p className="text-xl font-bold text-foreground">98.660 €</p>
-                            </div>
-                            <div className="text-center">
-                                <p className="text-sm text-muted-foreground">Coste operativo</p>
-                                <p className="text-xl font-bold text-red-600">63.091 €</p>
-                            </div>
-                            <div className="text-center">
-                                <p className="text-sm text-muted-foreground">Beneficio</p>
-                                <p className="text-xl font-bold text-green-600">35.569 €</p>
-                            </div>
-                        </div>
+                    <CardContent>
+                       <p>Aquí irá el gráfico de barras de ingresos.</p>
                     </CardContent>
                 </Card>
             </div>
@@ -133,50 +108,9 @@ export default function Dashboard() {
                 <Card className="h-full flex flex-col">
                     <CardHeader>
                         <CardTitle>Oportunidades de Menú</CardTitle>
-                        <p className="text-sm text-muted-foreground">Diagnóstico rápido de rentabilidad y popularidad de tus platos.</p>
                     </CardHeader>
-                    <CardContent className="flex-grow flex flex-col">
-                        <div className="space-y-4">
-                            <div>
-                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2">
-                                    <TrendingUp className="h-4 w-4 text-purple-600"/>
-                                    Los Más Populares (por Unidades)
-                                </h4>
-                                <ul className="space-y-2">
-                                    {popularItems.map(item => (
-                                        <li key={item.name} className="flex items-center justify-between text-sm p-2 rounded-md bg-gray-50">
-                                            <span>{item.name}</span>
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-bold text-white bg-purple-600 px-2 py-0.5 rounded-full text-xs">{item.units} uds.</span>
-                                                {item.trend === 'up' ? <TrendingUp className="h-4 w-4 text-green-500" /> : <TrendingDown className="h-4 w-4 text-red-500" />}
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                             <div>
-                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2">
-                                    <Gem className="h-4 w-4 text-purple-600"/>
-                                    Joyas Ocultas a Potenciar
-                                </h4>
-                                <ul className="space-y-2">
-                                    {hiddenGems.map(item => (
-                                        <li key={item.name} className="flex items-center justify-between text-sm p-2 rounded-md bg-gray-50">
-                                            <span>{item.name}</span>
-                                            <div className="text-right">
-                                                <p className="font-semibold text-green-600">+{item.benefit.toFixed(2)}€</p>
-                                                <p className="text-xs text-muted-foreground">beneficio/ud</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="mt-auto pt-4">
-                            <button className="w-full bg-purple-600 text-white font-semibold py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-purple-700 transition-colors">
-                                Analizar Menú Completo con Lola IA <ArrowRight className="h-4 w-4"/>
-                            </button>
-                        </div>
+                    <CardContent>
+                        <p>Aquí irán las oportunidades de menú.</p>
                     </CardContent>
                 </Card>
             </div>
