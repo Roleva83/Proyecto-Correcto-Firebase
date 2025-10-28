@@ -87,8 +87,8 @@ export default function FinancialSimulator() {
 
     // 5. Calcular el punto de equilibrio
     const margenContribucionPonderado = ticketMedioPonderado - costeVariablePonderado;
-    const puntoEquilibrioFacturacion = margenContribucionPonderado > 0 ? costesFijos / (margenContribucionPonderado / ticketMedioPonderado) : 0;
-    const comensalesPuntoEquilibrio = ticketMedioPonderado > 0 ? puntoEquilibrioFacturacion / ticketMedioPonderado : 0;
+    const comensalesPuntoEquilibrio = margenContribucionPonderado > 0 ? costesFijos / margenContribucionPonderado : 0;
+    const puntoEquilibrioFacturacion = comensalesPuntoEquilibrio * ticketMedioPonderado;
     
     setProyeccion({
       comensalesProyectados: comensalesTotalesProyectados,
@@ -98,7 +98,7 @@ export default function FinancialSimulator() {
       facturacionRestaurante,
       beneficio: beneficioProyectado,
       puntoEquilibrio: puntoEquilibrioFacturacion,
-      comensalesPuntoEquilibrio: comensalesPuntoEquilibrio,
+      comensalesPuntoEquilibrio,
     });
   }, [
     facturacionProyectada,
@@ -330,3 +330,5 @@ export default function FinancialSimulator() {
     </div>
   )
 }
+
+    
