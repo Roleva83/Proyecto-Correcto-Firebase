@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/ca
 import { Button } from '@/app/components/ui/button'
 import { Slider } from '@/app/components/ui/slider'
 import { Input } from '@/app/components/ui/input'
-import { Calculator, Utensils, Zap, Bot, Users, TrendingUp } from 'lucide-react'
+import { Calculator, Utensils, Zap, Bot, Users, TrendingUp, TrendingDown } from 'lucide-react'
 
 const strategicScenarios = [
   {
@@ -58,11 +58,11 @@ export default function FinancialSimulator() {
     comensalesRestaurante: 0,
     facturacionRestaurante: 0,
     beneficio: 0,
-    puntoEquilibrio: 0,
+    puntoEquilibrioFacturacion: 0,
     comensalesPuntoEquilibrio: 0,
   });
 
-  // --- Lógica de cálculo ---
+  // --- Lógica de cálculo unificada ---
   useEffect(() => {
     // 1. Calcular el ticket medio y coste variable ponderado según el mix de clientes
     const mixGastrobar = mixClientes / 100;
@@ -71,6 +71,7 @@ export default function FinancialSimulator() {
     const ticketMedioPonderado = (ticketMedioGastrobar * mixGastrobar) + (ticketMedioRestaurante * mixRestaurante);
     const costeVariablePonderado = (costeVariableGastrobar * mixGastrobar) + (costeVariableRestaurante * mixRestaurante);
     
+    // --- CÁLCULO DEL ESCENARIO PROYECTADO ---
     // 2. Calcular el número total de comensales proyectados a partir de la facturación
     const comensalesTotalesProyectados = ticketMedioPonderado > 0 ? Math.round(facturacionProyectada / ticketMedioPonderado) : 0;
 
@@ -80,12 +81,13 @@ export default function FinancialSimulator() {
     const facturacionGastrobar = comensalesGastrobar * ticketMedioGastrobar;
     const facturacionRestaurante = comensalesRestaurante * ticketMedioRestaurante;
 
-    // 4. Calcular costes y beneficio
+    // 4. Calcular costes y beneficio del escenario proyectado
     const costesVariablesTotales = comensalesTotalesProyectados * costeVariablePonderado;
     const costesTotalesProyectados = costesFijos + costesVariablesTotales;
     const beneficioProyectado = facturacionProyectada - costesTotalesProyectados;
 
-    // 5. Calcular el punto de equilibrio
+    // --- CÁLCULO DEL PUNTO DE EQUILIBRIO ---
+    // 5. Calcular el margen de contribución y el punto de equilibrio
     const margenContribucionPonderado = ticketMedioPonderado - costeVariablePonderado;
     const comensalesPuntoEquilibrio = margenContribucionPonderado > 0 ? costesFijos / margenContribucionPonderado : 0;
     const puntoEquilibrioFacturacion = comensalesPuntoEquilibrio * ticketMedioPonderado;
@@ -97,7 +99,7 @@ export default function FinancialSimulator() {
       comensalesRestaurante,
       facturacionRestaurante,
       beneficio: beneficioProyectado,
-      puntoEquilibrio: puntoEquilibrioFacturacion,
+      puntoEquilibrioFacturacion,
       comensalesPuntoEquilibrio,
     });
   }, [
@@ -117,6 +119,9 @@ export default function FinancialSimulator() {
   const formatNumber = (value: number) => {
     return new Intl.NumberFormat('es-ES').format(Math.round(value));
   }
+
+  const distanciaAlEquilibrio = proyeccion.beneficio;
+  const comensalesSobreEquilibrio = proyeccion.comensalesProyectados - proyeccion.comensalesPuntoEquilibrio;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -250,31 +255,40 @@ export default function FinancialSimulator() {
                   </div>
               </div>
 
-               {/* Break-even Point */}
+               {/* Break-even Point & Distance */}
               <div className="border-t mt-8 pt-6">
-                  <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Punto de Equilibrio</h3>
-                   <div className="grid grid-cols-1">
+                  <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Análisis de Rentabilidad</h3>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                      <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
-                        <p className="text-sm text-blue-800 font-semibold">Facturación Mínima para no Perder</p>
-                        <div className="grid grid-cols-4 gap-4 mt-4 text-center">
+                        <p className="text-sm text-blue-800 font-semibold">Punto de Equilibrio</p>
+                        <p className="text-xs text-blue-700 mb-4">La facturación mínima para cubrir costes</p>
+                        <div className="grid grid-cols-2 gap-4 mt-4 text-center">
                             <div>
                                 <p className="text-sm text-muted-foreground">Facturación</p>
-                                <p className="text-2xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrio)}</p>
+                                <p className="text-xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrioFacturacion)}</p>
                             </div>
                              <div>
                                 <p className="text-sm text-muted-foreground">Comensales</p>
-                                <p className="text-2xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-muted-foreground">Costes</p>
-                                <p className="text-2xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrio)}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-muted-foreground">Beneficio</p>
-                                <p className="text-2xl font-bold text-blue-600">{formatCurrency(0)}</p>
+                                <p className="text-xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
                             </div>
                         </div>
-                        <p className="text-xs text-blue-700 mt-4">Esta es la facturación mensual que necesitas para cubrir todos tus costes. Cualquier euro por encima es beneficio.</p>
+                     </div>
+                     <div className={`p-6 rounded-lg text-center border ${distanciaAlEquilibrio >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                        <p className={`text-sm font-semibold ${distanciaAlEquilibrio >= 0 ? 'text-green-800' : 'text-red-800'}`}>Distancia al Punto de Equilibrio</p>
+                        <p className={`text-xs ${distanciaAlEquilibrio >= 0 ? 'text-green-700' : 'text-red-700'}`}>El resultado de tu escenario proyectado</p>
+                         <div className="grid grid-cols-2 gap-4 mt-4 text-center">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Beneficio/Pérdida</p>
+                                <p className={`text-xl font-bold ${distanciaAlEquilibrio >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(distanciaAlEquilibrio)}</p>
+                            </div>
+                             <div>
+                                <p className="text-sm text-muted-foreground">Comensales sobre/bajo</p>
+                                <p className={`text-xl font-bold flex items-center justify-center ${comensalesSobreEquilibrio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                  {comensalesSobreEquilibrio >= 0 ? <TrendingUp className="h-5 w-5 mr-1"/> : <TrendingDown className="h-5 w-5 mr-1"/>}
+                                  {formatNumber(comensalesSobreEquilibrio)}
+                                </p>
+                            </div>
+                        </div>
                      </div>
                   </div>
               </div>
@@ -330,5 +344,3 @@ export default function FinancialSimulator() {
     </div>
   )
 }
-
-    
