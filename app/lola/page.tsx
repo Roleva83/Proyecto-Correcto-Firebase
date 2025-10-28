@@ -1,16 +1,18 @@
 
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar'
-import { AreaChart, BarChart, Bot, Search, Star } from 'lucide-react'
+import { AreaChart, BarChart, Bot, Search, Star, DollarSign, TrendingUp, Clock, PlusCircle } from 'lucide-react'
 import { AreaChart as RechartsAreaChart, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Area, Bar, Cell } from 'recharts';
 import Image from 'next/image'
 import { Input } from '@/app/components/ui/input'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs"
+
 
 const reviewsData = [
   {
@@ -115,120 +117,223 @@ export default function LolaPage() {
             <p className="text-muted-foreground">Analiza, gestiona y responde a todas las reseñas de tus clientes y obtén un plan de acción con IA.</p>
           </div>
 
-          <div className="flex justify-center mb-6">
-            <div className="bg-card border rounded-lg p-1 flex">
-              <Button variant="secondary" className="bg-white shadow-sm">Gestión de Reseñas</Button>
-              <Button variant="ghost">Plan de Acción de Lola</Button>
+          <Tabs defaultValue="gestion">
+            <div className="flex justify-center mb-6">
+              <TabsList className="bg-card border rounded-lg p-1 flex">
+                <TabsTrigger value="gestion" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">Gestión de Reseñas</TabsTrigger>
+                <TabsTrigger value="plan" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">Plan de Acción de Lola</TabsTrigger>
+              </TabsList>
             </div>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base"><AreaChart className="h-5 w-5 text-purple-600"/> Evolución de Reseñas</CardTitle>
-                <p className="text-sm text-muted-foreground">Cantidad de reseñas recibidas por período</p>
-              </CardHeader>
-              <CardContent className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsAreaChart data={evolutionData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                    <XAxis dataKey="name" tick={{fontSize: 12}} />
-                    <YAxis tick={{fontSize: 12}}/>
-                    <Tooltip />
-                    <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
-                  </RechartsAreaChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base"><BarChart className="h-5 w-5 text-pink-600"/> Sentimiento Positivo</CardTitle>
-                <p className="text-sm text-muted-foreground">Evolución del % de sentimiento positivo</p>
-              </CardHeader>
-              <CardContent className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsBarChart data={sentimentData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                    <XAxis dataKey="name" tick={{fontSize: 12}}/>
-                    <YAxis domain={[50, 100]} unit="%" tick={{fontSize: 12}}/>
-                    <Tooltip />
-                    <Bar dataKey="positivo">
-                       {sentimentData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index % 3 === 0 ? '#2dd4bf' : index % 3 === 1 ? '#f97316' : '#ec4899'} />
-                      ))}
-                    </Bar>
-                  </RechartsBarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
+            
+            <TabsContent value="gestion">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-base"><AreaChart className="h-5 w-5 text-purple-600"/> Evolución de Reseñas</CardTitle>
+                    <p className="text-sm text-muted-foreground">Cantidad de reseñas recibidas por período</p>
+                  </CardHeader>
+                  <CardContent className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RechartsAreaChart data={evolutionData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                        <XAxis dataKey="name" tick={{fontSize: 12}} />
+                        <YAxis tick={{fontSize: 12}}/>
+                        <Tooltip />
+                        <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
+                      </RechartsAreaChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-base"><BarChart className="h-5 w-5 text-pink-600"/> Sentimiento Positivo</CardTitle>
+                    <p className="text-sm text-muted-foreground">Evolución del % de sentimiento positivo</p>
+                  </CardHeader>
+                  <CardContent className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RechartsBarChart data={sentimentData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                        <XAxis dataKey="name" tick={{fontSize: 12}}/>
+                        <YAxis domain={[50, 100]} unit="%" tick={{fontSize: 12}}/>
+                        <Tooltip />
+                        <Bar dataKey="positivo">
+                          {sentimentData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={index % 3 === 0 ? '#2dd4bf' : index % 3 === 1 ? '#f97316' : '#ec4899'} />
+                          ))}
+                        </Bar>
+                      </RechartsBarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <Star className="h-6 w-6 text-primary"/>
-                <div>
-                  <h4 className="font-semibold text-amber-900">¡A por el día, campeón!</h4>
-                  <p className="text-sm text-amber-800">Has respondido a 3 de 5 reseñas hoy.</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 w-1/4">
-                <div className="w-full bg-amber-200 rounded-full h-2.5">
-                  <div className="bg-primary h-2.5 rounded-full" style={{width: '60%'}}></div>
-                </div>
-                <span className="text-sm font-semibold text-amber-900">60%</span>
-              </div>
-          </div>
-          
-          <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" className="bg-accent">Todas (7)</Button>
-                <Button variant="ghost">Nuevas (1)</Button>
-                <Button variant="ghost" className="text-red-600 font-semibold">Requieren atención (2)</Button>
-              </div>
-              <div className="relative w-1/3">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Buscar reseñas..." className="pl-9" />
-              </div>
-          </div>
-
-          <div className="space-y-4">
-            {reviewsData.map((review) => (
-              <Card key={review.author}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={review.avatar} alt={review.author}/>
-                      <AvatarFallback>{review.author.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <h4 className="font-semibold">{review.author}</h4>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <p>{review.platform}</p>
-                          <p>{review.date}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center mb-2">
-                        {[...Array(5)].map((_, i) => (
-                           <Star key={i} className={`h-5 w-5 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
-                        ))}
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">{review.comment}</p>
-                      <div className="flex justify-between items-center">
-                        <div className="flex gap-2">
-                           {review.tags.map(tag => (
-                            <span key={tag.text} className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${getTagClass(tag.type)}`}>
-                              {tag.text}
-                            </span>
-                           ))}
-                        </div>
-                        <Button variant="outline"><Bot className="mr-2 h-4 w-4"/> Generar Respuesta</Button>
-                      </div>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <Star className="h-6 w-6 text-primary"/>
+                    <div>
+                      <h4 className="font-semibold text-amber-900">¡A por el día, campeón!</h4>
+                      <p className="text-sm text-amber-800">Has respondido a 3 de 5 reseñas hoy.</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <div className="flex items-center gap-3 w-1/4">
+                    <div className="w-full bg-amber-200 rounded-full h-2.5">
+                      <div className="bg-primary h-2.5 rounded-full" style={{width: '60%'}}></div>
+                    </div>
+                    <span className="text-sm font-semibold text-amber-900">60%</span>
+                  </div>
+              </div>
+              
+              <div className="flex justify-between items-center mb-4">
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" className="bg-accent">Todas (7)</Button>
+                    <Button variant="ghost">Nuevas (1)</Button>
+                    <Button variant="ghost" className="text-red-600 font-semibold">Requieren atención (2)</Button>
+                  </div>
+                  <div className="relative w-1/3">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="Buscar reseñas..." className="pl-9" />
+                  </div>
+              </div>
 
+              <div className="space-y-4">
+                {reviewsData.map((review) => (
+                  <Card key={review.author}>
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-4">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={review.avatar} alt={review.author}/>
+                          <AvatarFallback>{review.author.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex justify-between items-center mb-1">
+                            <h4 className="font-semibold">{review.author}</h4>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <p>{review.platform}</p>
+                              <p>{review.date}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center mb-2">
+                            {[...Array(5)].map((_, i) => (
+                              <Star key={i} className={`h-5 w-5 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
+                            ))}
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">{review.comment}</p>
+                          <div className="flex justify-between items-center">
+                            <div className="flex gap-2">
+                              {review.tags.map(tag => (
+                                <span key={tag.text} className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${getTagClass(tag.type)}`}>
+                                  {tag.text}
+                                </span>
+                              ))}
+                            </div>
+                            <Button variant="outline"><Bot className="mr-2 h-4 w-4"/> Generar Respuesta</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="plan">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                {/* Servicio y Tiempos de Espera */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Clock className="h-5 w-5 text-primary"/>Servicio y Tiempos de Espera</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Card className="border-red-200 bg-red-50/50">
+                        <CardHeader>
+                            <CardTitle className="text-base text-red-800">Mejora del Servicio</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-red-700">La lentitud en el servicio y la falta de atención por parte del personal son problemas recurrentes en las reseñas negativas. Esto afecta directamente la experiencia del cliente y la probabilidad de que regrese.</p>
+                            <div className="flex justify-between items-center mt-4">
+                                <span className="text-xs font-semibold px-2 py-1 bg-red-100 text-red-800 rounded-full">Prioridad: Alta</span>
+                                <a href="#" className="text-sm font-semibold text-primary hover:underline">Ver detalles y plan de acción</a>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-sm font-medium">Impacto Potencial</CardTitle>
+                                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold text-green-600">+0.8 pts</div>
+                                <p className="text-xs text-muted-foreground">en valoración media</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-sm font-medium">Impacto Económico Mensual</CardTitle>
+                                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold text-green-600">+1.250€</div>
+                                <p className="text-xs text-muted-foreground">en beneficio estimado</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                     <div className="flex gap-4">
+                        <Button variant="outline" className="w-full"><PlusCircle className="mr-2 h-4 w-4"/> Añadir acción propia</Button>
+                        <Button className="w-full">Marcar como resuelto</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Mejoras Operativas */}
+                <Card className="shadow-soft">
+                   <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Bot className="h-5 w-5 text-primary"/>Mejoras Operativas</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Card className="border-red-200 bg-red-50/50">
+                        <CardHeader>
+                            <CardTitle className="text-base text-red-800">Mejora Operativa</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-red-700">La inconsistencia en la calidad de los platos es un problema significativo. Algunos clientes elogian la comida, mientras que otros la critican, lo que sugiere una falta de estandarización en la cocina.</p>
+                            <div className="flex justify-between items-center mt-4">
+                                <span className="text-xs font-semibold px-2 py-1 bg-red-100 text-red-800 rounded-full">Prioridad: Alta</span>
+                                <a href="#" className="text-sm font-semibold text-primary hover:underline">Ver detalles y plan de acción</a>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-sm font-medium">Impacto Potencial</CardTitle>
+                                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold text-green-600">+0.5 pts</div>
+                                <p className="text-xs text-muted-foreground">en valoración media</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-sm font-medium">Impacto Económico Mensual</CardTitle>
+                                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold text-green-600">+800€</div>
+                                <p className="text-xs text-muted-foreground">en beneficio estimado</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                     <div className="flex gap-4">
+                        <Button variant="outline" className="w-full"><PlusCircle className="mr-2 h-4 w-4"/> Añadir acción propia</Button>
+                        <Button className="w-full">Marcar como resuelto</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+              </div>
+            </TabsContent>
+          </Tabs>
         </main>
       </div>
     </div>
