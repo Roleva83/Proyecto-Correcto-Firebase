@@ -5,8 +5,8 @@ import Sidebar from '../components/layout/Sidebar'
 import MetricsWidget from '../components/dashboard/widgets/MetricsWidget'
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
-import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight } from 'lucide-react'
-import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign } from 'lucide-react'
+import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
 
 const incomeData = [
   { date: '27 ago', income: 3200, cost: 2200 },
@@ -51,7 +51,20 @@ const hiddenGems = [
     { name: 'Entrecot de Vaca Madurada', benefit: 15.00 },
     { name: 'Lubina a la Sal', benefit: 14.00 },
     { name: 'Carrilleras al Vino Tinto', benefit: 13.00 },
-]
+];
+
+const salesData = [
+  { name: 'Con Reserva', value: 75, color: '#14b8a6' }, // Teal-500
+  { name: 'Sin Reserva', value: 25, color: '#ec4899' }, // Pink-500
+];
+
+const reservationSourceData = [
+    { name: 'CoverManager', value: 40, color: '#14b8a6' }, // Teal-500
+    { name: 'Google', value: 30, color: '#ec4899' }, // Pink-500
+    { name: 'Teléfono', value: 20, color: '#f97316' }, // Orange-500
+    { name: 'Web', value: 10, color: '#84cc16' }, // Lime-500
+];
+
 
 export default function Dashboard() {
   const user = { name: 'Restaurante Ejemplo' };
@@ -107,7 +120,7 @@ export default function Dashboard() {
                         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                         <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip />
-                        <Bar dataKey="income" fill="#8884d8" name="Ingresos" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="income" fill="hsl(var(--primary))" name="Ingresos" radius={[4, 4, 0, 0]} />
                         <Bar dataKey="cost" fill="#82ca9d" name="Costes" radius={[4, 4, 0, 0]} />
                       </RechartsBarChart>
                     </ResponsiveContainer>
@@ -170,43 +183,110 @@ export default function Dashboard() {
 
 
             {/* Bottom Widgets */}
-            <div className="col-span-3">
-              <Card>
+            <div className="col-span-12 lg:col-span-3">
+              <Card className="h-full">
                 <CardHeader>
                   <CardTitle>Ventas: Con vs Sin Reserva</CardTitle>
+                  <CardContent className="text-xs text-muted-foreground">Ingresos de clientes con y sin reserva</CardContent>
                 </CardHeader>
                 <CardContent>
-                  <p>Gráfico circular aquí.</p>
+                  <div className="w-full h-40 relative">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie data={salesData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={70} paddingAngle={2}>
+                                {salesData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="text-center text-sm text-muted-foreground mt-4">Las ventas de clientes con reserva representaron un <span className="font-bold text-foreground">75%</span> del total.</p>
                 </CardContent>
               </Card>
             </div>
-            <div className="col-span-3">
-              <Card>
+            <div className="col-span-12 lg:col-span-3">
+              <Card className="h-full">
                 <CardHeader>
                   <CardTitle>Origen de las Reservas</CardTitle>
+                  <CardContent className="text-xs text-muted-foreground">Distribución por canal en el periodo</CardContent>
                 </CardHeader>
                 <CardContent>
-                  <p>Gráfico circular aquí.</p>
+                    <div className="w-full h-40 relative">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie data={reservationSourceData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={70} paddingAngle={2}>
+                                    {reservationSourceData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                            </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <span className="text-3xl font-bold">2362</span>
+                            <span className="text-sm text-muted-foreground">Reservas</span>
+                        </div>
+                    </div>
+                    <div className="flex justify-around text-xs mt-4">
+                        {reservationSourceData.map(item => (
+                            <div key={item.name} className="flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></span>
+                                <span>{item.name}</span>
+                            </div>
+                        ))}
+                    </div>
                 </CardContent>
               </Card>
             </div>
-            <div className="col-span-3">
-              <Card>
-                <CardHeader>
+            <div className="col-span-12 lg:col-span-3">
+              <Card className="h-full">
+                <CardHeader className="flex flex-row items-start justify-between">
                   <CardTitle>Tasa de Respuesta</CardTitle>
+                  <div className="p-2 rounded-lg bg-blue-100">
+                    <ShieldCheck className="h-4 w-4 text-blue-600"/>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <p>Datos de respuesta aquí.</p>
+                  <p className="text-4xl font-bold text-foreground">91% <span className="text-base font-semibold text-green-600 align-text-bottom">+5%</span></p>
+                  <p className="text-xs text-muted-foreground">Respecto al periodo anterior</p>
+                  <div className="border-t my-4"></div>
+                  <h4 className="font-semibold text-sm mb-2">Comunicaciones</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 rounded-full bg-green-500 mt-2"></span>
+                        <span>Respondiendo mejoras tu SEO local</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                         <span className="w-1 h-1 rounded-full bg-green-500 mt-2"></span>
+                        <span>Aumenta la confianza del cliente</span>
+                    </li>
+                  </ul>
                 </CardContent>
               </Card>
             </div>
-            <div className="col-span-3">
-              <Card>
-                <CardHeader>
+            <div className="col-span-12 lg:col-span-3">
+              <Card className="h-full">
+                <CardHeader className="flex flex-row items-start justify-between">
                   <CardTitle>Beneficio Recuperable</CardTitle>
+                   <div className="p-2 rounded-lg bg-green-100">
+                    <DollarSign className="h-4 w-4 text-green-600"/>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <p>Datos de beneficio aquí.</p>
+                  <p className="text-4xl font-bold text-green-600">280€ <span className="text-base font-semibold text-muted-foreground align-text-bottom">+2 acciones</span></p>
+                  <p className="text-xs text-muted-foreground">Aplicando mejoras de Lola</p>
+                  <div className="border-t my-4"></div>
+                  <h4 className="font-semibold text-sm mb-2">Acciones de Mayor Impacto</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                     <li className="flex items-start gap-2">
+                        <span className="w-1 h-1 rounded-full bg-green-500 mt-2"></span>
+                        <span>Implementar una lista de verificación diaria para la recepción y control de calidad de los ingredientes.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                         <span className="w-1 h-1 rounded-full bg-green-500 mt-2"></span>
+                        <span>Establecer un sistema de retroalimentación para los cocineros.</span>
+                    </li>
+                  </ul>
                 </CardContent>
               </Card>
             </div>
