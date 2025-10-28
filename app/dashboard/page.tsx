@@ -5,7 +5,7 @@ import Sidebar from '../components/layout/Sidebar'
 import MetricsWidget from '../components/dashboard/widgets/MetricsWidget'
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
 import { Button } from '@/app/components/ui/button'
-import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign } from 'lucide-react'
+import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign, AlertCircle, Star, Utensils, Lightbulb, Bot } from 'lucide-react'
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
 
 const incomeData = [
@@ -65,6 +65,17 @@ const reservationSourceData = [
     { name: 'Web', value: 10, color: '#84cc16' }, // Lime-500
 ];
 
+const alerts = [
+  { icon: <AlertCircle className="h-5 w-5 text-red-500" />, title: "Cliente con reseña negativa vuelve al local", description: "Juan Pérez (reseña de 1 estrella el 15/07) tiene una reserva para hoy. Es una segunda oportunidad para ofrecerle una experiencia excelente.", action: "Ver Cliente" },
+  { icon: <Star className="h-5 w-5 text-yellow-500" />, title: "5 reseñas llevan más de 48h sin respuesta", description: "Responder rápidamente a las reseñas, especialmente a las negativas, puede mitigar su impacto y mejorar la percepción del cliente.", action: "Ir a Reseñas" },
+  { icon: <Utensils className="h-5 w-5 text-orange-500" />, title: 'La "Sopa de pescado" tiene una baja rotación', description: "Este plato solo representa el 3% de las ventas en su categoría. Considera renovarlo o crear una promoción para aumentar su visibilidad.", action: "Revisar Menú" },
+  { icon: <TrendingDown className="h-5 w-5 text-blue-500" />, title: "Caída del 18% en las reservas esta semana", description: "La semana pasada tuviste un 18% más de reservas. Lanza una campaña en redes sociales para atraer más clientes.", action: "Lanzar Campaña" },
+];
+
+const tips = [
+  { title: "Mejora Operativa", description: "La inconsistencia en la calidad de los platos es un problema significativo. Res...", tags: ["Prioridad Alta", "Carta"], tagColors: ["bg-red-100 text-red-800", "bg-purple-100 text-purple-800"] },
+  { title: "Mejora del Servicio", description: "La lentitud en el servicio y la falta de atención por parte del personal son pro...", tags: ["Prioridad Alta", "Servicio"], tagColors: ["bg-red-100 text-red-800", "bg-indigo-100 text-indigo-800"] },
+];
 
 export default function Dashboard() {
   const user = { name: 'Restaurante Ejemplo' };
@@ -305,7 +316,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="flex justify-center">
-                    <Button>Analizar en profundidad</Button>
+                     <Button>Analizar en profundidad</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -314,20 +325,56 @@ export default function Dashboard() {
             <div className="col-span-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Alertas de Lola</CardTitle>
+                  <CardTitle className="flex items-center gap-2"><Lightbulb className="h-5 w-5 text-primary"/> Alertas de Lola</CardTitle>
+                  <p className="text-sm text-muted-foreground pt-1">Lola ha detectado estas situaciones. ¡Revísalas para no perder ninguna oportunidad!</p>
                 </CardHeader>
-                <CardContent>
-                  <p>Listado de alertas de Lola.</p>
+                <CardContent className="space-y-2">
+                    {alerts.map((alert, index) => (
+                        <div key={index} className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors">
+                            <div className="flex items-start justify-between gap-4">
+                                <div className="flex items-start gap-3">
+                                    {alert.icon}
+                                    <div>
+                                        <p className="font-semibold text-foreground text-sm">{alert.title}</p>
+                                        <p className="text-xs text-muted-foreground">{alert.description}</p>
+                                    </div>
+                                </div>
+                                <Button variant="ghost" className="text-primary text-sm whitespace-nowrap">{alert.action} <ArrowRight className="h-4 w-4 ml-1"/></Button>
+                            </div>
+                        </div>
+                    ))}
+                    <div className="pt-2">
+                      <Button variant="secondary" className="w-full">Ver todas las alertas</Button>
+                    </div>
                 </CardContent>
               </Card>
             </div>
             <div className="col-span-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Consejos de Lola</CardTitle>
+                  <CardTitle className="flex items-center gap-2"><Bot className="h-5 w-5 text-primary"/> Consejos de Lola</CardTitle>
+                  <p className="text-sm text-muted-foreground pt-1">Recomendaciones para ti.</p>
                 </CardHeader>
-                <CardContent>
-                  <p>Listado de consejos de Lola.</p>
+                <CardContent className="space-y-4">
+                  {tips.map((tip, index) => (
+                    <div key={index} className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-semibold text-foreground">{tip.title}</h4>
+                          <div className="flex items-center gap-2 mt-1">
+                            {tip.tags.map((tag, i) => (
+                              <span key={i} className={`text-xs font-semibold px-2 py-0.5 rounded-full ${tip.tagColors[i]}`}>{tag}</span>
+                            ))}
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-2">{tip.description}</p>
+                        </div>
+                        <Button variant="ghost" className="text-primary text-sm whitespace-nowrap">Ver detalles <ArrowRight className="h-4 w-4 ml-1"/></Button>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="pt-2">
+                     <Button variant="secondary" className="w-full">Ver todos los consejos</Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
