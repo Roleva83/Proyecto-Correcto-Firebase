@@ -1,9 +1,10 @@
+
 'use client';
 import React from 'react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check, Sparkles, Instagram, Facebook, Linkedin } from 'lucide-react';
-import ScrollToTopButton from './components/ui/ScrollToTopButton';
+import ScrollToTopButton from '@/app/components/ui/ScrollToTopButton';
 
 const inter = Inter({ subsets: ['latin'] });
 
