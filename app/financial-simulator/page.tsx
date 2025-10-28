@@ -59,6 +59,7 @@ export default function FinancialSimulator() {
     facturacionRestaurante: 0,
     beneficio: 0,
     puntoEquilibrio: 0,
+    comensalesPuntoEquilibrio: 0,
   });
 
   // --- Lógica de cálculo ---
@@ -86,9 +87,9 @@ export default function FinancialSimulator() {
 
     // 5. Calcular el punto de equilibrio
     const margenContribucionPonderado = ticketMedioPonderado - costeVariablePonderado;
-    const ratioMargenContribucion = ticketMedioPonderado > 0 ? margenContribucionPonderado / ticketMedioPonderado : 0;
-    const puntoEquilibrio = ratioMargenContribucion > 0 ? costesFijos / ratioMargenContribucion : 0;
-
+    const puntoEquilibrioFacturacion = margenContribucionPonderado > 0 ? costesFijos / (margenContribucionPonderado / ticketMedioPonderado) : 0;
+    const comensalesPuntoEquilibrio = ticketMedioPonderado > 0 ? puntoEquilibrioFacturacion / ticketMedioPonderado : 0;
+    
     setProyeccion({
       comensalesProyectados: comensalesTotalesProyectados,
       comensalesGastrobar,
@@ -96,7 +97,8 @@ export default function FinancialSimulator() {
       comensalesRestaurante,
       facturacionRestaurante,
       beneficio: beneficioProyectado,
-      puntoEquilibrio,
+      puntoEquilibrio: puntoEquilibrioFacturacion,
+      comensalesPuntoEquilibrio: comensalesPuntoEquilibrio,
     });
   }, [
     facturacionProyectada,
@@ -113,7 +115,7 @@ export default function FinancialSimulator() {
   }
 
   const formatNumber = (value: number) => {
-    return new Intl.NumberFormat('es-ES').format(value);
+    return new Intl.NumberFormat('es-ES').format(Math.round(value));
   }
 
   return (
@@ -251,18 +253,28 @@ export default function FinancialSimulator() {
                {/* Break-even Point */}
               <div className="border-t mt-8 pt-6">
                   <h3 className="text-lg font-semibold text-center mb-4 text-foreground">Punto de Equilibrio</h3>
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-center">
-                        <p className="text-sm text-blue-800">Facturación Mínima para no Perder</p>
-                        <p className="text-3xl font-bold text-blue-600 mt-1">{formatCurrency(proyeccion.puntoEquilibrio)}</p>
-                        <p className="text-xs text-blue-700 mt-1">Esta es la facturación mensual que necesitas para cubrir todos tus costes.</p>
-                     </div>
-                     <div className="bg-green-50 border border-green-200 p-4 rounded-lg text-center">
-                        <p className="text-sm text-green-800">Distancia al Punto de Equilibrio</p>
-                        <p className={`text-3xl font-bold mt-1 ${facturacionProyectada - proyeccion.puntoEquilibrio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {formatCurrency(facturacionProyectada - proyeccion.puntoEquilibrio)}
-                        </p>
-                        <p className="text-xs text-green-700 mt-1">Esto es lo que te queda (o te falta) para empezar a tener beneficios.</p>
+                   <div className="grid grid-cols-1">
+                     <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center">
+                        <p className="text-sm text-blue-800 font-semibold">Facturación Mínima para no Perder</p>
+                        <div className="grid grid-cols-4 gap-4 mt-4 text-center">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Facturación</p>
+                                <p className="text-2xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrio)}</p>
+                            </div>
+                             <div>
+                                <p className="text-sm text-muted-foreground">Comensales</p>
+                                <p className="text-2xl font-bold text-blue-600">{formatNumber(proyeccion.comensalesPuntoEquilibrio)}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Costes</p>
+                                <p className="text-2xl font-bold text-blue-600">{formatCurrency(proyeccion.puntoEquilibrio)}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Beneficio</p>
+                                <p className="text-2xl font-bold text-blue-600">{formatCurrency(0)}</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-4">Esta es la facturación mensual que necesitas para cubrir todos tus costes. Cualquier euro por encima es beneficio.</p>
                      </div>
                   </div>
               </div>
@@ -318,5 +330,3 @@ export default function FinancialSimulator() {
     </div>
   )
 }
-
-    
