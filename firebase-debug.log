@@ -1,0 +1,35 @@
+[debug] [2025-10-28T23:53:05.037Z] ----------------------------------------------------------------------
+[debug] [2025-10-28T23:53:05.040Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/i78h9v2gl6qg2w9646hi06syn3hbv4kj-firebase-tools-14.19.1/lib/node_modules/firebase-tools/lib/bin/firebase.js apphosting:secrets:set GOOGLE_AI_API_KEY --force
+[debug] [2025-10-28T23:53:05.041Z] CLI Version:   14.19.1
+[debug] [2025-10-28T23:53:05.041Z] Platform:      linux
+[debug] [2025-10-28T23:53:05.041Z] Node Version:  v20.19.1
+[debug] [2025-10-28T23:53:05.041Z] Time:          Tue Oct 28 2025 23:53:05 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-10-28T23:53:05.041Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-28T23:53:05.050Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:05.050Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:05.055Z] >>> [apiv2][query] GET https://monospace-pa.googleapis.com/v1/workspaces/studio-8288078077 [none]
+[debug] [2025-10-28T23:53:05.997Z] <<< [apiv2][status] GET https://monospace-pa.googleapis.com/v1/workspaces/studio-8288078077 200
+[debug] [2025-10-28T23:53:05.998Z] <<< [apiv2][body] GET https://monospace-pa.googleapis.com/v1/workspaces/studio-8288078077 {"workspaceId":"studio-8288078077","name":"Lola AI","workspaceRedirectUrl":"firebase-studio-1751801531699.cluster-axf5tvtfjjfekvhwxwkkkzsk2y.cloudworkstations.dev","status":"WORKSPACE_STATUS_RUNNING","lastAccessDatetime":"2025-10-28T23:17:03.648012Z","failureReason":"Starting your workstation timed out since your container took over 896 seconds to start.","workspaceTemplate":"WORKSPACE_TEMPLATE_CAPRA_BUILDER","owner":"SELF","serviceAccountEmail":"msp-3782665935377388300@monospace-per-ws-sa-6.iam.gserviceaccount.com","ownerEmail":"rociotraffickerdigital@gmail.com","workspaceImageUrl":"https://www.gstatic.com/monospace/250314/workspace-prototype-192.png","templateArgs":"{}","templateRepoUrl":"file:///usr/local/monospace/templates/private/_capra_next","workstationAccessToken":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Nsb3VkLmdvb2dsZS5jb20vd29ya3N0YXRpb25zIiwiYXVkIjoiZmlyZWJhc2Utc3R1ZGlvLTE3NTE4MDE1MzE2OTkuY2x1c3Rlci1heGY1dHZ0ZmpqZmVrdmh3eHdra2t6c2syeS5jbG91ZHdvcmtzdGF0aW9ucy5kZXYiLCJpYXQiOjE3NjE2OTU1ODUsImV4cCI6MTc2MTc4MTk4NX0.BRl_SHBqRR7VEHDfOoUBS7y6vyRwtEyA2ylnn4fTRzaZwGHGX1-s6CdqpYMruYw7evbTL3O-AYHuPtBCqXQETIUCIQAiDdu7h8GbNhmQl5B6adzzCapBmqGf90VaPdTeRhsL5_YkqLBHWHrsvKMCvgPNOdMMB_JbjER1YjGZ1CCKwqI-BX78ftmks2ybegVRXMP09AWf7q55TGyQFIWSgaV0rZCoUP8gYWhc5z6wIkpRXLbT6F7t2lmaf28mj7wRlojAihvBLH30Sl_pQUjipXAsVm3eYRns8SI5_OthGdSh53Yzkp2jKz3ENtgKBxvMXrADsEbe_3zIf5p0CBw8CA","firebaseProjectId":"lola-ai-j1cmn"}
+[debug] [2025-10-28T23:53:05.999Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-10-28T23:53:06.000Z] > authorizing via signed-in user (rociotraffickerdigital@gmail.com)
+[debug] [2025-10-28T23:53:06.004Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-10-28T23:53:06.004Z] > authorizing via signed-in user (rociotraffickerdigital@gmail.com)
+[debug] [2025-10-28T23:53:06.004Z] [iam] checking project lola-ai-j1cmn for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2025-10-28T23:53:06.008Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:06.008Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:06.008Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn:testIamPermissions [none]
+[debug] [2025-10-28T23:53:06.009Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn:testIamPermissions x-goog-quota-user=projects/lola-ai-j1cmn
+[debug] [2025-10-28T23:53:06.009Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-10-28T23:53:06.680Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn:testIamPermissions 200
+[debug] [2025-10-28T23:53:06.680Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.getIamPolicy","secretmanager.secrets.setIamPolicy","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-10-28T23:53:06.682Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:06.682Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:06.682Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn [none]
+[debug] [2025-10-28T23:53:06.875Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn 200
+[debug] [2025-10-28T23:53:06.876Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/lola-ai-j1cmn {"projectNumber":"996350649746","projectId":"lola-ai-j1cmn","lifecycleState":"ACTIVE","name":"Lola AI","labels":{"monospace-workspace-id":"studio-8288078077","firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-08-04T18:41:44.732898Z"}
+[debug] [2025-10-28T23:53:06.879Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:06.879Z] Checked if tokens are valid: true, expires at: 1761698273078
+[debug] [2025-10-28T23:53:06.881Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/lola-ai-j1cmn/secrets/GOOGLE_AI_API_KEY [none]
+[debug] [2025-10-28T23:53:07.056Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/lola-ai-j1cmn/secrets/GOOGLE_AI_API_KEY 200
+[debug] [2025-10-28T23:53:07.057Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/lola-ai-j1cmn/secrets/GOOGLE_AI_API_KEY {"name":"projects/996350649746/secrets/GOOGLE_AI_API_KEY","replication":{"automatic":{}},"createTime":"2025-10-28T23:39:24.949549Z","labels":{"firebase-managed":"apphosting"},"etag":"\"16424086bb73f9\""}
