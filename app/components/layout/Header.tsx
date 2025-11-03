@@ -1,5 +1,4 @@
 "use client"
-
 import React from 'react'
 import { useAuth } from '@/app/contexts/AuthContext'
 import { Button } from '../ui/button'
@@ -11,7 +10,7 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   const { signOut } = useAuth()
-
+  
   return (
     <header className="bg-white border-b px-6 py-4">
       <div className="flex items-center justify-between">
@@ -19,7 +18,12 @@ export default function Header({ user }: HeaderProps) {
         {user && (
           <div className="flex items-center gap-4">
             <div>Usuario: {user.name}</div>
-            <Button variant="ghost" size="icon" onClick={signOut} aria-label="Cerrar sesión">
+            <Button 
+              variant="ghost" 
+              onClick={signOut} 
+              aria-label="Cerrar sesión"
+              className="h-10 w-10 p-0"
+            >
               <LogOut className="h-5 w-5 text-muted-foreground" />
             </Button>
           </div>
