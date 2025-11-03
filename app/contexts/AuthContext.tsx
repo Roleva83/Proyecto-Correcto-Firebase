@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
@@ -55,6 +56,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error("Error signing out: ", error);
     }
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <AuthContext.Provider value={{ user, loading, signOut }}>

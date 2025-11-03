@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter, Poppins } from 'next/font/google'
+import ClientAuthProvider from './contexts/ClientAuthProvider'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({ 
@@ -20,7 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${poppins.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${poppins.variable}`}>
+        <ClientAuthProvider>
+          {children}
+        </ClientAuthProvider>
+      </body>
     </html>
   )
 }
