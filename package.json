@@ -12,6 +12,7 @@
     "dependencies": {
         "@anthropic-ai/sdk": "^0.59.0",
         "@genkit-ai/core": "^1.21.0",
+        "@genkit-ai/google-genai": "^1.22.0",
         "@genkit-ai/googleai": "^1.21.0",
         "@genkit-ai/next": "^1.21.0",
         "@google-cloud/local-auth": "^3.0.1",
@@ -53,7 +54,7 @@
         "date-fns": "^3.6.0",
         "embla-carousel-react": "^8.3.0",
         "firebase": "^12.4.0",
-        "genkit": "^1.21.0",
+        "genkit": "^1.22.0",
         "googleapis": "^155.0.0",
         "lucide-react": "^0.263.1",
         "next": "^14.2.0",
@@ -81,5 +82,13 @@
     },
     "engines": {
         "node": "20.x"
-    }
+    },
+    "description": "Plataforma SaaS integral para la gestión de reputación y automatización de restaurantes y negocios gastronómicos.",
+    "main": "eslint.config.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
 }
