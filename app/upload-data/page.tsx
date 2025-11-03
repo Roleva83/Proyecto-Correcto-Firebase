@@ -44,7 +44,17 @@ export default function UploadDataPage() {
     }, [user]);
 
     if (loading) {
-        return null; // O un componente de carga para evitar el error de hidratación
+        return (
+            <div className="flex min-h-screen bg-gray-50">
+                <Sidebar />
+                <div className="flex-1 flex flex-col">
+                    <Header user={user} />
+                    <main className="flex-1 p-8 text-center">
+                        <p>Cargando...</p>
+                    </main>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -88,7 +98,7 @@ export default function UploadDataPage() {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    {file.analysisStatus === 'completed' && <Button variant="ghost" size="sm">Ver Análisis</Button>}
+                                                    {file.analysisStatus === 'completed' && <Button variant="ghost">Ver Análisis</Button>}
                                                      {file.analysisStatus === 'pending' && <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">Pendiente</span>}
                                                       {file.analysisStatus === 'error' && <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">Error</span>}
                                                 </div>
