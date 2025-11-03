@@ -3,7 +3,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { Home, Bot, BarChart2, Users, TrendingUp, CircleDollarSign, Megaphone, Settings, Award } from 'lucide-react'
+import { Home, Bot, BarChart2, Users, TrendingUp, CircleDollarSign, Megaphone, Settings, Award, UploadCloud } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 interface SidebarProps {
@@ -18,6 +18,7 @@ const navItems = [
     { href: "/mis-metas-y-medallas", icon: <Award className="h-5 w-5" />, label: "Mis Metas y Medallas" },
     { href: "/financial-simulator", icon: <CircleDollarSign className="h-5 w-5" />, label: "Simulador Financiero" },
     { href: "/marketing", icon: <Megaphone className="h-5 w-5" />, label: "Marketing y Clientes" },
+    { href: "/upload-data", icon: <UploadCloud className="h-5 w-5" />, label: "Subida de Datos" },
 ]
 
 export default function Sidebar({ isOpen = true }: SidebarProps) {
