@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/lib/firebase';
-import { useAuth } from '@/contexts/AuthContext';
+import { storage } from '../../lib/firebase';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface FileUploaderProps {
   categoria: 'tpv' | 'reservas' | 'reseñas' | 'menus' | 'otros';
@@ -39,7 +39,7 @@ export default function FileUploader({ categoria }: FileUploaderProps) {
 
   const guardarMetadataEnFirestore = async (url: string) => {
     const { addDoc, collection } = await import('firebase/firestore');
-    const { db } = await import('@/lib/firebase');
+    const { db } = await import('../../lib/firebase');
 
     await addDoc(collection(db, `usuarios/${user!.uid}/archivos`), {
       nombre: archivo!.name,
