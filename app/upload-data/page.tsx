@@ -24,7 +24,7 @@ interface UploadedFile {
 }
 
 export default function UploadDataPage() {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
     useEffect(() => {
@@ -42,6 +42,10 @@ export default function UploadDataPage() {
 
         return () => unsubscribe();
     }, [user]);
+
+    if (loading) {
+        return null; // O un componente de carga para evitar el error de hidratación
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-50">
