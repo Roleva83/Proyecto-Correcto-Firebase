@@ -33,131 +33,88 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.syncExternalReviews = exports.generateMonthlyReport = exports.cleanupOldData = exports.processMenuImage = exports.calculateRestaurantScore = exports.onNewReview = exports.sendWelcomeEmail = exports.analyzeMenu = exports.analyzeReview = exports.sendLolaMessage = void 0;
+exports.syncExternalReviews = exports.generateMonthlyReport = exports.cleanupOldData = exports.processMenuImage = exports.calculateRestaurantScore = exports.onNewReview = exports.sendWelcomeEmail = exports.analyzeReview = exports.sendLolaMessage = void 0;
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
-const genkit_1 = require("./genkit");
+// Inicializar Firebase Admin
 admin.initializeApp();
 // ========================================
-// FUNCTION 1: Send Lola Message (CON IA REAL)
+// FUNCTION 1: Send Lola Message
 // ========================================
 exports.sendLolaMessage = functions.https.onCall(async (data, context) => {
-    var _a, _b;
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'Usuario no autenticado');
     }
     const { message, restauranteId } = data;
     if (!message || !restauranteId) {
-        throw new functions.https.HttpsError('invalid-argument', 'Faltan parámetros');
+        throw new functions.https.HttpsError('invalid-argument', 'Faltan parámetros requeridos');
     }
     try {
-        // Obtener info del restaurante
-        let restauranteInfo;
-        if (restauranteId) {
-            const doc = await admin.firestore().collection('restaurantes').doc(restauranteId).get();
-            restauranteInfo = doc.exists ? {
-                nombre: (_a = doc.data()) === null || _a === void 0 ? void 0 : _a.nombre,
-                tipo: (_b = doc.data()) === null || _b === void 0 ? void 0 : _b.tipo_negocio,
-            } : undefined;
-        }
-        // Usar flow de Genkit para generar respuesta
-        const result = await (0, genkit_1.lolaChatFlow)({
-            message,
-            restauranteInfo,
-        });
-        // Guardar conversación
         const conversacion = await admin.firestore().collection('conversaciones_lola').add({
             restaurante_id: restauranteId,
             usuario_id: context.auth.uid,
             pregunta: message,
-            respuesta: result.response,
+            respuesta: 'Hola, soy Lola. Estoy aquí para ayudarte.',
             tipo: 'consulta',
             contexto: 'chat',
             fecha_creacion: admin.firestore.FieldValue.serverTimestamp(),
-            resuelto: true,
+            resuelto: false
         });
         return {
             success: true,
             conversacionId: conversacion.id,
-            response: result.response,
+            response: 'Hola, soy Lola. Estoy aquí para ayudarte.'
         };
     }
     catch (error) {
-        console.error('Error:', error);
-        throw new functions.https.HttpsError('internal', 'Error al procesar mensaje');
+        console.error('Error en sendLolaMessage:', error);
+        throw new functions.https.HttpsError('internal', 'Error al procesar el mensaje');
     }
 });
 // ========================================
-// FUNCTION 2: Analyze Review (CON IA AVANZADA)
+// FUNCTION 2: Analyze Review
 // ========================================
 exports.analyzeReview = functions.firestore
     .document('reseñas/{reseñaId}')
     .onCreate(async (snap, context) => {
     const reseña = snap.data();
     try {
-        // Usar IA para análisis avanzado
-        const analysis = await (0, genkit_1.analyzeReviewFlow)({
-            reviewText: reseña.texto,
-            rating: reseña.puntuacion,
-            platform: reseña.plataforma,
-        });
-        // Actualizar documento con análisis
+        const sentimiento = analizarSentimiento(reseña.texto);
         await snap.ref.update({
-            sentimiento: analysis.sentiment,
-            temas_principales: analysis.mainTopics,
-            respuesta_sugerida: analysis.suggestedResponse,
-            insights: analysis.actionableInsights,
+            sentimiento: sentimiento,
             analizado: true,
-            fecha_analisis: admin.firestore.FieldValue.serverTimestamp(),
+            fecha_analisis: admin.firestore.FieldValue.serverTimestamp()
         });
-        return { success: true, sentiment: analysis.sentiment };
+        console.log(`Reseña ${context.params.reseñaId} analizada: ${sentimiento}`);
+        return { success: true, sentimiento };
     }
     catch (error) {
-        console.error('Error:', error);
-        return { success: false };
+        console.error('Error analizando reseña:', error);
+        return { success: false, error: String(error) };
     }
 });
+function analizarSentimiento(texto) {
+    const palabrasPositivas = ['excelente', 'bueno', 'delicioso', 'genial', 'increíble', 'perfecto'];
+    const palabrasNegativas = ['malo', 'terrible', 'pésimo', 'horrible', 'sucio', 'lento'];
+    const textoLower = texto.toLowerCase();
+    let scorePositivo = 0;
+    let scoreNegativo = 0;
+    palabrasPositivas.forEach(palabra => {
+        if (textoLower.includes(palabra))
+            scorePositivo++;
+    });
+    palabrasNegativas.forEach(palabra => {
+        if (textoLower.includes(palabra))
+            scoreNegativo++;
+    });
+    if (scorePositivo > scoreNegativo)
+        return 'positivo';
+    if (scoreNegativo > scorePositivo)
+        return 'negativo';
+    return 'neutral';
+}
 // ========================================
-// FUNCTION 3: Analyze Menu (CON IA)
-// ========================================
-exports.analyzeMenu = functions.https.onCall(async (data, context) => {
-    var _a;
-    if (!context.auth) {
-        throw new functions.https.HttpsError('unauthenticated', 'No autenticado');
-    }
-    const { restauranteId } = data;
-    try {
-        // Obtener menú del restaurante
-        const menusSnapshot = await admin.firestore()
-            .collection('menus')
-            .where('restaurante_id', '==', restauranteId)
-            .where('activo', '==', true)
-            .get();
-        const menuItems = menusSnapshot.docs.map(doc => ({
-            nombre: doc.data().nombre,
-            precio: doc.data().precio,
-            categoria: doc.data().categoria,
-        }));
-        // Obtener tipo de restaurante
-        const restauranteDoc = await admin.firestore()
-            .collection('restaurantes')
-            .doc(restauranteId)
-            .get();
-        const restaurantType = ((_a = restauranteDoc.data()) === null || _a === void 0 ? void 0 : _a.tipo_negocio) || 'restaurante';
-        // Analizar con IA
-        const analysis = await (0, genkit_1.analyzeMenuFlow)({
-            menuItems,
-            restaurantType,
-        });
-        return Object.assign({ success: true }, analysis);
-    }
-    catch (error) {
-        console.error('Error:', error);
-        throw new functions.https.HttpsError('internal', 'Error analizando menú');
-    }
-});
-// ========================================
-// RESTO DE FUNCTIONS (sin cambios)
+// FUNCTION 3: Send Welcome Email
 // ========================================
 exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
     try {
@@ -166,16 +123,20 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
             usuario_id: user.uid,
             email: user.email,
             nombre: user.displayName || 'Usuario',
-            mensaje: 'Bienvenido a Caña y Reseña',
+            mensaje: `Bienvenido a Caña y Reseña`,
             enviado: false,
-            fecha_creacion: admin.firestore.FieldValue.serverTimestamp(),
+            fecha_creacion: admin.firestore.FieldValue.serverTimestamp()
         });
         return { success: true };
     }
     catch (error) {
+        console.error('Error:', error);
         return { success: false };
     }
 });
+// ========================================
+// FUNCTION 4: On New Review Notification
+// ========================================
 exports.onNewReview = functions.firestore
     .document('reseñas/{reseñaId}')
     .onCreate(async (snap, context) => {
@@ -195,7 +156,7 @@ exports.onNewReview = functions.firestore
             usuario_admin: restaurante === null || restaurante === void 0 ? void 0 : restaurante.usuario_admin,
             mensaje: `Nueva reseña de ${reseña.autor}`,
             leido: false,
-            fecha_creacion: admin.firestore.FieldValue.serverTimestamp(),
+            fecha_creacion: admin.firestore.FieldValue.serverTimestamp()
         });
         return { success: true };
     }
@@ -203,6 +164,9 @@ exports.onNewReview = functions.firestore
         return { success: false };
     }
 });
+// ========================================
+// FUNCTION 5: Calculate Restaurant Score
+// ========================================
 exports.calculateRestaurantScore = functions.https.onCall(async (data, context) => {
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'No autenticado');
@@ -227,57 +191,75 @@ exports.calculateRestaurantScore = functions.https.onCall(async (data, context) 
             puntuacion_promedio: promedio,
             total_reseñas: reseñas.size,
             porcentaje_positivas: porcentajePositivas,
-            ultima_actualizacion: admin.firestore.FieldValue.serverTimestamp(),
+            ultima_actualizacion: admin.firestore.FieldValue.serverTimestamp()
         });
         return { success: true, promedio, total: reseñas.size };
     }
     catch (error) {
-        throw new functions.https.HttpsError('internal', 'Error');
+        throw new functions.https.HttpsError('internal', 'Error calculando score');
     }
 });
+// ========================================
+// FUNCTION 6: Process Menu Image (con IA)
+// ========================================
 exports.processMenuImage = functions.https.onCall(async (data, context) => {
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'No autenticado');
     }
     const { imageUrl, restauranteId } = data;
     try {
+        // TODO: Integrar con Google Vision API o Gemini para OCR
+        // Por ahora, guardamos la imagen para procesamiento futuro
         await admin.firestore().collection('imagenes_pendientes').add({
             restaurante_id: restauranteId,
             imagen_url: imageUrl,
             procesado: false,
-            fecha_subida: admin.firestore.FieldValue.serverTimestamp(),
+            fecha_subida: admin.firestore.FieldValue.serverTimestamp()
         });
-        return { success: true, message: 'Imagen recibida' };
+        return { success: true, message: 'Imagen recibida para procesamiento' };
     }
     catch (error) {
-        throw new functions.https.HttpsError('internal', 'Error');
+        throw new functions.https.HttpsError('internal', 'Error procesando imagen');
     }
 });
+// ========================================
+// FUNCTION 7: Cleanup Old Data (Cron Job)
+// ========================================
 exports.cleanupOldData = functions.pubsub
     .schedule('0 2 * * 0')
     .timeZone('Europe/Madrid')
     .onRun(async (context) => {
+    console.log('Limpiando datos antiguos...');
     try {
         const seisMesesAtras = new Date();
         seisMesesAtras.setMonth(seisMesesAtras.getMonth() - 6);
+        // Limpiar notificaciones antiguas leídas
         const notificacionesAntiguas = await admin.firestore()
             .collection('notificaciones')
             .where('leido', '==', true)
             .where('fecha_creacion', '<', seisMesesAtras)
             .get();
         const batch = admin.firestore().batch();
-        notificacionesAntiguas.forEach(doc => batch.delete(doc.ref));
+        notificacionesAntiguas.forEach(doc => {
+            batch.delete(doc.ref);
+        });
         await batch.commit();
+        console.log(`${notificacionesAntiguas.size} notificaciones antiguas eliminadas`);
         return { success: true, eliminadas: notificacionesAntiguas.size };
     }
     catch (error) {
-        return { success: false };
+        console.error('Error limpiando datos:', error);
+        return { success: false, error: String(error) };
     }
 });
+// ========================================
+// FUNCTION 8: Generate Monthly Report (Cron Job)
+// ========================================
 exports.generateMonthlyReport = functions.pubsub
     .schedule('0 0 1 * *')
     .timeZone('Europe/Madrid')
     .onRun(async (context) => {
+    console.log('Generando reportes mensuales...');
     try {
         const restaurantes = await admin.firestore()
             .collection('restaurantes')
@@ -309,31 +291,36 @@ exports.generateMonthlyReport = functions.pubsub
                 total_reseñas: totalReseñas,
                 promedio_calificacion: promedio,
                 reseñas_positivas: positivas,
-                fecha_generacion: admin.firestore.FieldValue.serverTimestamp(),
+                fecha_generacion: admin.firestore.FieldValue.serverTimestamp()
             });
         }
         return { success: true, restaurantes: restaurantes.size };
     }
     catch (error) {
-        return { success: false };
+        return { success: false, error: String(error) };
     }
 });
+// ========================================
+// FUNCTION 9: Sync External Reviews
+// ========================================
 exports.syncExternalReviews = functions.https.onCall(async (data, context) => {
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'No autenticado');
     }
     const { restauranteId, plataforma } = data;
     try {
+        // TODO: Integrar con APIs de Google My Business, TheFork, TripAdvisor
+        // Por ahora, simulamos la sincronización
         await admin.firestore().collection('sincronizaciones').add({
             restaurante_id: restauranteId,
             plataforma: plataforma,
             estado: 'pendiente',
-            fecha_solicitud: admin.firestore.FieldValue.serverTimestamp(),
+            fecha_solicitud: admin.firestore.FieldValue.serverTimestamp()
         });
-        return { success: true, message: `Sincronización iniciada` };
+        return { success: true, message: `Sincronización de ${plataforma} iniciada` };
     }
     catch (error) {
-        throw new functions.https.HttpsError('internal', 'Error');
+        throw new functions.https.HttpsError('internal', 'Error en sincronización');
     }
 });
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index-without-ai.js.map

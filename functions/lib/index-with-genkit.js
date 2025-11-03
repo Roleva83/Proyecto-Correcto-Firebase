@@ -336,4 +336,4 @@ exports.syncExternalReviews = functions.https.onCall(async (data, context) => {
         throw new functions.https.HttpsError('internal', 'Error');
     }
 });
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index-with-genkit.js.map
