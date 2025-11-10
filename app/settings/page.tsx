@@ -1,4 +1,3 @@
-
 'use client'
 import React, { useState } from 'react'
 import Header from '../components/layout/Header'
@@ -9,35 +8,10 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Upload, Building, Globe, Mail, Phone, MapPin, Users, Star, Calendar, MessageSquare, Briefcase, Link as LinkIcon, Settings } from 'lucide-react'
 import Image from 'next/image'
+import { auth } from '@/lib/firebase'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { toast } from 'sonner'
 
-
-const IntegrationCard = ({ icon, title, description, status, syncDate, syncStatus }: { icon: React.ReactNode, title: string, description: string, status: 'Conectado' | 'No conectado', syncDate?: string, syncStatus?: string }) => (
-    <Card className={`flex flex-col justify-between ${status === 'Conectado' ? 'border-green-500' : 'border-border'}`}>
-        <CardContent className="p-4">
-            <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent flex-shrink-0">
-                       {icon}
-                    </div>
-                    <h4 className="font-semibold text-foreground">{title}</h4>
-                </div>
-                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${status === 'Conectado' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}>
-                    {status}
-                </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2 h-10">{description}</p>
-        </CardContent>
-        <div className="bg-gray-50/50 px-4 py-3 border-t flex justify-between items-center">
-            <div>
-                 {syncDate && <p className="text-xs text-muted-foreground">Sinc.: {syncDate}</p>}
-                 {syncStatus && <p className="text-xs text-muted-foreground">{syncStatus}</p>}
-            </div>
-             <Button variant={status === 'Conectado' ? 'destructive' : 'primary'}>
-                {status === 'Conectado' ? 'Desconectar' : 'Conectar'}
-            </Button>
-        </div>
-    </Card>
-)
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -60,10 +34,110 @@ const GoogleIcon = () => (
   </svg>
 );
 
+interface Integration {
+    id: string;
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+    status: 'Conectado' | 'No conectado';
+    syncDate?: string;
+    syncStatus?: string;
+}
+
+const IntegrationCard = ({ integration, onConnect, onDisconnect }: { integration: Integration, onConnect: (id: string) => void, onDisconnect: (id: string) => void }) => {
+    const isConnected = integration.status === 'Conectado';
+
+    const handleButtonClick = () => {
+        if (isConnected) {
+            onDisconnect(integration.id);
+        } else {
+            onConnect(integration.id);
+        }
+    };
+    
+    return (
+        <Card className={`flex flex-col justify-between ${isConnected ? 'border-green-500' : 'border-border'}`}>
+            <CardContent className="p-4">
+                <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent flex-shrink-0">
+                           {integration.icon}
+                        </div>
+                        <h4 className="font-semibold text-foreground">{integration.title}</h4>
+                    </div>
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isConnected ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}>
+                        {integration.status}
+                    </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 h-10">{integration.description}</p>
+            </CardContent>
+            <div className="bg-gray-50/50 px-4 py-3 border-t flex justify-between items-center">
+                <div>
+                     {isConnected && integration.syncDate && <p className="text-xs text-muted-foreground">Sinc.: {integration.syncDate}</p>}
+                     {isConnected && integration.syncStatus && <p className="text-xs text-muted-foreground">{integration.syncStatus}</p>}
+                     {!isConnected && <p className="text-xs text-muted-foreground">Sincronización pendiente</p>}
+                </div>
+                 <Button onClick={handleButtonClick} variant={isConnected ? 'destructive' : 'primary'}>
+                    {isConnected ? 'Desconectar' : 'Conectar'}
+                </Button>
+            </div>
+        </Card>
+    )
+}
+
 
 export default function SettingsPage() {
   const user = { name: 'Restaurante Ejemplo' }
   const [activeTab, setActiveTab] = useState('perfil');
+  const [integrations, setIntegrations] = useState<Integration[]>([
+        { id: 'google', icon: <GoogleIcon/>, title: 'Google', description: 'Sincroniza automáticamente las reseñas desde tu perfil de Google My Business.', status: 'No conectado' },
+        { id: 'tripadvisor', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'TripAdvisor', description: 'Conecta tu cuenta para gestionar todas las opiniones de TripAdvisor aquí.', status: 'Conectado', syncDate: '2024-07-24' },
+        { id: 'thefork', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'TheFork', description: 'Integra las reseñas de los comensales que reservan a través de TheFork.', status: 'No conectado' },
+        { id: 'covermanager', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'CoverManager', description: 'Sincroniza tus reservas para obtener feedback post-visita de forma automática.', status: 'Conectado', syncDate: '2024-07-25' },
+        { id: 'zenchef', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'Zenchef', description: 'Conecta con Zenchef para centralizar la gestión de reservas y opiniones.', status: 'No conectado' },
+        { id: 'opentable', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'OpenTable', description: 'Integra OpenTable para unificar la experiencia del cliente y la gestión de reseñas.', status: 'No conectado' },
+        { id: 'brevo', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'Brevo', description: 'Sincroniza contactos y automatiza campañas de email con Brevo.', status: 'Conectado', syncDate: '2024-07-25' },
+        { id: 'activecampaign', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'ActiveCampaign', description: 'Conecta tu CRM para comunicaciones personalizadas.', status: 'No conectado' },
+        { id: 'square', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'Square', description: 'Conecta tu TPV Square para vincular ventas con el rendimiento de los empleados.', status: 'No conectado' },
+        { id: 'revo', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'Revo', description: 'Integra Revo para analizar el impacto de las reseñas en tus ventas.', status: 'Conectado', syncDate: '2024-07-25' },
+        { id: 'lightspeed', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'Lightspeed', description: 'Sincroniza tus datos de ventas para obtener métricas de negocio más completas.', status: 'No conectado' },
+        { id: 'zapier', icon: <LinkIcon className="h-5 w-5 text-gray-700" />, title: 'Zapier', description: 'Conecta Caña y Reseña con más de 5,000 apps para automatizar flujos de trabajo.', status: 'No conectado' },
+        { id: 'webhook', icon: <LinkIcon className="h-5 w-5 text-gray-700" />, title: 'Webhook', description: 'Usa webhooks para integraciones personalizadas y notificaciones en tiempo real.', status: 'No conectado' },
+    ]);
+
+  const updateIntegrationStatus = (id: string, status: 'Conectado' | 'No conectado', syncDate?: string) => {
+      setIntegrations(prev => prev.map(int => int.id === id ? { ...int, status, syncDate: syncDate || int.syncDate } : int));
+  };
+
+  const handleConnect = async (id: string) => {
+    if (id === 'google') {
+      const provider = new GoogleAuthProvider();
+      // Solicitar permiso para gestionar el perfil de Google My Business
+      provider.addScope('https://www.googleapis.com/auth/business.manage');
+      
+      try {
+        await signInWithPopup(auth, provider);
+        toast.success('¡Google My Business conectado con éxito!');
+        const today = new Date().toISOString().split('T')[0];
+        updateIntegrationStatus(id, 'Conectado', today);
+      } catch (error: any) {
+        console.error('Error al conectar con Google:', error);
+        toast.error('No se pudo conectar con Google', {
+          description: error.message,
+        });
+      }
+    } else {
+        // Simulación para otras integraciones
+        toast.success(`¡${id} conectado con éxito!`);
+        const today = new Date().toISOString().split('T')[0];
+        updateIntegrationStatus(id, 'Conectado', today);
+    }
+  };
+
+  const handleDisconnect = (id: string) => {
+      toast.info(`Desconectado de ${id}.`);
+      updateIntegrationStatus(id, 'No conectado');
+  };
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -207,9 +281,9 @@ export default function SettingsPage() {
                         <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Star className="h-5 w-5 text-primary"/> Plataformas de Reseñas</h3>
                         <p className="text-sm text-muted-foreground mb-4">Conecta tus cuentas para sincronizar los datos automáticamente.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <IntegrationCard icon={<GoogleIcon/>} title="Google" description="Sincroniza automáticamente las reseñas desde tu perfil de Google My Business." status="No conectado" syncStatus="Sincronización pendiente" />
-                            <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="TripAdvisor" description="Conecta tu cuenta para gestionar todas las opiniones de TripAdvisor aquí." status="Conectado" syncDate="2024-07-24" />
-                            <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="TheFork" description="Integra las reseñas de los comensales que reservan a través de TheFork." status="No conectado" syncStatus="Sincronización pendiente" />
+                            {integrations.filter(i => ['google', 'tripadvisor', 'thefork'].includes(i.id)).map(int => (
+                                <IntegrationCard key={int.id} integration={int} onConnect={handleConnect} onDisconnect={handleDisconnect} />
+                            ))}
                         </div>
                     </div>
 
@@ -218,9 +292,9 @@ export default function SettingsPage() {
                         <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Calendar className="h-5 w-5 text-primary"/> Sistemas de Reservas</h3>
                         <p className="text-sm text-muted-foreground mb-4">Conecta tus cuentas para sincronizar los datos automáticamente.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="CoverManager" description="Sincroniza tus reservas para obtener feedback post-visita de forma automática." status="Conectado" syncDate="2024-07-25" />
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="Zenchef" description="Conecta con Zenchef para centralizar la gestión de reservas y opiniones." status="No conectado" syncStatus="Sincronización pendiente" />
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="OpenTable" description="Integra OpenTable para unificar la experiencia del cliente y la gestión de reseñas." status="No conectado" syncStatus="Sincronización pendiente" />
+                           {integrations.filter(i => ['covermanager', 'zenchef', 'opentable'].includes(i.id)).map(int => (
+                                <IntegrationCard key={int.id} integration={int} onConnect={handleConnect} onDisconnect={handleDisconnect} />
+                            ))}
                         </div>
                     </div>
 
@@ -229,8 +303,9 @@ export default function SettingsPage() {
                         <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Mail className="h-5 w-5 text-primary"/> CRM y Email Marketing</h3>
                         <p className="text-sm text-muted-foreground mb-4">Conecta tus cuentas para sincronizar los datos automáticamente.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="Brevo" description="Sincroniza contactos y automatiza campañas de email con Brevo." status="Conectado" syncDate="2024-07-25" />
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="ActiveCampaign" description="Conecta tu CRM para comunicaciones personalizadas." status="No conectado" syncStatus="Sincronización pendiente" />
+                           {integrations.filter(i => ['brevo', 'activecampaign'].includes(i.id)).map(int => (
+                                <IntegrationCard key={int.id} integration={int} onConnect={handleConnect} onDisconnect={handleDisconnect} />
+                            ))}
                         </div>
                     </div>
 
@@ -239,9 +314,9 @@ export default function SettingsPage() {
                         <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Building className="h-5 w-5 text-primary"/> Sistemas de TPV</h3>
                         <p className="text-sm text-muted-foreground mb-4">Conecta tus cuentas para sincronizar los datos automáticamente.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="Square" description="Conecta tu TPV Square para vincular ventas con el rendimiento de los empleados." status="No conectado" syncStatus="Sincronización pendiente" />
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="Revo" description="Integra Revo para analizar el impacto de las reseñas en tus ventas." status="Conectado" syncDate="2024-07-25" />
-                           <IntegrationCard icon={<Briefcase className="h-5 w-5 text-gray-700" />} title="Lightspeed" description="Sincroniza tus datos de ventas para obtener métricas de negocio más completas." status="No conectado" syncStatus="Sincronización pendiente" />
+                           {integrations.filter(i => ['square', 'revo', 'lightspeed'].includes(i.id)).map(int => (
+                                <IntegrationCard key={int.id} integration={int} onConnect={handleConnect} onDisconnect={handleDisconnect} />
+                            ))}
                         </div>
                     </div>
 
@@ -250,8 +325,9 @@ export default function SettingsPage() {
                         <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Settings className="h-5 w-5 text-primary"/> Automatización</h3>
                         <p className="text-sm text-muted-foreground mb-4">Conecta tus cuentas para sincronizar los datos automáticamente.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           <IntegrationCard icon={<LinkIcon className="h-5 w-5 text-gray-700" />} title="Zapier" description="Conecta Caña y Reseña con más de 5,000 apps para automatizar flujos de trabajo." status="No conectado" syncStatus="Sincronización pendiente" />
-                           <IntegrationCard icon={<LinkIcon className="h-5 w-5 text-gray-700" />} title="Webhook" description="Usa webhooks para integraciones personalizadas y notificaciones en tiempo real." status="No conectado" syncStatus="Sincronización pendiente" />
+                           {integrations.filter(i => ['zapier', 'webhook'].includes(i.id)).map(int => (
+                                <IntegrationCard key={int.id} integration={int} onConnect={handleConnect} onDisconnect={handleDisconnect} />
+                            ))}
                         </div>
                     </div>
                 </div>
