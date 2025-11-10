@@ -1,8 +1,9 @@
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { auth } from '@/lib/firebase'
+import { auth, db } from '@/lib/firebase'
 import { onAuthStateChanged, signOut as firebaseSignOut, User as FirebaseUser } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 import { useRouter } from 'next/navigation'
 
 
@@ -32,14 +33,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          restaurante_id: 'default-restaurant-id'
-        })
+        // Usuario ha iniciado sesión, ahora obtenemos su perfil de Firestore
+        const userDocRef = doc(db, 'users', firebaseUser.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              restaurante_id: userData.businessId // Usamos el businessId del perfil
+            })
+        } else {
+            // El documento de usuario aún no existe, esto puede pasar brevemente durante el registro.
+            // Establecemos un usuario básico sin ID de restaurante por ahora.
+            setUser({
+                uid: firebaseUser.uid,
+                email: firebaseUser.email,
+                displayName: firebaseUser.displayName,
+            });
+        }
       } else {
         setUser(null)
       }

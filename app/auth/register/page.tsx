@@ -30,14 +30,11 @@ export default function Register() {
         }
 
         try {
+            // 1. Crear usuario en Firebase Auth
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            await updateProfile(user, {
-                displayName: restaurantName // Usamos el nombre del negocio como displayName inicial
-            });
-            
-            // Creamos un documento de negocio asociado al usuario
+            // 2. Crear el documento del negocio en la colección 'businesses'
             const businessRef = await addDoc(collection(db, "businesses"), {
                 name: restaurantName,
                 owner_id: user.uid,
@@ -47,13 +44,18 @@ export default function Register() {
                 createdAt: serverTimestamp(),
             });
 
-            // Creamos el perfil de usuario en nuestra colección 'users'
+            // 3. Actualizar el perfil de Firebase Auth (opcional, pero bueno tenerlo)
+            await updateProfile(user, {
+                displayName: restaurantName
+            });
+
+            // 4. Crear el perfil de usuario en nuestra colección 'users'
             await setDoc(doc(db, "users", user.uid), {
                 email: user.email,
                 displayName: restaurantName,
                 photoURL: user.photoURL,
-                businessId: businessRef.id,
-                role: 'owner',
+                businessId: businessRef.id, // ID del negocio creado
+                role: 'owner', // El primer usuario es el dueño
                 createdAt: serverTimestamp(),
             });
 
