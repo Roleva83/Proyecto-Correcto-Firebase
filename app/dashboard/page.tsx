@@ -79,8 +79,8 @@ export default function Dashboard() {
             const allItems = menuDoc.items || [];
             
             // Populares
-            const sortedBySales = [...allItems].sort((a, b) => b.sales - a.sales);
-            setPopularItems(sortedBySales.slice(0, 3).map(item => ({...item, trend: Math.random() > 0.5 ? 'up' : 'down'})));
+            const sortedBySales = [...allItems].sort((a:any, b:any) => b.sales - a.sales);
+            setPopularItems(sortedBySales.slice(0, 3).map((item:any) => ({...item, trend: Math.random() > 0.5 ? 'up' : 'down'})));
 
             // Joyas Ocultas
             const avgSales = allItems.reduce((acc: number, item: any) => acc + item.sales, 0) / allItems.length;
@@ -223,7 +223,7 @@ export default function Dashboard() {
                   <div>
                     <h4 className="font-semibold mb-2 text-foreground">Los Más Populares (por Unidades)</h4>
                     <div className="space-y-3">
-                      {popularItems.map(item => (
+                      {popularItems.map((item:any) => (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                           <span className="flex items-center">
                             {item.trend === 'up' ? <TrendingUp className="h-4 w-4 mr-2 text-green-500" /> : <TrendingDown className="h-4 w-4 mr-2 text-red-500" />}
@@ -235,7 +235,7 @@ export default function Dashboard() {
                     </div>
                     <h4 className="font-semibold mb-2 mt-6 text-foreground">Joyas Ocultas a Potenciar</h4>
                     <div className="space-y-3">
-                      {hiddenGems.map(item => (
+                      {hiddenGems.map((item:any) => (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                           <span className="flex items-center">
                             <Gem className="h-4 w-4 mr-2 text-purple-500" />
@@ -390,7 +390,7 @@ export default function Dashboard() {
                   <p className="text-sm text-muted-foreground pt-1">Lola ha detectado estas situaciones. ¡Revísalas para no perder ninguna oportunidad!</p>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                    {alerts.map((alert, index) => (
+                    {alerts.map((alert:any, index) => (
                         <div key={index} className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors">
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex items-start gap-3">
@@ -417,7 +417,7 @@ export default function Dashboard() {
                   <p className="text-sm text-muted-foreground pt-1">Recomendaciones para ti.</p>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {tips.map((tip, index) => (
+                  {tips.map((tip:any, index:number) => (
                     <div key={index} className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors">
                       <div className="flex justify-between items-start">
                         <div>
