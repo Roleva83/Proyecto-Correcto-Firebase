@@ -1,6 +1,6 @@
 import './globals.css'
 import { Inter, Poppins } from 'next/font/google'
-import ClientAuthProvider from './contexts/ClientAuthProvider'
+import { AuthProvider } from './contexts/AuthContext'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/ThemeProvider'
 
@@ -31,9 +31,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientAuthProvider>
+          <AuthProvider>
             {children}
-          </ClientAuthProvider>
+          </AuthProvider>
           <Toaster />
         </ThemeProvider>
       </body>
