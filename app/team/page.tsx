@@ -91,7 +91,7 @@ export default function TeamPage() {
                       <CardTitle>Rendimiento del Personal</CardTitle>
                   </CardHeader>
                   <CardContent>
-                      <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {teamData.map((employee) => (
                               <div 
                                 key={employee.id} 
