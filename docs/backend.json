@@ -1,0 +1,326 @@
+{
+  "backend": {
+    "entities": {
+      "User": {
+        "title": "User",
+        "description": "Represents a user account in the system.",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The user's email address."
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The user's display name."
+          },
+          "photoURL": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the user's profile picture."
+          },
+          "businessId": {
+            "type": "string",
+            "description": "The ID of the business this user belongs to."
+          },
+          "role": {
+            "type": "string",
+            "description": "The user's role within the business (e.g., owner, manager).",
+            "enum": ["owner", "manager", "employee"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when the user was created."
+          },
+          "lastLogin": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the user's last login."
+          }
+        },
+        "required": ["email", "businessId", "role"]
+      },
+      "Business": {
+        "title": "Business",
+        "description": "Represents a restaurant, bar, or cafe using the service.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the business."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the business.",
+            "enum": ["restaurante", "bar", "cafetería"]
+          },
+          "address": {
+            "type": "string",
+            "description": "The physical address of the business."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The contact phone number of the business."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The contact email of the business."
+          },
+          "owner": {
+            "type": "string",
+            "description": "The user ID of the business owner."
+          },
+          "platforms": {
+            "type": "object",
+            "description": "URLs for the business on different review platforms.",
+            "properties": {
+              "google": { "type": "string", "format": "uri" },
+              "tripadvisor": { "type": "string", "format": "uri" },
+              "thefork": { "type": "string", "format": "uri" }
+            }
+          },
+          "settings": {
+            "type": "object",
+            "description": "Specific settings for the business.",
+            "properties": {
+              "ticketMedio": { "type": "number" },
+              "horariosApertura": { "type": "string" }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when the business was registered."
+          }
+        },
+        "required": ["name", "type", "owner"]
+      },
+      "Review": {
+        "title": "Review",
+        "description": "Represents a customer review from a platform.",
+        "type": "object",
+        "properties": {
+          "businessId": {
+            "type": "string",
+            "description": "The ID of the business this review is for."
+          },
+          "platform": {
+            "type": "string",
+            "description": "The platform the review originated from.",
+            "enum": ["google", "tripadvisor", "thefork", "yelp"]
+          },
+          "rating": {
+            "type": "integer",
+            "description": "The rating given, from 1 to 5.",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "text": {
+            "type": "string",
+            "description": "The full text of the review."
+          },
+          "customerName": {
+            "type": "string",
+            "description": "The name of the customer who wrote the review."
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the review was posted."
+          },
+          "aiAnalysis": {
+            "type": "object",
+            "properties": {
+              "sentiment": { "type": "string", "enum": ["positive", "negative", "neutral"] },
+              "categories": { "type": "array", "items": { "type": "string" } },
+              "keywords": { "type": "array", "items": { "type": "string" } },
+              "urgency": { "type": "number", "minimum": 0, "maximum": 10 }
+            }
+          },
+          "response": {
+            "type": "object",
+            "properties": {
+              "text": { "type": "string" },
+              "sentBy": { "type": "string" },
+              "sentAt": { "type": "string", "format": "date-time" }
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pendiente", "respondida"],
+            "default": "pendiente"
+          }
+        },
+        "required": ["businessId", "platform", "rating", "date"]
+      },
+      "Menu": {
+        "title": "Menu",
+        "description": "Represents the menu of a business with all its items.",
+        "type": "object",
+        "properties": {
+          "businessId": {
+            "type": "string",
+            "description": "The ID of the business this menu belongs to."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "category": { "type": "string" },
+                "price": { "type": "number" },
+                "cost": { "type": "number" },
+                "margin": { "type": "number" },
+                "sales": { "type": "integer" },
+                "aiRecommendation": { "type": "string" }
+              },
+              "required": ["name", "price", "cost"]
+            }
+          }
+        },
+        "required": ["businessId"]
+      },
+      "Employee": {
+        "title": "Employee",
+        "description": "Represents an employee of a business.",
+        "type": "object",
+        "properties": {
+          "businessId": {
+            "type": "string",
+            "description": "The ID of the business this employee works for."
+          },
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "role": { "type": "string" },
+          "rating": { "type": "number" },
+          "reviewsMentioned": { "type": "integer" },
+          "lastReviewDate": { "type": "string", "format": "date-time" },
+          "performance": {
+            "type": "object",
+            "properties": {
+              "positiveCount": { "type": "integer" },
+              "negativeCount": { "type": "integer" }
+            }
+          }
+        },
+        "required": ["businessId", "name"]
+      },
+      "Conversation": {
+        "title": "Conversation",
+        "description": "A conversation thread with the Lola AI assistant.",
+        "type": "object",
+        "properties": {
+          "businessId": { "type": "string" },
+          "userId": { "type": "string" },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": { "type": "string", "enum": ["user", "lola"] },
+                "content": { "type": "string" },
+                "timestamp": { "type": "string", "format": "date-time" }
+              }
+            }
+          },
+          "context": {
+            "type": "object",
+            "properties": {
+              "currentModule": { "type": "string" }
+            }
+          }
+        },
+        "required": ["businessId", "userId", "messages"]
+      },
+      "Goal": {
+        "title": "Goal",
+        "description": "Tracks user goals, points, and achievements.",
+        "type": "object",
+        "properties": {
+          "userId": { "type": "string" },
+          "businessId": { "type": "string" },
+          "points": { "type": "integer" },
+          "level": {
+            "type": "string",
+            "enum": ["comprometido", "destacado", "excelencia"]
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "description": { "type": "string" },
+                "unlockedAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          }
+        },
+        "required": ["userId", "businessId"]
+      },
+      "FinancialSimulation": {
+        "title": "FinancialSimulation",
+        "description": "Stores financial simulation scenarios for a business.",
+        "type": "object",
+        "properties": {
+          "businessId": { "type": "string" },
+          "currentRevenue": { "type": "number" },
+          "currentTicket": { "type": "number" },
+          "projectedScenarios": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "impact": { "type": "string" },
+                "benefit": { "type": "number" }
+              }
+            }
+          }
+        },
+        "required": ["businessId"]
+      }
+    },
+    "auth": {
+      "providers": ["email"]
+    },
+    "firestore": {
+      "/users/{userId}": {
+        "schema": { "$ref": "#/backend/entities/User" },
+        "description": "Stores user profile information."
+      },
+      "/businesses/{businessId}": {
+        "schema": { "$ref": "#/backend/entities/Business" },
+        "description": "Stores business profile information."
+      },
+      "/businesses/{businessId}/reviews/{reviewId}": {
+        "schema": { "$ref": "#/backend/entities/Review" },
+        "description": "All reviews for a specific business."
+      },
+      "/businesses/{businessId}/menus/{menuId}": {
+        "schema": { "$ref": "#/backend/entities/Menu" },
+        "description": "Menu information for a business."
+      },
+      "/businesses/{businessId}/employees/{employeeId}": {
+        "schema": { "$ref": "#/backend/entities/Employee" },
+        "description": "Employee information for a business."
+      },
+      "/businesses/{businessId}/conversations/{conversationId}": {
+        "schema": { "$ref": "#/backend/entities/Conversation" },
+        "description": "AI conversation history for a business."
+      },
+      "/users/{userId}/goals/{goalId}": {
+        "schema": { "$ref": "#/backend/entities/Goal" },
+        "description": "User-specific goals and achievements."
+      },
+      "/businesses/{businessId}/financialSimulations/{simulationId}": {
+        "schema": { "$ref": "#/backend/entities/FinancialSimulation" },
+        "description": "Financial simulation data for a business."
+      }
+    }
+  }
+}
