@@ -7,7 +7,7 @@ import { Mail, Lock, Building, Phone } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { auth, db } from '@/lib/firebase'
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { doc, setDoc, serverTimestamp, collection, addDoc } from 'firebase/firestore'
 import { toast } from 'sonner'
 
 export default function Register() {
@@ -38,8 +38,7 @@ export default function Register() {
             });
             
             // Creamos un documento de negocio asociado al usuario
-            const businessRef = doc(collection(db, "businesses"));
-            await setDoc(businessRef, {
+            const businessRef = await addDoc(collection(db, "businesses"), {
                 name: restaurantName,
                 owner_id: user.uid,
                 email: user.email,
