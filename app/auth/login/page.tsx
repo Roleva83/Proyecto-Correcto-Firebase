@@ -5,6 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { auth, db } from '@/lib/firebase'
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'
+import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore'
+import { toast } from 'sonner'
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -37,13 +41,66 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Implement actual Firebase login
-    console.log('Logging in with:', { email, password });
-    router.push('/dashboard');
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success('¡Sesión iniciada correctamente!');
+      router.push('/dashboard');
+    } catch (error: any) {
+      console.error('Error al iniciar sesión:', error);
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        toast.error('El email o la contraseña son incorrectos.');
+      } else {
+        toast.error('Ha ocurrido un error al iniciar sesión.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleSignInWithProvider = async (provider: GoogleAuthProvider | FacebookAuthProvider) => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Comprobar si el usuario ya existe en Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        // El usuario es nuevo, crear su perfil en Firestore
+        // Aquí asumimos que no podemos crear un 'business' sin más datos,
+        // así que lo dejamos pendiente. El usuario deberá completar su perfil.
+        await setDoc(userDocRef, {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          businessId: null, // Pendiente de crear/asignar
+          role: 'owner',
+          createdAt: serverTimestamp(),
+        });
+        toast.info('Completa el perfil de tu negocio para continuar.');
+      }
+
+      toast.success('¡Sesión iniciada con éxito!');
+      router.push('/dashboard');
+
+    } catch (error: any) {
+      console.error('Error con el proveedor de autenticación:', error);
+      if (error.code === 'auth/account-exists-with-different-credential') {
+        toast.error('Ya existe una cuenta con este email. Prueba a iniciar sesión con otro método.');
+      } else {
+        toast.error('No se pudo iniciar sesión. Por favor, inténtalo de nuevo.');
+      }
+    }
+  };
+
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-50 to-white px-4">
@@ -63,6 +120,29 @@ export default function Login() {
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-8 shadow-xl">
+                <div className="grid grid-cols-2 gap-4">
+                    <button
+                        onClick={() => handleSignInWithProvider(googleProvider)}
+                        className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background transition-colors hover:bg-accent"
+                    >
+                        <GoogleIcon />
+                        <span className="text-sm font-medium text-foreground">Google</span>
+                    </button>
+                     <button
+                        onClick={() => handleSignInWithProvider(facebookProvider)}
+                        className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-border bg-background transition-colors hover:bg-accent"
+                    >
+                        <FacebookIcon />
+                        <span className="text-sm font-medium text-foreground">Facebook</span>
+                    </button>
+                </div>
+
+                <div className="my-6 flex items-center">
+                    <div className="flex-grow border-t border-border"></div>
+                    <span className="mx-4 flex-shrink text-sm text-secondary">O continúa con</span>
+                    <div className="flex-grow border-t border-border"></div>
+                </div>
+                
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">Email</label>
@@ -99,8 +179,8 @@ export default function Login() {
                         </div>
                     </div>
                     
-                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring">
-                        Iniciar Sesión
+                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring" disabled={loading}>
+                        {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                     </button>
                 </form>
 
@@ -113,3 +193,5 @@ export default function Login() {
     </main>
   )
 }
+
+    
