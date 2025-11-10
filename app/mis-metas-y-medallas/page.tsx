@@ -1,9 +1,10 @@
+
 'use client'
 import React from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { CheckCircle2, Star, HelpCircle, Trophy, Sparkles } from 'lucide-react'
 
 // Custom icons for medals

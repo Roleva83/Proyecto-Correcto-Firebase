@@ -1,10 +1,11 @@
+
 'use client'
 import React from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
-import { Card, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Star, Lightbulb } from 'lucide-react'
 
 const menuData = [

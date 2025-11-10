@@ -2,8 +2,8 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/app/components/ui/dialog'
-import { Button } from '@/app/components/ui/button'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight, QrCode } from 'lucide-react'
 
 interface NewStrategiesModalProps {

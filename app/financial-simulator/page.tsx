@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
-import { Slider } from '@/app/components/ui/slider'
-import { Input } from '@/app/components/ui/input'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Slider } from '@/components/ui/slider'
+import { Input } from '@/components/ui/input'
 import { Calculator, Utensils, Zap, Bot, Users, TrendingUp, TrendingDown } from 'lucide-react'
 
 const strategicScenarios = [

@@ -4,14 +4,14 @@
 import React, { useState } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { AreaChart, BarChart, Bot, Search, Star, DollarSign, TrendingUp, Clock, PlusCircle } from 'lucide-react'
 import { AreaChart as RechartsAreaChart, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Area, Bar, Cell } from 'recharts';
 import Image from 'next/image'
-import { Input } from '@/app/components/ui/input'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs"
+import { Input } from '@/components/ui/input'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
 const reviewsData = [

@@ -3,10 +3,10 @@
 import React from 'react'
 import Header from '../../components/layout/Header'
 import Sidebar from '../../components/layout/Sidebar'
-import { Card, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
-import { Input } from '@/app/components/ui/input'
-import { Switch } from '@/app/components/ui/switch'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { BarChart, TrendingUp, Coffee, Gift, Percent, Trash2, Edit, Link2 } from 'lucide-react'
 
 const clientesLeales = [

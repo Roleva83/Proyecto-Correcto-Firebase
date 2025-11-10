@@ -1,11 +1,12 @@
+
 'use client'
 import React from 'react'
 import Image from 'next/image'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Plus, Star, MessageSquare, Award } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts'
 
