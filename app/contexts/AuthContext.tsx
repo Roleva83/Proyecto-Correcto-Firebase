@@ -43,9 +43,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser) {
-        // Usuario ha iniciado sesión.
-        // Diferenciamos entre el flujo de registro y un inicio de sesión normal.
-        // Durante el registro, el doc del usuario puede no existir aún, lo que es normal.
         const userDocRef = doc(db, 'users', firebaseUser.uid);
         const userDoc = await getDoc(userDocRef);
 
@@ -55,11 +52,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               uid: firebaseUser.uid,
               email: firebaseUser.email,
               displayName: firebaseUser.displayName,
-              restaurante_id: userData.businessId // Usamos el businessId del perfil
-            })
+              restaurante_id: userData.businessId
+            });
         } else {
-            // Caso probable: el usuario se acaba de registrar y el documento 'users'
-            // se está creando. Asumimos un estado de usuario básico mientras tanto.
+            // This can happen during registration before the user doc is created.
+            // Set a minimal user object.
             setUser({
                 uid: firebaseUser.uid,
                 email: firebaseUser.email,

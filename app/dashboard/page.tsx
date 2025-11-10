@@ -31,7 +31,10 @@ export default function Dashboard() {
   const [tips, setTips] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!user || !user.restaurante_id) return;
+    if (!user || !user.restaurante_id) {
+        if(!user) setLoading(true);
+        return;
+    };
 
     const fetchData = async () => {
       setLoading(true);
@@ -127,7 +130,7 @@ export default function Dashboard() {
 
   const appUser = { name: 'Restaurante Ejemplo' };
 
-  if (loading) {
+  if (loading || !user) {
     return (
        <div className="flex min-h-screen bg-background">
         <Sidebar />
