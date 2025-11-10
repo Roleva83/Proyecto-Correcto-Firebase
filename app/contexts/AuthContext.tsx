@@ -1,11 +1,11 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { auth, db } from '@/lib/firebase'
 import { onAuthStateChanged, signOut as firebaseSignOut, User as FirebaseUser } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { useRouter } from 'next/navigation'
-
+import { Loader2 } from 'lucide-react'
 
 interface User {
   uid: string
@@ -26,7 +26,15 @@ const AuthContext = createContext<AuthContextType>({
   signOut: () => {},
 })
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+function AuthLoader() {
+  return (
+    <div className="flex h-screen w-screen items-center justify-center bg-background">
+      <Loader2 className="h-12 w-12 animate-spin text-primary" />
+    </div>
+  );
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter();
@@ -74,13 +82,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  if (loading) {
-    return null;
-  }
-
   return (
     <AuthContext.Provider value={{ user, loading, signOut }}>
-      {children}
+      {loading ? <AuthLoader /> : children}
     </AuthContext.Provider>
   )
 }
