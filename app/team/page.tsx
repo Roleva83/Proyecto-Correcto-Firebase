@@ -9,6 +9,7 @@ import { Button } from '@/app/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/app/components/ui/dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar'
 import { PlusCircle, ArrowUp, ArrowDown, Star, MessageSquare, Download, Sparkles, X, ChevronLeft, ChevronRight, Award, TrendingUp, Target, Euro } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 const teamData = [
   {
@@ -336,8 +337,15 @@ export default function TeamPage() {
                     <Card>
                         <CardHeader><CardTitle>Evolución del Rendimiento</CardTitle></CardHeader>
                         <CardContent>
-                            <div className="h-48 bg-accent rounded-md flex items-center justify-center text-muted-foreground">
-                                <p>Gráfico de Líneas Placeholder</p>
+                            <div className="h-48">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={anaGarciaDetails.chartData}>
+                                        <XAxis dataKey="month" />
+                                        <YAxis domain={[4, 5]} />
+                                        <Tooltip />
+                                        <Line type="monotone" dataKey="rating" stroke="#8884d8" />
+                                    </LineChart>
+                                </ResponsiveContainer>
                             </div>
                         </CardContent>
                     </Card>
@@ -390,5 +398,3 @@ export default function TeamPage() {
     </div>
   )
 }
-
-    
