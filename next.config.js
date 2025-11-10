@@ -19,9 +19,13 @@ const nextConfig = {
     ],
   },
   webpack: (config) => {
+    config.externals.push({
+        'sharp': 'commonjs sharp',
+        'onnxruntime-node': 'commonjs onnxruntime-node',
+    })
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.resolve(__dirname),
+      '@': path.resolve(__dirname, './'),
     }
     return config
   },

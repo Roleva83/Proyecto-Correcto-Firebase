@@ -1,6 +1,8 @@
 import './globals.css'
 import { Inter, Poppins } from 'next/font/google'
 import ClientAuthProvider from './contexts/ClientAuthProvider'
+import { Toaster } from '@/app/components/ui/sonner'
+
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({ 
@@ -25,6 +27,7 @@ export default function RootLayout({
         <ClientAuthProvider>
           {children}
         </ClientAuthProvider>
+        <Toaster />
       </body>
     </html>
   )

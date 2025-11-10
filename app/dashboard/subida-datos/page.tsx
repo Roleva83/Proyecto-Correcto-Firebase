@@ -1,285 +1,285 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
-import Header from '../../components/layout/Header';
-import Sidebar from '../../components/layout/Sidebar';
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card';
-import { Button } from '@/app/components/ui/button';
+
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/app/contexts/AuthContext';
-import { collection, onSnapshot, query, where, orderBy, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from '@/app/lib/firebase';
-import { useDropzone } from 'react-dropzone';
-import { FileText, Clock, BarChart, UploadCloud, X, Loader, CheckCircle } from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { Button } from '@/app/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card';
+import { Upload, FileText, Trash2, Loader2, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import Header from '@/app/components/layout/Header';
+import Sidebar from '@/app/components/layout/Sidebar';
+import { toast, Toaster } from 'sonner';
 
-interface UploadedFile {
-    id: string;
-    nombre_archivo: string;
-    tamano_archivo: number;
-    fecha_subida: {
-        seconds: number;
-        nanoseconds: number;
-    };
-    estado: 'subiendo' | 'subido' | 'procesando' | 'completado' | 'error';
-    analisis?: any;
-    url_descarga: string;
-    ruta_storage: string;
+interface ArchivoSubido {
+  id: string;
+  nombre_archivo: string;
+  tipo_datos: string;
+  tamano: number;
+  fecha_subida: any;
+  estado: 'pendiente' | 'procesando' | 'completado' | 'error';
+  url_descarga: string;
+  ruta_storage: string;
+  analisis?: any;
 }
 
-interface UploadProgress {
-  file: File;
-  status: 'uploading' | 'analyzing' | 'completed' | 'error';
-  error?: string;
-}
+export default function SubidaDatosPage() {
+  const { user } = useAuth();
+  const [archivos, setArchivos] = useState<ArchivoSubido[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [tipoArchivo, setTipoArchivo] = useState<string>('otros');
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!user) return;
+    setLoading(false);
+    
+    if (!user.uid) return;
 
-export default function UploadDataPage() {
-    const { user, loading } = useAuth();
-    const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-    const [uploads, setUploads] = useState<Record<string, UploadProgress>>({});
+    const q = query(
+      collection(db, 'archivos_subidos'),
+      where('usuario_id', '==', user.uid),
+      orderBy('fecha_subida', 'desc')
+    );
 
-    // Real-time listener for Firestore
-    useEffect(() => {
-        if (!user) return;
-
-        const q = query(
-            collection(db, `archivos_subidos`), 
-            where('usuario_id', '==', user.uid), 
-            orderBy('fecha_subida', 'desc')
-        );
-        
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const files: UploadedFile[] = [];
-            querySnapshot.forEach((doc) => {
-                files.push({ id: doc.id, ...doc.data() } as UploadedFile);
-            });
-            setUploadedFiles(files);
-        });
-
-        return () => unsubscribe();
-    }, [user]);
-
-    const handleFileUpload = useCallback(async (acceptedFiles: File[]) => {
-      if (!user) {
-          console.error("Debes iniciar sesión para subir archivos.");
-          // You can show a toast here
-          return;
-      }
-  
-      for (const file of acceptedFiles) {
-          const fileName = file.name;
-          setUploads(prev => ({ ...prev, [fileName]: { file, status: 'uploading' } }));
-  
-          try {
-              const formData = new FormData();
-              formData.append('file', file);
-              formData.append('userId', user.uid);
-              formData.append('restauranteId', 'default-restaurant-id'); // Replace with actual restaurant ID
-              formData.append('tipoArchivo', 'auto');
-  
-              // Step 1: Upload the file
-              const uploadResponse = await fetch('/api/upload-file', {
-                  method: 'POST',
-                  body: formData,
-              });
-  
-              if (!uploadResponse.ok) {
-                  const { error } = await uploadResponse.json();
-                  throw new Error(error || 'Error al subir el archivo.');
-              }
-  
-              const { archivoId } = await uploadResponse.json();
-  
-              setUploads(prev => ({ ...prev, [fileName]: { ...prev[fileName], status: 'analyzing' } }));
-  
-              // Step 2: Trigger the analysis
-              const analyzeResponse = await fetch('/api/analyze-file', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ archivoId }),
-              });
-  
-              if (!analyzeResponse.ok) {
-                  const { error } = await analyzeResponse.json();
-                  throw new Error(error || 'Error al analizar el archivo.');
-              }
-              
-              // The Firestore listener will automatically update the UI to 'completed'
-              // but we can remove it from the progress list
-              setUploads(prev => {
-                const newUploads = { ...prev };
-                delete newUploads[fileName];
-                return newUploads;
-              });
-  
-          } catch (error: any) {
-              console.error(`Error con el archivo ${fileName}:`, error);
-              setUploads(prev => ({
-                  ...prev,
-                  [fileName]: { ...prev[fileName], status: 'error', error: error.message }
-              }));
-          }
-      }
-    }, [user]);
-
-    const handleDelete = async (file: UploadedFile) => {
-        if (!user) return;
-        if (!confirm(`¿Estás seguro de que quieres eliminar "${file.nombre_archivo}"?`)) return;
-
-        try {
-            // Delete from Firestore
-            await deleteDoc(doc(db, 'archivos_subidos', file.id));
-            
-            // Delete from Storage
-            const storageRef = ref(storage, file.ruta_storage);
-            await deleteObject(storageRef);
-
-            // You can add a success toast here
-        } catch (error) {
-            console.error("Error eliminando el archivo:", error);
-            // You can add an error toast here
-        }
-    };
-
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-      onDrop: handleFileUpload,
-      accept: {
-        'text/csv': ['.csv'],
-        'application/vnd.ms-excel': ['.xls'],
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-        'application/pdf': ['.pdf'],
-        'text/plain': ['.txt'],
-        'application/json': ['.json'],
-        'image/jpeg': ['.jpg', '.jpeg'],
-        'image/png': ['.png'],
-      },
-      maxSize: 20 * 1024 * 1024,
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const archivosData: ArchivoSubido[] = [];
+      snapshot.forEach((doc) => {
+        archivosData.push({ id: doc.id, ...doc.data() } as ArchivoSubido);
+      });
+      setArchivos(archivosData);
+    }, (error) => {
+        console.error("Error al obtener archivos: ", error);
+        toast.error("No se pudieron cargar los archivos.");
     });
 
-    if (loading) {
-        return (
-            <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <div className="flex-1 flex flex-col">
-                    <Header user={user} />
-                    <main className="flex-1 p-8 text-center">
-                        <p>Cargando...</p>
-                    </main>
-                </div>
-            </div>
-        );
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 20 * 1024 * 1024) {
+        toast.error('El archivo es demasiado grande. Máximo 20MB.');
+        return;
+      }
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile || !user?.uid) {
+      toast.error('Selecciona un archivo primero');
+      return;
     }
 
+    setUploading(true);
+    toast.info('Subiendo archivo...', {
+        description: selectedFile.name,
+    });
+
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('userId', user.uid);
+      formData.append('restauranteId', 'default-restaurant-id'); // Reemplazar con ID real
+      formData.append('tipoArchivo', tipoArchivo);
+
+      const uploadResponse = await fetch('/api/upload-file', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.error || 'Error al subir el archivo');
+      }
+
+      const uploadData = await uploadResponse.json();
+      toast.success('Archivo subido correctamente. Iniciando análisis...');
+
+      const analyzeResponse = await fetch('/api/analyze-file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ archivoId: uploadData.archivoId }),
+      });
+      
+      if (!analyzeResponse.ok) {
+        const errorData = await analyzeResponse.json();
+        throw new Error(errorData.error || 'El análisis del archivo falló');
+      }
+
+      toast.success('Análisis completado');
+      
+    } catch (error: any) {
+      console.error('Error en el proceso:', error);
+      toast.error(error.message || 'Ocurrió un error inesperado');
+    } finally {
+      setSelectedFile(null);
+      setTipoArchivo('otros');
+      const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
+      setUploading(false);
+    }
+  };
+
+  const handleDelete = async (archivo: ArchivoSubido) => {
+    if (!confirm('¿Estás seguro de eliminar este archivo?')) return;
+
+    toast.info('Eliminando archivo...');
+    try {
+      const storageRef = ref(storage, archivo.ruta_storage);
+      await deleteObject(storageRef);
+      await deleteDoc(doc(db, 'archivos_subidos', archivo.id));
+      toast.success('Archivo eliminado correctamente');
+    } catch (error: any) {
+      console.error('Error al eliminar:', error);
+      toast.error('No se pudo eliminar el archivo.');
+    }
+  };
+  
+    const formatBytes = (bytes: number, decimals = 2) => {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+
+  const getEstadoIcon = (estado: string) => {
+    switch (estado) {
+      case 'completado': return <CheckCircle className="w-5 h-5 text-green-500" />;
+      case 'procesando': return <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />;
+      case 'error': return <XCircle className="w-5 h-5 text-red-500" />;
+      default: return <AlertCircle className="w-5 h-5 text-yellow-500" />;
+    }
+  };
+
+  if (loading) {
     return (
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
             <div className="flex-1 flex flex-col">
                 <Header user={user} />
-                <main className="flex-1 p-8">
-                    <div className="mb-6">
-                        <h1 className="text-3xl font-bold text-foreground">Subida y Análisis de Datos</h1>
-                        <p className="text-muted-foreground">Sube tus archivos (TPV, reservas, etc.) para que Lola IA los analice.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <Card className="shadow-soft">
-                            <CardHeader>
-                                <CardTitle>Subir Nuevos Archivos</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div
-                                  {...getRootProps()}
-                                  className={`flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-xl cursor-pointer transition-colors
-                                  ${isDragActive ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'}`}
-                                >
-                                  <input {...getInputProps()} />
-                                  <div className="flex flex-col items-center gap-4 text-center">
-                                    <div className="rounded-full border-8 border-gray-50 bg-gray-100 p-4">
-                                      <UploadCloud className="h-10 w-10 text-primary" />
-                                    </div>
-                                    <div className="text-secondary">
-                                      <span className="font-semibold text-primary">Haz clic para subir</span> o arrastra y suelta
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">CSV, XLS, PDF, TXT, JSON, JPG o PNG (máx. 20MB)</p>
-                                  </div>
-                                </div>
-                                
-                                {Object.values(uploads).length > 0 && (
-                                  <div className="mt-6 space-y-3">
-                                      <h3 className="font-semibold text-foreground">Progreso de Subida</h3>
-                                      {Object.entries(uploads).map(([fileName, { status, error }]) => (
-                                      <div key={fileName} className="flex items-center gap-4 rounded-lg border p-3">
-                                          <FileText className="h-8 w-8 text-muted-foreground flex-shrink-0" />
-                                          <div className="flex-1 overflow-hidden">
-                                              <p className="truncate text-sm font-medium text-foreground">{fileName}</p>
-                                              {status === 'uploading' && <div className="mt-1 flex items-center gap-2 text-xs text-blue-600"><Loader className="h-3 w-3 animate-spin" /> Subiendo...</div>}
-                                              {status === 'analyzing' && <div className="mt-1 flex items-center gap-2 text-xs text-amber-600"><Loader className="h-3 w-3 animate-spin" /> Analizando con IA...</div>}
-                                              {status === 'error' && <p className="mt-1 text-xs text-red-600">{error}</p>}
-                                          </div>
-                                          <button onClick={() => setUploads(p => { const newP = {...p}; delete newP[fileName]; return newP;})} className="text-muted-foreground hover:text-foreground">
-                                              <X className="h-5 w-5" />
-                                          </button>
-                                      </div>
-                                      ))}
-                                  </div>
-                                )}
-                            </CardContent>
-                        </Card>
-
-                        <Card className="shadow-soft">
-                            <CardHeader>
-                                <CardTitle>Historial de Archivos</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-                                    {uploadedFiles.length > 0 ? (
-                                        uploadedFiles.map(file => (
-                                            <div key={file.id} className="flex items-center gap-4 rounded-lg border p-3">
-                                                <FileText className="h-6 w-6 text-muted-foreground flex-shrink-0" />
-                                                <div className="flex-1 overflow-hidden">
-                                                    <p className="truncate text-sm font-medium text-foreground">{file.nombre_archivo}</p>
-                                                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                                        <span>{(file.tamano_archivo / (1024 * 1024)).toFixed(2)} MB</span>
-                                                        <span>
-                                                            {file.fecha_subida ? format(new Date(file.fecha_subida.seconds * 1000), 'dd MMM yyyy, HH:mm', { locale: es }) : '...'}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    {file.estado === 'completado' && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800 flex items-center gap-1"><CheckCircle className="h-3 w-3" />Completado</span>}
-                                                    {file.estado === 'procesando' && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 flex items-center gap-1"><Loader className="h-3 w-3 animate-spin" />Procesando</span>}
-                                                    {file.estado === 'subido' && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-800">Subido</span>}
-                                                    {file.estado === 'error' && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-red-100 text-red-800">Error</span>}
-                                                </div>
-                                                <Button variant="ghost" size="sm" onClick={() => handleDelete(file)}><X className="h-4 w-4"/></Button>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div className="text-center py-10 text-muted-foreground">
-                                            <p>No has subido ningún archivo todavía.</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    <Card className="mt-8 shadow-soft">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><BarChart className="text-primary"/> Panel de Preguntas a tus Datos</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground mb-4">Una vez tus archivos sean analizados, podrás hacer preguntas aquí para obtener insights.</p>
-                            <div className="flex items-center gap-2">
-                                <input placeholder="Ej: ¿Cuál fue el plato más vendido en la última semana?" className="flex-1 h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
-                                <Button disabled>Preguntar a Lola</Button>
-                            </div>
-                        </CardContent>
-                    </Card>
+                <main className="flex-1 p-8 text-center">
+                    <p>Cargando...</p>
                 </main>
             </div>
         </div>
     );
+  }
+
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+        <Toaster richColors />
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+            <Header user={user} />
+            <main className="flex-1 p-8">
+                <div className="mb-6">
+                    <h1 className="text-3xl font-bold text-foreground">Subida y Análisis de Datos</h1>
+                    <p className="text-muted-foreground">Sube tus archivos (TPV, reservas, etc.) para que Lola IA los analice.</p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <Card className="shadow-soft">
+                        <CardHeader>
+                            <CardTitle>Subir Nuevos Archivos</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium mb-2">Tipo de datos</label>
+                                <select
+                                    value={tipoArchivo}
+                                    onChange={(e) => setTipoArchivo(e.target.value)}
+                                    className="w-full p-2 border rounded-lg bg-background"
+                                    disabled={uploading}
+                                >
+                                    <option value="tpv">TPV / Ventas</option>
+                                    <option value="reservas">Reservas</option>
+                                    <option value="resenas">Reseñas</option>
+                                    <option value="menus">Menús</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+                            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
+                                <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                                <input
+                                type="file"
+                                accept=".csv,.xls,.xlsx,.pdf,.txt,.json,.jpg,.jpeg,.png"
+                                onChange={handleFileSelect}
+                                className="hidden"
+                                id="file-upload"
+                                disabled={uploading}
+                                />
+                                <label htmlFor="file-upload" className="cursor-pointer text-primary hover:underline font-medium">
+                                    Haz clic para subir
+                                </label>
+                                <p className="text-sm text-gray-500 mt-1">o arrastra y suelta</p>
+                                {selectedFile && (
+                                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                    <p className="text-sm text-green-800 font-medium">✓ Archivo seleccionado: {selectedFile.name}</p>
+                                    <p className="text-xs text-green-700 mt-1">{formatBytes(selectedFile.size)}</p>
+                                </div>
+                                )}
+                            </div>
+
+                            <Button
+                                onClick={handleUpload}
+                                disabled={!selectedFile || uploading}
+                                className="w-full"
+                            >
+                                {uploading ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    Subiendo y analizando...
+                                </>
+                                ) : 'Subir y Analizar'}
+                            </Button>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="shadow-soft">
+                        <CardHeader>
+                            <CardTitle>Historial de Archivos</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {archivos.length === 0 ? (
+                            <div className="text-center py-10 text-muted-foreground">
+                                <p>No has subido ningún archivo todavía.</p>
+                            </div>
+                            ) : (
+                            <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                                {archivos.map((archivo) => (
+                                <div key={archivo.id} className="flex items-center gap-4 rounded-lg border p-3">
+                                    <FileText className="h-6 w-6 text-muted-foreground flex-shrink-0" />
+                                    <div className="flex-1 overflow-hidden">
+                                        <p className="truncate text-sm font-medium text-foreground">{archivo.nombre_archivo}</p>
+                                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                            <span>{formatBytes(archivo.tamano)}</span>
+                                            <span>
+                                                {archivo.fecha_subida?.toDate?.().toLocaleDateString() || 'Reciente'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        {getEstadoIcon(archivo.estado)}
+                                    </div>
+                                    <Button variant="ghost" size="sm" onClick={() => handleDelete(archivo)}><Trash2 className="h-4 w-4 text-red-500"/></Button>
+                                </div>
+                                ))}
+                            </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+            </main>
+        </div>
+    </div>
+  );
 }

@@ -1,10 +1,21 @@
-// @ts-nocheck
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
-import pdf from 'pdf-parse';
 
-export const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB
-export const ALLOWED_FILE_TYPES = [
+export interface FileValidation {
+  isValid: boolean;
+  error?: string;
+}
+
+export interface ParsedData {
+  type: 'tpv' | 'reservas' | 'resenas' | 'otros';
+  data: any[];
+  summary: {
+    rows: number;
+    columns: string[];
+  };
+}
+
+const ALLOWED_TYPES = [
   'text/csv',
   'application/vnd.ms-excel',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -12,68 +23,112 @@ export const ALLOWED_FILE_TYPES = [
   'text/plain',
   'application/json',
   'image/jpeg',
-  'image/png',
+  'image/png'
 ];
 
-export function validateFile(file) {
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
+
+export function validateFile(file: File): FileValidation {
   if (file.size > MAX_FILE_SIZE) {
-    return { isValid: false, error: 'El archivo es demasiado grande (máx 20MB).' };
+    return {
+      isValid: false,
+      error: 'El archivo es demasiado grande. Máximo 20MB.'
+    };
   }
-  if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-    return { isValid: false, error: 'Tipo de archivo no permitido.' };
+
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    return {
+      isValid: false,
+      error: 'Tipo de archivo no permitido.'
+    };
   }
-  return { isValid: true, error: null };
+
+  return { isValid: true };
 }
 
-export async function parseCSV(file) {
+export function parseCSV(file: File): Promise<ParsedData> {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
-        resolve(results.data);
+        const data = results.data as any[];
+        const columns = results.meta.fields || [];
+        const type = detectDataType(columns);
+        
+        resolve({
+          type,
+          data,
+          summary: {
+            rows: data.length,
+            columns
+          }
+        });
       },
       error: (error) => {
-        reject(error);
-      },
+        reject(new Error(`Error al parsear CSV: ${error.message}`));
+      }
     });
   });
 }
 
-export async function parseExcel(file) {
-  const arrayBuffer = await file.arrayBuffer();
-  const workbook = XLSX.read(arrayBuffer, { type: 'buffer' });
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  return XLSX.utils.sheet_to_json(worksheet);
+export async function parseExcel(file: File): Promise<ParsedData> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        const columns = Object.keys(jsonData[0] || {});
+        const type = detectDataType(columns);
+        
+        resolve({
+          type,
+          data: jsonData,
+          summary: {
+            rows: jsonData.length,
+            columns
+          }
+        });
+      } catch (error) {
+        reject(new Error(`Error al parsear Excel: ${error}`));
+      }
+    };
+    
+    reader.onerror = () => reject(new Error('Error al leer el archivo'));
+    reader.readAsArrayBuffer(file);
+  });
 }
 
-export async function parsePDF(file) {
-    const arrayBuffer = await file.arrayBuffer();
-    const data = await pdf(Buffer.from(arrayBuffer));
-    return data.text;
-}
-
-export function detectDataType(columns) {
-  const lowercasedColumns = columns.map(c => c.toLowerCase());
-
-  const tpvKeywords = ['venta', 'producto', 'precio', 'cantidad', 'total', 'ticket', 'sale', 'product', 'price', 'quantity'];
-  const reservasKeywords = ['reserva', 'cliente', 'fecha', 'hora', 'pax', 'comensales', 'booking', 'customer', 'date', 'time'];
-  const resenasKeywords = ['reseña', 'valoracion', 'comentario', 'plataforma', 'review', 'rating', 'comment', 'platform'];
-
-  const tpvScore = lowercasedColumns.filter(c => tpvKeywords.includes(c)).length;
-  const reservasScore = lowercasedColumns.filter(c => reservasKeywords.includes(c)).length;
-  const resenasScore = lowercasedColumns.filter(c => resenasKeywords.includes(c)).length;
-
-  if (tpvScore > reservasScore && tpvScore > resenasScore) {
+function detectDataType(columns: string[]): 'tpv' | 'reservas' | 'resenas' | 'otros' {
+  const columnsLower = columns.map(c => c.toLowerCase());
+  
+  const tpvKeywords = ['venta', 'ticket', 'importe', 'producto', 'precio', 'cantidad'];
+  if (tpvKeywords.some(keyword => columnsLower.some(col => col.includes(keyword)))) {
     return 'tpv';
   }
-  if (reservasScore > tpvScore && reservasScore > resenasScore) {
+  
+  const reservasKeywords = ['reserva', 'mesa', 'comensales', 'hora', 'cliente', 'telefono'];
+  if (reservasKeywords.some(keyword => columnsLower.some(col => col.includes(keyword)))) {
     return 'reservas';
   }
-  if (resenasScore > tpvScore && resenasScore > reservasScore) {
+  
+  const resenasKeywords = ['reseña', 'comentario', 'opinion', 'valoracion', 'estrellas', 'puntuacion'];
+  if (resenasKeywords.some(keyword => columnsLower.some(col => col.includes(keyword)))) {
     return 'resenas';
   }
-
+  
   return 'otros';
+}
+
+export function generateUniqueFilename(originalName: string, userId: string): string {
+  const timestamp = Date.now();
+  const randomString = Math.random().toString(36).substring(2, 8);
+  const extension = originalName.split('.').pop();
+  const nameWithoutExt = originalName.replace(/\.[^/.]+$/, '');
+  
+  return `${userId}_${timestamp}_${randomString}_${nameWithoutExt}.${extension}`;
 }

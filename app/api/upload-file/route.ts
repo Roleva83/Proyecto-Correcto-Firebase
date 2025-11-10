@@ -1,60 +1,73 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db, storage } from '@/app/lib/firebase';
-import { validateFile } from '@/app/lib/fileProcessing';
+import { storage, db } from '@/app/lib/firebase';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const userId = formData.get('userId') as string;
     const restauranteId = formData.get('restauranteId') as string;
-    let tipoArchivo = formData.get('tipoArchivo') as string;
+    const tipoArchivo = formData.get('tipoArchivo') as string;
 
     if (!file || !userId || !restauranteId) {
-      return NextResponse.json({ success: false, error: 'Faltan datos requeridos.' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Faltan parámetros requeridos' },
+        { status: 400 }
+      );
     }
 
-    const validation = validateFile(file);
-    if (!validation.isValid) {
-      return NextResponse.json({ success: false, error: validation.error }, { status: 400 });
-    }
-    
-    if (!tipoArchivo || tipoArchivo === 'auto') {
-        // Implement detection logic if needed, for now we default to 'otros'
-        tipoArchivo = 'otros';
+    const MAX_SIZE = 20 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { error: 'El archivo es demasiado grande. Máximo 20MB.' },
+        { status: 400 }
+      );
     }
 
     const timestamp = Date.now();
     const fileName = `${timestamp}_${file.name}`;
-    const storagePath = `uploads/${tipoArchivo}/${userId}/${fileName}`;
-    const storageRef = ref(storage, storagePath);
+    const folder = tipoArchivo || 'otros';
+    const filePath = `uploads/${folder}/${userId}/${fileName}`;
 
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
+    const storageRef = ref(storage, filePath);
+    const fileBuffer = await file.arrayBuffer();
+    const uploadResult = await uploadBytes(storageRef, fileBuffer, {
+      contentType: file.type,
+    });
 
-    const docRef = await addDoc(collection(db, 'archivos_subidos'), {
+    const downloadURL = await getDownloadURL(uploadResult.ref);
+
+    const archivoData = {
       usuario_id: userId,
       restaurante_id: restauranteId,
       nombre_archivo: file.name,
+      nombre_archivo_storage: fileName,
       tipo_archivo: file.type,
-      tamano_archivo: file.size,
-      ruta_storage: storagePath,
+      tipo_datos: folder,
+      tamano: file.size,
       url_descarga: downloadURL,
-      estado: 'subido',
+      ruta_storage: filePath,
       fecha_subida: serverTimestamp(),
-      analisis: null,
-    });
+      estado: 'pendiente',
+      analisis: null
+    };
+
+    const docRef = await addDoc(collection(db, 'archivos_subidos'), archivoData);
 
     return NextResponse.json({
       success: true,
       archivoId: docRef.id,
       url: downloadURL,
+      mensaje: 'Archivo subido correctamente'
     });
 
-  } catch (error) {
-    console.error('Error en la subida de archivo:', error);
-    return NextResponse.json({ success: false, error: 'Error interno del servidor.' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Error al subir archivo:', error);
+    return NextResponse.json(
+      { error: 'Error al subir el archivo', details: error.message },
+      { status: 500 }
+    );
   }
 }

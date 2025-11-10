@@ -11,6 +11,7 @@ interface User {
   uid: string
   email: string | null
   displayName: string | null
+  restaurante_id?: string
 }
 
 interface AuthContextType {
@@ -38,6 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
           displayName: firebaseUser.displayName,
+          restaurante_id: 'default-restaurant-id'
         })
       } else {
         setUser(null)
