@@ -1,9 +1,14 @@
 
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Lock, Building, Phone } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth, db } from '@/lib/firebase'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { toast } from 'sonner'
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -33,6 +38,71 @@ const FacebookIcon = () => (
 );
 
 export default function Register() {
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [restaurantName, setRestaurantName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+
+        if (password !== confirmPassword) {
+            toast.error('Las contraseñas no coinciden.');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await updateProfile(user, {
+                displayName: restaurantName // Usamos el nombre del negocio como displayName inicial
+            });
+            
+            // Creamos un documento de negocio asociado al usuario
+            const businessRef = doc(collection(db, "businesses"));
+            await setDoc(businessRef, {
+                name: restaurantName,
+                owner_id: user.uid,
+                email: user.email,
+                phone: phone,
+                type: 'restaurante', // Valor por defecto
+                createdAt: serverTimestamp(),
+            });
+
+            // Creamos el perfil de usuario en nuestra colección 'users'
+            await setDoc(doc(db, "users", user.uid), {
+                email: user.email,
+                displayName: restaurantName,
+                photoURL: user.photoURL,
+                businessId: businessRef.id,
+                role: 'owner',
+                createdAt: serverTimestamp(),
+            });
+
+            toast.success('¡Registro completado! Redirigiendo al panel de control...');
+            router.push('/dashboard');
+
+        } catch (error: any) {
+            console.error("Error en el registro:", error);
+            if (error.code === 'auth/email-already-in-use') {
+                toast.error('El email ya está en uso. Por favor, prueba con otro.');
+            } else if (error.code === 'auth/weak-password') {
+                toast.error('La contraseña es demasiado débil. Debe tener al menos 6 caracteres.');
+            } else {
+                toast.error('Ha ocurrido un error durante el registro.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-50 to-white px-4 py-12">
         <div className="w-full max-w-md">
@@ -51,7 +121,7 @@ export default function Register() {
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-8 shadow-xl">
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleRegister}>
                     <div>
                         <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">Email</label>
                         <div className="relative">
@@ -61,6 +131,8 @@ export default function Register() {
                                 type="email" 
                                 placeholder="tu@email.com" 
                                 required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
@@ -75,6 +147,8 @@ export default function Register() {
                                 type="text" 
                                 placeholder="El nombre de tu negocio" 
                                 required
+                                value={restaurantName}
+                                onChange={(e) => setRestaurantName(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
@@ -89,6 +163,8 @@ export default function Register() {
                                 type="tel" 
                                 placeholder="Tu número de teléfono" 
                                 required
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
@@ -101,8 +177,10 @@ export default function Register() {
                             <input 
                                 id="password" 
                                 type="password" 
-                                placeholder="••••••••" 
+                                placeholder="Mínimo 6 caracteres" 
                                 required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
@@ -115,15 +193,17 @@ export default function Register() {
                             <input 
                                 id="confirm-password" 
                                 type="password" 
-                                placeholder="••••••••" 
+                                placeholder="Repite la contraseña" 
                                 required
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="h-12 w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 placeholder-gray-400 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-ring" 
                             />
                         </div>
                     </div>
                     
-                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring">
-                        Crear Cuenta
+                    <button type="submit" className="h-[50px] w-full rounded-xl bg-primary font-semibold text-primary-foreground shadow-lg shadow-amber-500/20 duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-ring" disabled={loading}>
+                        {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
                     </button>
                 </form>
 
@@ -155,3 +235,5 @@ export default function Register() {
     </main>
   )
 }
+
+    
