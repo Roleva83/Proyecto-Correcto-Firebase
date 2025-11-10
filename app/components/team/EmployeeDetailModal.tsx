@@ -33,6 +33,26 @@ const mentionedReviews = [
 export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext, onPrevious }: EmployeeDetailModalProps) {
     if (!employee) return null;
 
+    const handleDownloadQR = () => {
+        if (!employee) return;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://www.canayresena.com/review?employee=${employee.id}`;
+        const fileName = `qr-${employee.name.toLowerCase().replace(/\s/g, '-')}.png`;
+        
+        fetch(qrUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error("Error al descargar el QR:", error));
+    };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
@@ -93,7 +113,7 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext,
                             <div className="flex justify-center">
                                 <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.canayresena.com/review?employee=${employee.id}`} alt="QR Code" />
                             </div>
-                            <Button variant="outline" className="mt-4">Descargar QR</Button>
+                            <Button variant="outline" className="mt-4" onClick={handleDownloadQR}>Descargar QR</Button>
                         </CardContent>
                     </Card>
                 </div>
