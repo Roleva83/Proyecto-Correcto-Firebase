@@ -4,10 +4,10 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud, File as FileIcon, X, CheckCircle, Loader } from 'lucide-react';
-import { useAuth } from '@/app/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from '@/app/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { getStorage } from 'firebase/storage';
 
 interface UploadStatus {

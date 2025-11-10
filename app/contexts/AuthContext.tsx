@@ -2,7 +2,7 @@
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { auth } from '@/app/lib/firebase'
+import { auth } from '@/lib/firebase'
 import { onAuthStateChanged, signOut as firebaseSignOut, User as FirebaseUser } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 

@@ -1,15 +1,16 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/app/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
-import { db, storage } from '@/app/lib/firebase';
-import { Button } from '@/app/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card';
+import { db, storage } from '@/lib/firebase';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Upload, FileText, Trash2, Loader2, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import Header from '@/app/components/layout/Header';
-import Sidebar from '@/app/components/layout/Sidebar';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
 import { toast, Toaster } from 'sonner';
 
 interface ArchivoSubido {
@@ -270,7 +271,7 @@ export default function SubidaDatosPage() {
                                     <div className="flex items-center gap-2">
                                         {getEstadoIcon(archivo.estado)}
                                     </div>
-                                    <Button variant="ghost" size="sm" onClick={() => handleDelete(archivo)}><Trash2 className="h-4 w-4 text-red-500"/></Button>
+                                    <Button variant="ghost" onClick={() => handleDelete(archivo)}><Trash2 className="h-4 w-4 text-red-500"/></Button>
                                 </div>
                                 ))}
                             </div>

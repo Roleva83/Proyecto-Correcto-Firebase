@@ -1,7 +1,8 @@
+
 import { NextRequest, NextResponse } from 'next/server';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { storage, db } from '@/app/lib/firebase';
+import { storage, db } from '@/lib/firebase';
 
 export async function POST(request: NextRequest) {
   try {

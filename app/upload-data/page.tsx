@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/layout/Header';
 import Sidebar from '../components/layout/Sidebar';
 import FileUploader from '../components/uploads/FileUploader';
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card';
-import { Button } from '@/app/components/ui/button';
-import { useAuth } from '@/app/contexts/AuthContext';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-import { db } from '@/app/lib/firebase';
+import { db } from '@/lib/firebase';
 import { FileText, Clock, BarChart } from 'lucide-react';
 import { format } from 'date-fns';
 
