@@ -1,12 +1,13 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
+import Link from 'next/link'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Star, MessageSquare, TrendingUp, Sparkles, QrCode, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Star, MessageSquare, TrendingUp, Sparkles, QrCode, ArrowLeft, ArrowRight, Settings } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import type { Employee } from '@/app/team/page'
 
@@ -32,6 +33,9 @@ const mentionedReviews = [
 
 export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext, onPrevious }: EmployeeDetailModalProps) {
     if (!employee) return null;
+
+    // Simulación: Cambia este valor a `true` para ver el estado "conectado"
+    const [isReviewPlatformConnected, setIsReviewPlatformConnected] = useState(false);
 
     const handleDownloadQR = () => {
         if (!employee) return;
@@ -104,18 +108,38 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext,
                         </CardContent>
                     </Card>
 
-                    <Card className="shadow-soft">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><QrCode className="h-5 w-5 text-primary" /> QR Personal de Reseña</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center">
-                            <p className="text-sm text-muted-foreground mb-4">Usa este QR para que los clientes dejen reseñas mencionando a {employee.name}.</p>
-                            <div className="flex justify-center">
-                                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.canayresena.com/review?employee=${employee.id}`} alt="QR Code" />
-                            </div>
-                            <Button variant="outline" className="mt-4" onClick={handleDownloadQR}>Descargar QR</Button>
-                        </CardContent>
-                    </Card>
+                    {isReviewPlatformConnected ? (
+                        <Card className="shadow-soft">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2"><QrCode className="h-5 w-5 text-primary" /> QR Personal de Reseña</CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-center">
+                                <p className="text-sm text-muted-foreground mb-4">Usa este QR para que los clientes dejen reseñas mencionando a {employee.name}.</p>
+                                <div className="flex justify-center">
+                                    <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.canayresena.com/review?employee=${employee.id}`} alt="QR Code" />
+                                </div>
+                                <Button variant="outline" className="mt-4" onClick={handleDownloadQR}>Descargar QR</Button>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <Card className="shadow-soft border-dashed border-primary">
+                            <CardContent className="p-6 text-center">
+                                <div className="flex justify-center mb-4">
+                                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                                    <QrCode className="h-6 w-6 text-primary" />
+                                  </div>
+                                </div>
+                                <h4 className="font-semibold text-foreground">Activa los QR de tu equipo</h4>
+                                <p className="text-sm text-muted-foreground mt-2 mb-4">Para generar un QR único para cada empleado, primero necesitas conectar tu cuenta de Google My Business (o similar).</p>
+                                <Link href="/settings">
+                                  <Button variant="default">
+                                    <Settings className="mr-2 h-4 w-4" />
+                                    Conectar ahora
+                                  </Button>
+                                </Link>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
 
                 {/* Columna Derecha */}
