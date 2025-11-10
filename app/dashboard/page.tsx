@@ -1,90 +1,151 @@
 'use client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import MetricsWidget from '../components/dashboard/widgets/MetricsWidget'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card'
-import { Button } from '@/app/components/ui/button'
-import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign, AlertCircle, Star, Utensils, Lightbulb, Bot } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign, AlertCircle, Star, Utensils, Lightbulb, Bot, Loader2 } from 'lucide-react'
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
-
-const incomeData = [
-  { date: '27 ago', income: 3200, cost: 2200 },
-  { date: '28 ago', income: 2900, cost: 1900 },
-  { date: '29 ago', income: 2700, cost: 1600 },
-  { date: '30 ago', income: 4200, cost: 2600 },
-  { date: '31 ago', income: 3800, cost: 2400 },
-  { date: '1 sep', income: 3300, cost: 2200 },
-  { date: '2 sep', income: 3500, cost: 2300 },
-  { date: '3 sep', income: 2900, cost: 1700 },
-  { date: '4 sep', income: 2600, cost: 1600 },
-  { date: '5 sep', income: 3400, cost: 2200 },
-  { date: '6 sep', income: 3800, cost: 2500 },
-  { date: '7 sep', income: 4500, cost: 2800 },
-  { date: '8 sep', income: 3200, cost: 2100 },
-  { date: '9 sep', income: 2800, cost: 1800 },
-  { date: '10 sep', income: 3100, cost: 2000 },
-  { date: '11 sep', income: 2900, cost: 1900 },
-  { date: '12 sep', income: 3400, cost: 2200 },
-  { date: '13 sep', income: 4100, cost: 2800 },
-  { date: '14 sep', income: 3900, cost: 2500 },
-  { date: '15 sep', income: 2800, cost: 1800 },
-  { date: '16 sep', income: 2200, cost: 1500 },
-  { date: '17 sep', income: 3200, cost: 2100 },
-  { date: '18 sep', income: 3100, cost: 2000 },
-  { date: '19 sep', income: 3200, cost: 2100 },
-  { date: '20 sep', income: 3800, cost: 2400 },
-  { date: '21 sep', income: 4500, cost: 3000 },
-  { date: '22 sep', income: 3200, cost: 2200 },
-  { date: '23 sep', income: 2800, cost: 1800 },
-  { date: '24 sep', income: 2200, cost: 1500 },
-  { date: '25 sep', income: 2700, cost: 1800 },
-];
-
-const popularItems = [
-    { name: 'Tarta de Queso Cremosa', units: 180, trend: 'down' },
-    { name: 'Pasta Carbonara Original', units: 150, trend: 'up' },
-    { name: 'Coulant de Chocolate', units: 130, trend: 'down' },
-];
-
-const hiddenGems = [
-    { name: 'Entrecot de Vaca Madurada', benefit: 15.00 },
-    { name: 'Lubina a la Sal', benefit: 14.00 },
-    { name: 'Carrilleras al Vino Tinto', benefit: 13.00 },
-];
-
-const salesData = [
-  { name: 'Con Reserva', value: 75, color: '#14b8a6' }, // Teal-500
-  { name: 'Sin Reserva', value: 25, color: '#ec4899' }, // Pink-500
-];
-
-const reservationSourceData = [
-    { name: 'CoverManager', value: 40, color: '#14b8a6' }, // Teal-500
-    { name: 'Google', value: 30, color: '#ec4899' }, // Pink-500
-    { name: 'Teléfono', value: 20, color: '#f97316' }, // Orange-500
-    { name: 'Web', value: 10, color: '#84cc16' }, // Lime-500
-];
-
-const alerts = [
-  { icon: <AlertCircle className="h-5 w-5 text-red-500" />, title: "Cliente con reseña negativa vuelve al local", description: "Juan Pérez (reseña de 1 estrella el 15/07) tiene una reserva para hoy. Es una segunda oportunidad para ofrecerle una experiencia excelente.", action: "Ver Cliente" },
-  { icon: <Star className="h-5 w-5 text-yellow-500" />, title: "5 reseñas llevan más de 48h sin respuesta", description: "Responder rápidamente a las reseñas, especialmente a las negativas, puede mitigar su impacto y mejorar la percepción del cliente.", action: "Ir a Reseñas" },
-  { icon: <Utensils className="h-5 w-5 text-orange-500" />, title: 'La "Sopa de pescado" tiene una baja rotación', description: "Este plato solo representa el 3% de las ventas en su categoría. Considera renovarlo o crear una promoción para aumentar su visibilidad.", action: "Revisar Menú" },
-  { icon: <TrendingDown className="h-5 w-5 text-blue-500" />, title: "Caída del 18% en las reservas esta semana", description: "La semana pasada tuviste un 18% más de reservas. Lanza una campaña en redes sociales para atraer más clientes.", action: "Lanzar Campaña" },
-];
-
-const tips = [
-  { title: "Mejora Operativa", description: "La inconsistencia en la calidad de los platos es un problema significativo. Res...", tags: ["Prioridad Alta", "Carta"], tagColors: ["bg-red-100 text-red-800", "bg-purple-100 text-purple-800"] },
-  { title: "Mejora del Servicio", description: "La lentitud en el servicio y la falta de atención por parte del personal son pro...", tags: ["Prioridad Alta", "Servicio"], tagColors: ["bg-red-100 text-red-800", "bg-indigo-100 text-indigo-800"] },
-];
+import { collection, query, where, getDocs, orderBy, limit, Timestamp } from 'firebase/firestore'
+import { db } from '@/lib/firebase'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Dashboard() {
-  const user = { name: 'Restaurante Ejemplo' };
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+
+  // Estados para los datos de Firestore
+  const [avgReview, setAvgReview] = useState('0.0 ★');
+  const [reservationsToday, setReservationsToday] = useState('0');
+  const [dailySales, setDailySales] = useState('0€');
+  const [loyalCustomers, setLoyalCustomers] = useState('0');
+  const [incomeData, setIncomeData] = useState<any[]>([]);
+  const [popularItems, setPopularItems] = useState<any[]>([]);
+  const [hiddenGems, setHiddenGems] = useState<any[]>([]);
+  const [salesData, setSalesData] = useState<any[]>([]);
+  const [reservationSourceData, setReservationSourceData] = useState<any[]>([]);
+  const [responseRate, setResponseRate] = useState('0%');
+  const [recoverableBenefit, setRecoverableBenefit] = useState('0€');
+  const [alerts, setAlerts] = useState<any[]>([]);
+  const [tips, setTips] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!user || !user.restaurante_id) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const businessId = user.restaurante_id;
+
+        // 1. KPI Cards
+        // Reseñas promedio últimos 7 días
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        const reviewsQuery = query(
+          collection(db, 'reviews'), 
+          where('businessId', '==', businessId),
+          where('date', '>=', Timestamp.fromDate(sevenDaysAgo))
+        );
+        const reviewsSnapshot = await getDocs(reviewsQuery);
+        let totalRating = 0;
+        if (!reviewsSnapshot.empty) {
+          reviewsSnapshot.forEach(doc => {
+            totalRating += doc.data().rating;
+          });
+          setAvgReview(`${(totalRating / reviewsSnapshot.size).toFixed(1)} ★`);
+        } else {
+          setAvgReview('N/A');
+        }
+
+        // Simulación de otros datos por ahora
+        setReservationsToday('72');
+        setDailySales('75€');
+        setLoyalCustomers('2');
+
+        // 2. Gráfico "Ingresos Totales"
+        // Simulado por ahora, requiere agregación compleja
+        setIncomeData([
+          { date: '27 ago', income: 3200, cost: 2200 },
+          { date: '28 ago', income: 2900, cost: 1900 },
+          { date: '29 ago', income: 2700, cost: 1600 },
+        ]);
+
+        // 9. Los Más Populares y 10. Joyas Ocultas
+        const menuQuery = query(collection(db, 'menus'), where('businessId', '==', businessId), limit(1));
+        const menuSnapshot = await getDocs(menuQuery);
+        if (!menuSnapshot.empty) {
+            const menuDoc = menuSnapshot.docs[0].data();
+            const allItems = menuDoc.items || [];
+            
+            // Populares
+            const sortedBySales = [...allItems].sort((a, b) => b.sales - a.sales);
+            setPopularItems(sortedBySales.slice(0, 3).map(item => ({...item, trend: Math.random() > 0.5 ? 'up' : 'down'})));
+
+            // Joyas Ocultas
+            const avgSales = allItems.reduce((acc: number, item: any) => acc + item.sales, 0) / allItems.length;
+            const hidden = allItems.filter((item: any) => item.margin > 70 && item.sales < avgSales);
+            setHiddenGems(hidden.slice(0, 3));
+        }
+
+        // Simulación del resto de datos
+        setSalesData([
+          { name: 'Con Reserva', value: 75, color: '#14b8a6' },
+          { name: 'Sin Reserva', value: 25, color: '#ec4899' },
+        ]);
+        setReservationSourceData([
+            { name: 'CoverManager', value: 40, color: '#14b8a6' },
+            { name: 'Google', value: 30, color: '#ec4899' },
+            { name: 'Teléfono', value: 20, color: '#f97316' },
+            { name: 'Web', value: 10, color: '#84cc16' },
+        ]);
+        setResponseRate('91%');
+        setRecoverableBenefit('280€');
+        
+        // 7. Alertas de Lola
+        const alertsQuery = query(collection(db, 'alerts'), where('businessId', '==', businessId), orderBy('priority', 'desc'), limit(4));
+        const alertsSnapshot = await getDocs(alertsQuery);
+        setAlerts(alertsSnapshot.docs.map(doc => ({
+            ...doc.data(),
+            icon: <AlertCircle className="h-5 w-5 text-red-500" />,
+        })));
+        
+        // 8. Consejos de Lola
+        const tipsQuery = query(collection(db, 'recommendations'), where('businessId', '==', businessId), limit(2));
+        const tipsSnapshot = await getDocs(tipsQuery);
+        setTips(tipsSnapshot.docs.map(doc => doc.data()));
+
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  const appUser = { name: 'Restaurante Ejemplo' };
+
+  if (loading) {
+    return (
+       <div className="flex min-h-screen bg-background">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <Header user={appUser} />
+          <main className="flex-1 p-8 flex items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          </main>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Header user={user} />
+        <Header user={appUser} />
         <main className="flex-1 p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground">Inicio</h1>
@@ -96,25 +157,25 @@ export default function Dashboard() {
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Reseñas (últimos 7 días)" 
-                value="3.4 ★" 
+                value={avgReview} 
                 />
             </div>
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Reservas hoy" 
-                value="72"
+                value={reservationsToday}
                 />
             </div>
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Ventas de día" 
-                value="75€"
+                value={dailySales}
                 />
             </div>
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Clientes fidelizados" 
-                value="2"
+                value={loyalCustomers}
                 />
             </div>
 
@@ -168,7 +229,7 @@ export default function Dashboard() {
                             {item.trend === 'up' ? <TrendingUp className="h-4 w-4 mr-2 text-green-500" /> : <TrendingDown className="h-4 w-4 mr-2 text-red-500" />}
                             {item.name}
                           </span>
-                          <span className="font-bold">{item.units}</span>
+                          <span className="font-bold">{item.sales}</span>
                         </div>
                       ))}
                     </div>
@@ -180,7 +241,7 @@ export default function Dashboard() {
                             <Gem className="h-4 w-4 mr-2 text-purple-500" />
                             {item.name}
                           </span>
-                          <span className="font-bold text-green-600">+ {item.benefit.toFixed(2)} €</span>
+                          <span className="font-bold text-green-600">+ {item.price - item.cost} €</span>
                         </div>
                       ))}
                     </div>
@@ -258,7 +319,7 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-foreground">91% <span className="text-base font-semibold text-green-600 align-text-bottom">+5%</span></p>
+                  <p className="text-4xl font-bold text-foreground">{responseRate} <span className="text-base font-semibold text-green-600 align-text-bottom">+5%</span></p>
                   <p className="text-xs text-muted-foreground">Respecto al periodo anterior</p>
                   <div className="border-t my-4"></div>
                   <h4 className="font-semibold text-sm mb-2">Comunicaciones</h4>
@@ -284,7 +345,7 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-green-600">280€ <span className="text-base font-semibold text-muted-foreground align-text-bottom">+2 acciones</span></p>
+                  <p className="text-4xl font-bold text-green-600">{recoverableBenefit} <span className="text-base font-semibold text-muted-foreground align-text-bottom">+2 acciones</span></p>
                   <p className="text-xs text-muted-foreground">Aplicando mejoras de Lola</p>
                   <div className="border-t my-4"></div>
                   <h4 className="font-semibold text-sm mb-2">Acciones de Mayor Impacto</h4>
@@ -362,7 +423,7 @@ export default function Dashboard() {
                         <div>
                           <h4 className="font-semibold text-foreground">{tip.title}</h4>
                           <div className="flex items-center gap-2 mt-1">
-                            {tip.tags.map((tag, i) => (
+                            {tip.tags.map((tag: string, i: number) => (
                               <span key={i} className={`text-xs font-semibold px-2 py-0.5 rounded-full ${tip.tagColors[i]}`}>{tag}</span>
                             ))}
                           </div>
