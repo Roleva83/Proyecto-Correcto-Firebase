@@ -104,25 +104,6 @@ export default function Login() {
                     </button>
                 </form>
 
-                <div className="relative my-6">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t border-border"></span>
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-card px-2 text-muted-foreground">O continúa con</span>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                    <button className="flex h-12 items-center justify-center gap-3 rounded-xl border border-border bg-background transition-colors hover:bg-accent">
-                        <GoogleIcon />
-                        <span className="text-sm font-medium text-foreground">Google</span>
-                    </button>
-                    <button className="flex h-12 items-center justify-center gap-3 rounded-xl border border-border bg-background transition-colors hover:bg-accent">
-                        <FacebookIcon />
-                        <span className="text-sm font-medium text-foreground">Facebook</span>
-                    </button>
-                </div>
             </div>
 
             <p className="mt-8 text-center text-sm text-secondary">
