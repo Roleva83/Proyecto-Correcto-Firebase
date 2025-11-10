@@ -1,8 +1,10 @@
+
 'use client';
 
-import FileUploader from '../../components/FileUploader';
+import FileUploader from '../../components/uploads/FileUploader';
 import Header from '../../components/layout/Header';
 import Sidebar from '../../components/layout/Sidebar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 
 export default function UploadsPage() {
   const user = { name: 'Restaurante Ejemplo' };
@@ -16,16 +18,19 @@ export default function UploadsPage() {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground">Subir Archivos</h1>
             <p className="text-muted-foreground">
-              Sube tus archivos de TPV, reservas, reseñas o menús en cualquier formato.
+              Sube tus archivos de TPV, reservas, reseñas o menús en cualquier formato. Lola IA los analizará por ti.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <FileUploader categoria="tpv" />
-            <FileUploader categoria="reservas" />
-            <FileUploader categoria="reseñas" />
-            <FileUploader categoria="menus" />
-          </div>
+          <Card>
+            <CardHeader>
+                <CardTitle>Sube aquí tus documentos</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <FileUploader />
+            </CardContent>
+          </Card>
+
         </main>
       </div>
     </div>
