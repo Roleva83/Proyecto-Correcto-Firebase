@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Star, MessageSquare, TrendingUp, Sparkles, QrCode, ArrowLeft, ArrowRight } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
-import type { Employee } from '@/team/page'
+import type { Employee } from '@/app/team/page'
 
 interface EmployeeDetailModalProps {
     employee: Employee | null;
@@ -91,7 +91,7 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext,
                         <CardContent className="text-center">
                             <p className="text-sm text-muted-foreground mb-4">Usa este QR para que los clientes dejen reseñas mencionando a {employee.name}.</p>
                             <div className="flex justify-center">
-                                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://example.com/review?employee=${employee.id}`} alt="QR Code" />
+                                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.canayresena.com/review?employee=${employee.id}`} alt="QR Code" />
                             </div>
                             <Button variant="outline" className="mt-4">Descargar QR</Button>
                         </CardContent>
