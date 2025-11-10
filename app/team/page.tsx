@@ -135,7 +135,7 @@ export default function TeamPage() {
                                     <Tooltip
                                         contentStyle={{
                                             backgroundColor: 'white',
-                                            borderColor: '#D4AF37',
+                                            borderColor: 'hsl(var(--primary))',
                                             borderRadius: '12px',
                                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                                         }}
