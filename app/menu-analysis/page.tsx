@@ -5,7 +5,7 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Star, Lightbulb, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react'
+import { Star, Lightbulb, TrendingUp, AlertTriangle, DollarSign, TrendingDown } from 'lucide-react'
 
 type Category = 'A Reinventar' | 'Popular a Optimizar' | 'Joya Oculta' | 'Plato Estrella';
 
@@ -135,32 +135,31 @@ const sortedMenuData = [...menuData].sort((a, b) => {
   return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
 });
 
-const getCategoryStyles = (category: Category) => {
-  switch (category) {
-    case 'Plato Estrella': return { color: 'text-green-600', bgColor: 'bg-green-500', icon: <Star className="h-4 w-4 text-green-600" /> };
-    case 'Joya Oculta': return { color: 'text-purple-600', bgColor: 'bg-purple-500', icon: <Star className="h-4 w-4 text-purple-600" /> };
-    case 'Popular a Optimizar': return { color: 'text-blue-600', bgColor: 'bg-blue-500', icon: <Star className="h-4 w-4 text-blue-600" /> };
-    case 'A Reinventar': return { color: 'text-red-600', bgColor: 'bg-red-500', icon: <Star className="h-4 w-4 text-red-600" /> };
-    default: return { color: 'text-gray-500', bgColor: 'bg-gray-500', icon: <Star className="h-4 w-4 text-gray-500" /> };
-  }
+const getCategoryStyles = (margin: number): { name: string; icon: React.ReactNode; tagBg: string; tagColor: string; barColor: string; } => {
+  if (margin > 70) return { name: 'Plato Estrella', icon: <Star className="h-4 w-4" />, tagBg: '#E6F9EE', tagColor: '#48BB78', barColor: '#48BB78' };
+  if (margin >= 40) return { name: 'A Optimizar', icon: <TrendingUp className="h-4 w-4" />, tagBg: '#FFF9E6', tagColor: '#D4AF37', barColor: '#D4AF37' };
+  return { name: 'A Replantear', icon: <AlertTriangle className="h-4 w-4" />, tagBg: '#FEECEC', tagColor: '#F56565', barColor: '#F56565' };
 };
 
-const getMarginStyles = (margin: number) => {
-    if (margin >= 70) return { color: '#48BB78' }; // Rentable
-    if (margin >= 50) return { color: '#D4AF37' }; // A Optimizar
-    return { color: '#F56565' }; // En Riesgo
-}
 
 export default function MenuAnalysis() {
   const user = { name: 'Restaurante Ejemplo' };
-  const [filter, setFilter] = useState<Category | 'Todos'>('Todos');
+  const [filter, setFilter] = useState<string>('Todos');
 
-  const filteredData = filter === 'Todos' ? sortedMenuData : sortedMenuData.filter(item => item.category === filter);
+  const getFilteredData = () => {
+    if (filter === 'Todos') return sortedMenuData;
+    if (filter === 'Rentables') return sortedMenuData.filter(item => item.margin > 70);
+    if (filter === 'A Optimizar') return sortedMenuData.filter(item => item.margin >= 40 && item.margin <= 70);
+    if (filter === 'En Riesgo') return sortedMenuData.filter(item => item.margin < 40);
+    return sortedMenuData;
+  }
+
+  const filteredData = getFilteredData();
   
   const totalBenefit = menuData.reduce((acc, item) => acc + item.benefit, 0);
   const totalIncome = menuData.reduce((acc, item) => acc + item.income, 0);
   const averageMargin = totalIncome > 0 ? (totalBenefit / totalIncome) * 100 : 0;
-  const riskyDishes = menuData.filter(item => item.category === 'A Reinventar').length;
+  const riskyDishes = menuData.filter(item => item.margin < 40).length;
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -210,38 +209,47 @@ export default function MenuAnalysis() {
           </div>
           
           <div className="flex items-center gap-2 mb-6">
-              <Button onClick={() => setFilter('Plato Estrella')} variant={filter === 'Plato Estrella' ? 'default' : 'outline'} className="rounded-full">⭐ Rentables</Button>
-              <Button onClick={() => setFilter('Popular a Optimizar')} variant={filter === 'Popular a Optimizar' ? 'default' : 'outline'} className="rounded-full">🧠 A Optimizar</Button>
-              <Button onClick={() => setFilter('A Reinventar')} variant={filter === 'A Reinventar' ? 'default' : 'outline'} className="rounded-full">⚠️ En Riesgo</Button>
+              <Button onClick={() => setFilter('Rentables')} variant={filter === 'Rentables' ? 'default' : 'outline'} className="rounded-full">⭐ Rentables</Button>
+              <Button onClick={() => setFilter('A Optimizar')} variant={filter === 'A Optimizar' ? 'default' : 'outline'} className="rounded-full">🧠 A Optimizar</Button>
+              <Button onClick={() => setFilter('En Riesgo')} variant={filter === 'En Riesgo' ? 'default' : 'outline'} className="rounded-full">⚠️ En Riesgo</Button>
               <Button onClick={() => setFilter('Todos')} variant={filter === 'Todos' ? 'secondary' : 'ghost'} className="rounded-full">📋 Todos</Button>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredData.map((item, index) => {
-              const categoryStyles = getCategoryStyles(item.category);
-              const marginStyle = getMarginStyles(item.margin);
+              const styles = getCategoryStyles(item.margin);
+              const isTrendingUp = item.margin > 50;
 
               return (
-              <Card key={index} className="bg-white rounded-2xl shadow-md p-5 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <Card key={index} className="bg-white rounded-2xl p-5 transition-all duration-200 hover:shadow-xl hover:-translate-y-1" style={{boxShadow: '0 2px 6px rgba(0,0,0,0.05)'}}>
                 <div className="flex flex-col h-full">
-                  <div className="flex-grow">
-                    <p className="font-semibold text-lg text-foreground">{item.name}</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                        <span className={`font-medium ${categoryStyles.color}`}>{item.category}</span>
-                        <span>|</span>
-                        <span>Margen: <span className="font-bold" style={{ color: marginStyle.color }}>{item.margin}%</span></span>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                      <span>💰 Beneficio: <span className="font-semibold text-foreground">{item.benefit.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span></span>
-                      <span>Coste: {item.cost.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3">
-                        <div className="h-1.5 rounded-full" style={{width: `${item.margin}%`, backgroundColor: marginStyle.color}}></div>
-                    </div>
+                  <div className="flex items-center gap-2 px-3 py-1 text-sm font-semibold rounded-full mb-3 self-start" style={{ backgroundColor: styles.tagBg, color: styles.tagColor }}>
+                    {styles.icon}
+                    <span>{styles.name}</span>
                   </div>
-                  <div className="flex items-start gap-3 mt-4 pt-3 border-t border-gray-100">
+
+                  <div className="border-t border-gray-100 my-2"></div>
+                  
+                  <h3 className="text-xl font-bold text-foreground mb-2">{item.name}</h3>
+
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 mb-3">
+                    <span className="font-semibold text-gray-800 text-lg">💰 Beneficio: <span className="text-xl">{item.benefit.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span></span>
+                    <span className="flex items-center font-semibold">
+                      {isTrendingUp ? <TrendingUp className="h-4 w-4 mr-1 text-green-500"/> : <TrendingDown className="h-4 w-4 mr-1 text-red-500" />}
+                      Margen: {item.margin}%
+                    </span>
+                    <span>🧾 Coste: {item.cost.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>
+                  </div>
+                  
+                  <div className="w-full bg-gray-200 rounded-full h-1 mt-1 mb-4">
+                      <div className="h-1 rounded-full" style={{width: `${item.margin}%`, backgroundColor: styles.barColor}}></div>
+                  </div>
+
+                  <div className="border-t border-gray-100 my-2"></div>
+
+                  <div className="flex items-start gap-3 mt-2">
                       <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-sm text-amber-900"><span className="font-semibold">Recomendación IA:</span> {item.recommendation}</p>
+                      <p className="text-sm text-gray-700"><span className="font-semibold">Recomendación IA:</span> {item.recommendation}</p>
                   </div>
                 </div>
               </Card>
@@ -252,3 +260,5 @@ export default function MenuAnalysis() {
     </div>
   )
 }
+
+    
