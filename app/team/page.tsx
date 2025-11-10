@@ -54,6 +54,20 @@ export default function TeamPage() {
   const user = { name: 'Restaurante Ejemplo' };
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
+  const handleNextEmployee = () => {
+    if (!selectedEmployee) return;
+    const currentIndex = teamData.findIndex(emp => emp.id === selectedEmployee.id);
+    const nextIndex = (currentIndex + 1) % teamData.length;
+    setSelectedEmployee(teamData[nextIndex]);
+  };
+
+  const handlePreviousEmployee = () => {
+    if (!selectedEmployee) return;
+    const currentIndex = teamData.findIndex(emp => emp.id === selectedEmployee.id);
+    const prevIndex = (currentIndex - 1 + teamData.length) % teamData.length;
+    setSelectedEmployee(teamData[prevIndex]);
+  };
+
   return (
     <>
       <div className="flex min-h-screen bg-gray-50 font-sans">
@@ -113,6 +127,8 @@ export default function TeamPage() {
           employee={selectedEmployee}
           isOpen={!!selectedEmployee}
           onClose={() => setSelectedEmployee(null)}
+          onNext={handleNextEmployee}
+          onPrevious={handlePreviousEmployee}
         />
       )}
     </>

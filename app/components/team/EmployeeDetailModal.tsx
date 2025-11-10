@@ -6,7 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Star, MessageSquare, TrendingUp, Sparkles, QrCode } from 'lucide-react'
+import { Star, MessageSquare, TrendingUp, Sparkles, QrCode, ArrowLeft, ArrowRight } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import type { Employee } from '@/team/page'
 
@@ -14,6 +14,8 @@ interface EmployeeDetailModalProps {
     employee: Employee | null;
     isOpen: boolean;
     onClose: () => void;
+    onNext: () => void;
+    onPrevious: () => void;
 }
 
 const performanceChartData = [
@@ -28,7 +30,7 @@ const mentionedReviews = [
     { rating: 4, platform: 'TheFork', comment: '...nos atendió Ana, muy profesional.' },
 ]
 
-export default function EmployeeDetailModal({ employee, isOpen, onClose }: EmployeeDetailModalProps) {
+export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext, onPrevious }: EmployeeDetailModalProps) {
     if (!employee) return null;
 
   return (
@@ -37,7 +39,16 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose }: Emplo
             <DialogHeader>
                 <DialogTitle>Detalle del Empleado</DialogTitle>
             </DialogHeader>
-            <div className="flex-1 overflow-y-auto px-6 pb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="relative flex-1 overflow-y-auto px-6 pb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                {/* Navigation Arrows */}
+                <Button variant="secondary" onClick={onPrevious} className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 p-0 bg-card/80 backdrop-blur-sm z-10">
+                    <ArrowLeft className="h-4 w-4" />
+                </Button>
+                <Button variant="secondary" onClick={onNext} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 p-0 bg-card/80 backdrop-blur-sm z-10">
+                    <ArrowRight className="h-4 w-4" />
+                </Button>
+
                 {/* Columna Izquierda */}
                 <div className="space-y-6">
                     <Card className="shadow-soft">
