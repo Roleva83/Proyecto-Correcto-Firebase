@@ -36,19 +36,19 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext,
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
-            <DialogHeader>
+            <DialogHeader className="flex-row items-center justify-between">
                 <DialogTitle>Detalle del Empleado</DialogTitle>
+                <div className="flex items-center gap-2 pr-12">
+                    <Button variant="outline" size="icon" onClick={onPrevious} className="h-8 w-8">
+                        <ArrowLeft className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="icon" onClick={onNext} className="h-8 w-8">
+                        <ArrowRight className="h-4 w-4" />
+                    </Button>
+                </div>
             </DialogHeader>
             <div className="relative flex-1 overflow-y-auto px-6 pb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
-                {/* Navigation Arrows */}
-                <Button variant="secondary" onClick={onPrevious} className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 p-0 bg-card/80 backdrop-blur-sm z-10">
-                    <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <Button variant="secondary" onClick={onNext} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 p-0 bg-card/80 backdrop-blur-sm z-10">
-                    <ArrowRight className="h-4 w-4" />
-                </Button>
-
                 {/* Columna Izquierda */}
                 <div className="space-y-6">
                     <Card className="shadow-soft">
