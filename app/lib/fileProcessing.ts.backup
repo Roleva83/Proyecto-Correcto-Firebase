@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import ExcelJS from 'exceljs';
+import * as XLSX from 'xlsx';
 
 export interface FileValidation {
   isValid: boolean;
@@ -73,33 +73,34 @@ export function parseCSV(file: File): Promise<ParsedData> {
 }
 
 export async function parseExcel(file: File): Promise<ParsedData> {
-  const buffer = await file.arrayBuffer();
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(buffer);
-  
-  const worksheet = workbook.worksheets[0];
-  const jsonData: any[] = [];
-  const columns: string[] = [];
-  
-  worksheet.eachRow((row, rowNumber) => {
-    if (rowNumber === 1) {
-      row.eachCell(cell => columns.push(cell.value?.toString() || ''));
-    } else {
-      const rowData: any = {};
-      row.eachCell((cell, colNumber) => {
-        rowData[columns[colNumber - 1]] = cell.value;
-      });
-      jsonData.push(rowData);
-    }
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        const columns = Object.keys(jsonData[0] || {});
+        const type = detectDataType(columns);
+        
+        resolve({
+          type,
+          data: jsonData,
+          summary: {
+            rows: jsonData.length,
+            columns
+          }
+        });
+      } catch (error) {
+        reject(new Error(`Error al parsear Excel: ${error}`));
+      }
+    };
+    
+    reader.onerror = () => reject(new Error('Error al leer el archivo'));
+    reader.readAsArrayBuffer(file);
   });
-  
-  const type = detectDataType(columns);
-  
-  return {
-    type,
-    data: jsonData,
-    summary: { rows: jsonData.length, columns }
-  };
 }
 
 function detectDataType(columns: string[]): 'tpv' | 'reservas' | 'resenas' | 'otros' {
