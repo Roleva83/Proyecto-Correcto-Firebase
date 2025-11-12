@@ -200,7 +200,7 @@ export default function MisMetasYMedallas() {
                       </ul>
                        <ul className="space-y-2">
                           <li className="flex items-center gap-2 text-sm text-indigo-800"><Star className="h-5 w-5 text-primary"/> Entrevista como caso de éxito en la plataforma</li>
-                          <li className="flex items-center gap-2 text-sm text-indigo-800"><Star className="h-5 w-5 text-primary"/> Tarjeta física exclusiva "Amigo de Lola"</li>
+                          <li className="flex items-center gap-2 text-sm text-indigo-800"><Star className="h-5 w-5 text-primary"/> Tarjeta física exclusiva &quot;Amigo de Lola&quot;</li>
                       </ul>
                   </div>
                   <div className="mt-6 bg-white/70 p-2 rounded-lg text-center">

@@ -58,11 +58,11 @@ export default function TermsAndConditions() {
           <p>Eres responsable de salvaguardar la contraseña que utilizas para acceder al Servicio y de cualquier actividad o acción bajo tu contraseña, ya sea que tu contraseña esté con nuestro Servicio o un servicio de terceros.</p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">2. Contenido</h2>
-          <p>Nuestro Servicio te permite publicar, vincular, almacenar, compartir y poner a disposición cierta información, texto, gráficos, videos u otro material ("Contenido"). Eres responsable del Contenido que publicas en el Servicio, incluida su legalidad, fiabilidad y adecuación.</p>
+          <p>Nuestro Servicio te permite publicar, vincular, almacenar, compartir y poner a disposición cierta información, texto, gráficos, videos u otro material (&quot;Contenido&quot;). Eres responsable del Contenido que publicas en el Servicio, incluida su legalidad, fiabilidad y adecuación.</p>
           <p>Al publicar Contenido en el Servicio, nos otorgas el derecho y la licencia para usar, modificar, ejecutar públicamente, mostrar públicamente, reproducir y distribuir dicho Contenido en y a través del Servicio. Conservas todos tus derechos sobre cualquier Contenido que envíes, publiques o muestres en o a través del Servicio y eres responsable de proteger esos derechos.</p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">3. Suscripciones</h2>
-          <p>Algunas partes del Servicio se facturan por suscripción ("Suscripción(es)"). Se te facturará por adelantado de forma recurrente y periódica ("Ciclo de facturación"). Los ciclos de facturación se establecen mensualmente o anualmente, según el tipo de plan de suscripción que selecciones al comprar una Suscripción.</p>
+          <p>Algunas partes del Servicio se facturan por suscripción (&quot;Suscripción(es)&quot;). Se te facturará por adelantado de forma recurrente y periódica (&quot;Ciclo de facturación&quot;). Los ciclos de facturación se establecen mensualmente o anualmente, según el tipo de plan de suscripción que selecciones al comprar una Suscripción.</p>
           <p>Al final de cada Ciclo de facturación, tu Suscripción se renovará automáticamente bajo las mismas condiciones exactas, a menos que la canceles o que Caña y Reseña la cancele.</p>
           
           <h2 className="text-2xl font-bold mt-8 mb-4">4. Limitación de Responsabilidad</h2>

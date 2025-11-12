@@ -209,9 +209,9 @@ export default function MenuAnalysis() {
           </div>
           
           <div className="flex items-center gap-2 mb-6">
-              <Button onClick={() => setFilter('Rentables')} variant={filter === 'Rentables' ? 'default' : 'outline'} className="rounded-full">⭐ Rentables</Button>
-              <Button onClick={() => setFilter('A Optimizar')} variant={filter === 'A Optimizar' ? 'default' : 'outline'} className="rounded-full">🧠 A Optimizar</Button>
-              <Button onClick={() => setFilter('En Riesgo')} variant={filter === 'En Riesgo' ? 'default' : 'outline'} className="rounded-full">⚠️ En Riesgo</Button>
+              <Button onClick={() => setFilter('Rentables')} variant={filter === 'Rentables' ? 'primary' : 'outline'} className="rounded-full">⭐ Rentables</Button>
+              <Button onClick={() => setFilter('A Optimizar')} variant={filter === 'A Optimizar' ? 'primary' : 'outline'} className="rounded-full">🧠 A Optimizar</Button>
+              <Button onClick={() => setFilter('En Riesgo')} variant={filter === 'En Riesgo' ? 'primary' : 'outline'} className="rounded-full">⚠️ En Riesgo</Button>
               <Button onClick={() => setFilter('Todos')} variant={filter === 'Todos' ? 'secondary' : 'ghost'} className="rounded-full">📋 Todos</Button>
           </div>
           

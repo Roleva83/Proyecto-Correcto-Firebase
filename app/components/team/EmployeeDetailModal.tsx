@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Star, MessageSquare, TrendingUp, Sparkles, QrCode, ArrowLeft, ArrowRight, Settings } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
-import type { Employee } from '@/app/team/page'
+import type { Employee } from '@/team/page'
 
 interface EmployeeDetailModalProps {
     employee: Employee | null;
@@ -32,10 +32,11 @@ const mentionedReviews = [
 ]
 
 export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext, onPrevious }: EmployeeDetailModalProps) {
-    if (!employee) return null;
 
     // Simulación: Cambia este valor a `true` para ver el estado "conectado"
     const [isReviewPlatformConnected, setIsReviewPlatformConnected] = useState(false);
+
+    if (!employee) return null;
 
     const handleDownloadQR = () => {
         if (!employee) return;
@@ -132,7 +133,7 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext,
                                 <h4 className="font-semibold text-foreground">Activa los QR de tu equipo</h4>
                                 <p className="text-sm text-muted-foreground mt-2 mb-4">Para generar un QR único para cada empleado, primero necesitas conectar tu cuenta de Google My Business (o similar).</p>
                                 <Link href="/settings">
-                                  <Button variant="default">
+                                  <Button variant="primary">
                                     <Settings className="mr-2 h-4 w-4" />
                                     Conectar ahora
                                   </Button>
@@ -159,7 +160,7 @@ export default function EmployeeDetailModal({ employee, isOpen, onClose, onNext,
                                         </div>
                                         <Badge variant="outline">{review.platform}</Badge>
                                     </div>
-                                    <p className="text-sm text-muted-foreground italic">"{review.comment}"</p>
+                                    <p className="text-sm text-muted-foreground italic">&quot;{review.comment}&quot;</p>
                                 </div>
                             ))}
                         </CardContent>
