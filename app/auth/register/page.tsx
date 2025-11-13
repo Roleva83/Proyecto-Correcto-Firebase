@@ -34,6 +34,7 @@ export default function Register() {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
+            await user.getIdToken(true);
             // 2. Crear el documento del negocio en la colección 'businesses'
             const businessRef = await addDoc(collection(db, "businesses"), {
                 name: restaurantName,
