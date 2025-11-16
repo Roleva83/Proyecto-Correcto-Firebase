@@ -33,8 +33,12 @@ export default function SubidaDatosPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user?.uid) {
-      setLoading(user === null);
+    if (!user) {
+      setLoading(true);
+      return;
+    }
+    if (!user.uid) {
+      setLoading(true);
       return;
     }
     setLoading(false);
@@ -120,7 +124,7 @@ export default function SubidaDatosPage() {
       toast.error(error.message || 'Ocurrió un error inesperado');
     } finally {
       setSelectedFile(null);
-      setTipoArchivo('otros');
+      setTipoArchivo('tpv');
       const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
       setUploading(false);

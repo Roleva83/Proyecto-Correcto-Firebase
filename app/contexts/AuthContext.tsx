@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               uid: firebaseUser.uid,
               email: firebaseUser.email,
               displayName: firebaseUser.displayName,
-              restaurante_id: userData.businessId
+              restaurante_id: userData.businessId || userData.restaurante_id
             });
         } else {
             // This can happen during registration before the user doc is created.
