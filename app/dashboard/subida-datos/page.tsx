@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -30,15 +29,16 @@ export default function SubidaDatosPage() {
   const [archivos, setArchivos] = useState<ArchivoSubido[]>([]);
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [tipoArchivo, setTipoArchivo] = useState<string>('otros');
+  const [tipoArchivo, setTipoArchivo] = useState<string>('tpv');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user?.uid) {
+      setLoading(user === null);
+      return;
+    }
     setLoading(false);
     
-    if (!user.uid) return;
-
     const q = query(
       collection(db, 'archivos_subidos'),
       where('usuario_id', '==', user.uid),
@@ -71,8 +71,8 @@ export default function SubidaDatosPage() {
   };
 
   const handleUpload = async () => {
-    if (!selectedFile || !user?.uid) {
-      toast.error('Selecciona un archivo primero');
+    if (!selectedFile || !user?.uid || !user?.restaurante_id) {
+      toast.error('Selecciona un archivo y asegúrate de que tu restaurante está configurado.');
       return;
     }
 
@@ -86,7 +86,7 @@ export default function SubidaDatosPage() {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('userId', user.uid);
-      formData.append('restauranteId', 'default-restaurant-id'); // Reemplazar con ID real
+      formData.append('restauranteId', user.restaurante_id);
       formData.append('tipoArchivo', tipoArchivo);
 
       const uploadResponse = await fetch('/api/upload-file', {
@@ -167,8 +167,8 @@ export default function SubidaDatosPage() {
             <Sidebar />
             <div className="flex-1 flex flex-col">
                 <Header user={user} />
-                <main className="flex-1 p-8 text-center">
-                    <p>Cargando...</p>
+                <main className="flex-1 p-8 flex items-center justify-center">
+                    <Loader2 className="w-12 h-12 animate-spin text-primary" />
                 </main>
             </div>
         </div>
