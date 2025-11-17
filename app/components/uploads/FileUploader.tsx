@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useCallback } from 'react';
@@ -28,13 +27,12 @@ export default function FileUploader() {
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (!user) {
-      // It's better to show a toast message here
       console.error("Debes iniciar sesión para subir archivos.");
       return;
     }
 
     acceptedFiles.forEach(file => {
-      if (file.size > 20 * 1024 * 1024) { // 20 MB validation
+      if (file.size > 20 * 1024 * 1024) {
         setUploads(prev => ({
           ...prev,
           [file.name]: { file, progress: 0, status: 'error', error: 'Archivo demasiado grande (máx 20MB)' }
@@ -46,7 +44,7 @@ export default function FileUploader() {
       setUploads(prev => ({ ...prev, [file.name]: newUpload }));
 
       const fileId = `${Date.now()}-${file.name}`;
-      const storageRef = ref(storage, `user_uploads/${user.uid}/${fileId}`);
+      const storageRef = ref(storage, `uploads/${user.uid}/${fileId}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on('state_changed',
@@ -73,18 +71,18 @@ export default function FileUploader() {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
           try {
-            await addDoc(collection(db, `users/${user.uid}/uploads`), {
-              fileName: file.name,
-              fileId: fileId,
-              fileType: file.type,
-              fileSize: file.size,
-              storagePath: uploadTask.snapshot.ref.fullPath,
-              downloadURL: downloadURL,
-              uploadDate: serverTimestamp(),
-              analysisStatus: 'pending',
+            await addDoc(collection(db, 'archivos_subidos'), {
+              nombre_archivo: file.name,
+              tipo_datos: 'otros',
+              tamano: file.size,
+              fecha_subida: serverTimestamp(),
+              estado: 'pendiente',
+              url_descarga: downloadURL,
+              ruta_storage: uploadTask.snapshot.ref.fullPath,
+              usuario_id: user.uid,
+              restaurante_id: user.restaurante_id || '',
             });
             
-            // Simulate AI processing
             setTimeout(() => {
                 setUploads(prev => ({
                     ...prev,
@@ -124,7 +122,7 @@ export default function FileUploader() {
       'image/jpeg': ['.jpg', '.jpeg'],
       'image/png': ['.png'],
     },
-    maxSize: 20 * 1024 * 1024, // 20MB
+    maxSize: 20 * 1024 * 1024,
   });
 
   const removeUpload = (fileName: string) => {
