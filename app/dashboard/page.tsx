@@ -1,154 +1,67 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import MetricsWidget from '../components/dashboard/widgets/MetricsWidget'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign, AlertCircle, Star, Utensils, Lightbulb, Bot, Loader2 } from 'lucide-react'
+import { BarChart, Users, Calendar, Euro, TrendingUp, TrendingDown, Gem, ArrowRight, ShieldCheck, DollarSign, AlertCircle, Star, Utensils, Lightbulb, Bot } from 'lucide-react'
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
-import { collection, query, where, getDocs, orderBy, limit, Timestamp } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
-import { useAuth } from '@/contexts/AuthContext'
+
+const incomeData = [
+  { date: '27 ago', income: 3200, cost: 2200 },
+  { date: '28 ago', income: 2900, cost: 1900 },
+  { date: '29 ago', income: 2700, cost: 1600 },
+  { date: '30 ago', income: 4100, cost: 2500 },
+  { date: '31 ago', income: 4500, cost: 2800 },
+  { date: '1 sep', income: 4200, cost: 2600 },
+  { date: '2 sep', income: 3800, cost: 2400 },
+];
+
+const popularItems = [
+  { name: 'Pasta Carbonara Original', sales: 125, trend: 'up' },
+  { name: 'Entrecot de Vaca Madurada', sales: 98, trend: 'down' },
+  { name: 'Tarta de Queso Cremosa', sales: 85, trend: 'up' },
+];
+
+const hiddenGems = [
+  { name: 'Risotto de Setas y Trufa', price: 18, cost: 4.5 },
+  { name: 'Provoleta a la parrilla', price: 12, cost: 3 },
+  { name: 'Pulpo a la brasa', price: 22, cost: 7 },
+];
+
+const salesData = [
+  { name: 'Con Reserva', value: 75, color: '#14b8a6' },
+  { name: 'Sin Reserva', value: 25, color: '#ec4899' },
+]
+
+const reservationSourceData = [
+    { name: 'CoverManager', value: 40, color: '#14b8a6' },
+    { name: 'Google', value: 30, color: '#ec4899' },
+    { name: 'Teléfono', value: 20, color: '#f97316' },
+    { name: 'Web', value: 10, color: '#84cc16' },
+]
+
+const alerts = [
+  { icon: <AlertCircle className="h-5 w-5 text-red-500" />, title: 'Baja puntuación en servicio', description: '3 reseñas negativas mencionan la lentitud del servicio.', action: 'Ver Reseñas' },
+  { icon: <AlertCircle className="h-5 w-5 text-red-500" />, title: 'Queja sobre la comida', description: 'Una reseña menciona que el pescado no estaba fresco.', action: 'Ver Reseña' },
+  { icon: <TrendingDown className="h-5 w-5 text-yellow-500" />, title: 'Tendencia a la baja', description: 'Las reseñas sobre "Ambiente" han bajado un 15%.', action: 'Analizar' },
+  { icon: <Star className="h-5 w-5 text-green-500" />, title: 'Mención de empleado', description: 'Ana García ha sido mencionada positivamente.', action: 'Ver Empleado' },
+];
+
+const tips = [
+    { title: 'Optimiza tu plato estrella', description: 'La "Pasta Carbonara Original" es tu plato más popular. Considera un ligero aumento de precio o una promoción cruzada para maximizar su rentabilidad.', tags: ['Menú', 'Rentabilidad'], tagColors: ['bg-blue-100 text-blue-800', 'bg-green-100 text-green-800'] },
+    { title: 'Potencia tus "Joyas Ocultas"', description: 'El "Risotto de Setas" tiene un margen de beneficio del 80% pero pocas ventas. Entrena a tu personal para que lo recomiende activamente.', tags: ['Equipo', 'Ventas'], tagColors: ['bg-purple-100 text-purple-800', 'bg-yellow-100 text-yellow-800'] }
+];
 
 export default function Dashboard() {
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-
-  // Estados para los datos de Firestore
-  const [avgReview, setAvgReview] = useState('0.0 ★');
-  const [reservationsToday, setReservationsToday] = useState('0');
-  const [dailySales, setDailySales] = useState('0€');
-  const [loyalCustomers, setLoyalCustomers] = useState('0');
-  const [incomeData, setIncomeData] = useState<any[]>([]);
-  const [popularItems, setPopularItems] = useState<any[]>([]);
-  const [hiddenGems, setHiddenGems] = useState<any[]>([]);
-  const [salesData, setSalesData] = useState<any[]>([]);
-  const [reservationSourceData, setReservationSourceData] = useState<any[]>([]);
-  const [responseRate, setResponseRate] = useState('0%');
-  const [recoverableBenefit, setRecoverableBenefit] = useState('0€');
-  const [alerts, setAlerts] = useState<any[]>([]);
-  const [tips, setTips] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (!user || !user.restaurante_id) {
-        if(!user) setLoading(true);
-        return;
-    };
-
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const businessId = user.restaurante_id;
-
-        // 1. KPI Cards
-        // Reseñas promedio últimos 7 días
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-        const reviewsQuery = query(
-          collection(db, 'reviews'), 
-          where('businessId', '==', businessId),
-          where('date', '>=', Timestamp.fromDate(sevenDaysAgo))
-        );
-        const reviewsSnapshot = await getDocs(reviewsQuery);
-        let totalRating = 0;
-        if (!reviewsSnapshot.empty) {
-          reviewsSnapshot.forEach(doc => {
-            totalRating += doc.data().rating;
-          });
-          setAvgReview(`${(totalRating / reviewsSnapshot.size).toFixed(1)} ★`);
-        } else {
-          setAvgReview('N/A');
-        }
-
-        // Simulación de otros datos por ahora
-        setReservationsToday('72');
-        setDailySales('75€');
-        setLoyalCustomers('2');
-
-        // 2. Gráfico "Ingresos Totales"
-        // Simulado por ahora, requiere agregación compleja
-        setIncomeData([
-          { date: '27 ago', income: 3200, cost: 2200 },
-          { date: '28 ago', income: 2900, cost: 1900 },
-          { date: '29 ago', income: 2700, cost: 1600 },
-        ]);
-
-        // 9. Los Más Populares y 10. Joyas Ocultas
-        const menuQuery = query(collection(db, 'menus'), where('businessId', '==', businessId), limit(1));
-        const menuSnapshot = await getDocs(menuQuery);
-        if (!menuSnapshot.empty) {
-            const menuDoc = menuSnapshot.docs[0].data();
-            const allItems = menuDoc.items || [];
-            
-            // Populares
-            const sortedBySales = [...allItems].sort((a:any, b:any) => b.sales - a.sales);
-            setPopularItems(sortedBySales.slice(0, 3).map((item:any) => ({...item, trend: Math.random() > 0.5 ? 'up' : 'down'})));
-
-            // Joyas Ocultas
-            const avgSales = allItems.reduce((acc: number, item: any) => acc + item.sales, 0) / allItems.length;
-            const hidden = allItems.filter((item: any) => item.margin > 70 && item.sales < avgSales);
-            setHiddenGems(hidden.slice(0, 3));
-        }
-
-        // Simulación del resto de datos
-        setSalesData([
-          { name: 'Con Reserva', value: 75, color: '#14b8a6' },
-          { name: 'Sin Reserva', value: 25, color: '#ec4899' },
-        ]);
-        setReservationSourceData([
-            { name: 'CoverManager', value: 40, color: '#14b8a6' },
-            { name: 'Google', value: 30, color: '#ec4899' },
-            { name: 'Teléfono', value: 20, color: '#f97316' },
-            { name: 'Web', value: 10, color: '#84cc16' },
-        ]);
-        setResponseRate('91%');
-        setRecoverableBenefit('280€');
-        
-        // 7. Alertas de Lola
-        const alertsQuery = query(collection(db, 'alerts'), where('businessId', '==', businessId), orderBy('priority', 'desc'), limit(4));
-        const alertsSnapshot = await getDocs(alertsQuery);
-        setAlerts(alertsSnapshot.docs.map(doc => ({
-            ...doc.data(),
-            icon: <AlertCircle className="h-5 w-5 text-red-500" />,
-        })));
-        
-        // 8. Consejos de Lola
-        const tipsQuery = query(collection(db, 'recommendations'), where('businessId', '==', businessId), limit(2));
-        const tipsSnapshot = await getDocs(tipsQuery);
-        setTips(tipsSnapshot.docs.map(doc => doc.data()));
-
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [user]);
-
-  const appUser = { name: 'Restaurante Ejemplo' };
-
-  if (loading || !user) {
-    return (
-       <div className="flex min-h-screen bg-background">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <Header user={appUser} />
-          <main className="flex-1 p-8 flex items-center justify-center">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          </main>
-        </div>
-      </div>
-    )
-  }
+  const user = { name: 'Restaurante Ejemplo' }
 
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Header user={appUser} />
+        <Header user={user} />
         <main className="flex-1 p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground">Inicio</h1>
@@ -160,25 +73,25 @@ export default function Dashboard() {
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Reseñas (últimos 7 días)" 
-                value={avgReview} 
+                value="4.8 ★" 
                 />
             </div>
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Reservas hoy" 
-                value={reservationsToday}
+                value="72"
                 />
             </div>
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Ventas de día" 
-                value={dailySales}
+                value="2.350€"
                 />
             </div>
             <div className="col-span-3">
                 <MetricsWidget 
                 title="Clientes fidelizados" 
-                value={loyalCustomers}
+                value="12"
                 />
             </div>
 
@@ -226,7 +139,7 @@ export default function Dashboard() {
                   <div>
                     <h4 className="font-semibold mb-2 text-foreground">Los Más Populares (por Unidades)</h4>
                     <div className="space-y-3">
-                      {popularItems.map((item:any) => (
+                      {popularItems.map(item => (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                           <span className="flex items-center">
                             {item.trend === 'up' ? <TrendingUp className="h-4 w-4 mr-2 text-green-500" /> : <TrendingDown className="h-4 w-4 mr-2 text-red-500" />}
@@ -238,7 +151,7 @@ export default function Dashboard() {
                     </div>
                     <h4 className="font-semibold mb-2 mt-6 text-foreground">Joyas Ocultas a Potenciar</h4>
                     <div className="space-y-3">
-                      {hiddenGems.map((item:any) => (
+                      {hiddenGems.map(item => (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                           <span className="flex items-center">
                             <Gem className="h-4 w-4 mr-2 text-purple-500" />
@@ -322,7 +235,7 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-foreground">{responseRate} <span className="text-base font-semibold text-green-600 align-text-bottom">+5%</span></p>
+                  <p className="text-4xl font-bold text-foreground">91% <span className="text-base font-semibold text-green-600 align-text-bottom">+5%</span></p>
                   <p className="text-xs text-muted-foreground">Respecto al periodo anterior</p>
                   <div className="border-t my-4"></div>
                   <h4 className="font-semibold text-sm mb-2">Comunicaciones</h4>
@@ -348,7 +261,7 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold text-green-600">{recoverableBenefit} <span className="text-base font-semibold text-muted-foreground align-text-bottom">+2 acciones</span></p>
+                  <p className="text-4xl font-bold text-green-600">280€ <span className="text-base font-semibold text-muted-foreground align-text-bottom">+2 acciones</span></p>
                   <p className="text-xs text-muted-foreground">Aplicando mejoras de Lola</p>
                   <div className="border-t my-4"></div>
                   <h4 className="font-semibold text-sm mb-2">Acciones de Mayor Impacto</h4>
@@ -393,7 +306,7 @@ export default function Dashboard() {
                   <p className="text-sm text-muted-foreground pt-1">Lola ha detectado estas situaciones. ¡Revísalas para no perder ninguna oportunidad!</p>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                    {alerts.map((alert:any, index) => (
+                    {alerts.map((alert, index) => (
                         <div key={index} className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors">
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex items-start gap-3">
@@ -420,7 +333,7 @@ export default function Dashboard() {
                   <p className="text-sm text-muted-foreground pt-1">Recomendaciones para ti.</p>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {tips.map((tip:any, index:number) => (
+                  {tips.map((tip, index) => (
                     <div key={index} className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors">
                       <div className="flex justify-between items-start">
                         <div>
