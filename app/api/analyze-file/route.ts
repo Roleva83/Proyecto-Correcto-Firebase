@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase';
-import { ai } from '@/app/ai/genkit';
+import { ai } from '@/ai/genkit';
 
 export async function POST(request: NextRequest) {
   try {
@@ -100,7 +100,7 @@ async function procesarPDF(fileBase64: string, tipoDatos: string) {
   }
   
   // Fallback si la IA no devuelve JSON directamente
-  let jsonText = response.text().trim();
+  let jsonText = response.text.trim();
   jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
   return JSON.parse(jsonText);
 }

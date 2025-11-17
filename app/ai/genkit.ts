@@ -1,14 +1,11 @@
-import { genkit, configureGenkit } from 'genkit';
-import { googleAI } from '@genkit-ai/google-genai';
-import { nextJs } from '@genkit-ai/next';
+import { genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 export const ai = genkit({
   plugins: [
-    nextJs(),
     googleAI({
-      apiKey: process.env.GOOGLE_AI_API_KEY,
-    }),
+      apiKey: process.env.GOOGLE_AI_API_KEY
+    })
   ],
-  logLevel: 'debug',
-  enableTracingAndMetrics: true,
+  model: 'googleai/gemini-2.0-flash-exp',
 });
