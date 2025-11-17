@@ -1,8 +1,11 @@
+
+'use client';
 import './globals.css'
 import { Inter, Poppins } from 'next/font/google'
 import { AuthProvider } from './contexts/AuthContext'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { useEffect } from 'react';
 
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -12,18 +15,38 @@ const poppins = Poppins({
   variable: '--font-poppins'
 })
 
-export const metadata = {
-  title: 'Caña y Reseña - Lola AI',
-  description: 'Gestión inteligente de reseñas con IA',
-}
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  
+  useEffect(() => {
+    // Este script busca y elimina Service Workers "zombis" que puedan causar problemas de caché.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        if (registrations.length > 0) {
+          console.log('Service Workers encontrados. Intentando eliminar...');
+          let unregistered = false;
+          registrations.forEach(registration => {
+            registration.unregister();
+            unregistered = true;
+          });
+          if (unregistered) {
+            console.log('Service Workers eliminados. Recargando la página para aplicar cambios.');
+            window.location.reload();
+          }
+        }
+      });
+    }
+  }, []);
+
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        <title>Caña y Reseña - Lola AI</title>
+        <meta name="description" content="Gestión inteligente de reseñas con IA" />
+      </head>
       <body className={`${inter.variable} ${poppins.variable}`}>
         <ThemeProvider
           attribute="class"
