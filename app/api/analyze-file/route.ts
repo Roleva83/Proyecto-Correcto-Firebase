@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase';
-import { generate } from 'genkit';
+import { ai } from '@/ai/genkit';
 
 export async function POST(request: NextRequest) {
   try {
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 async function procesarPDF(fileBase64: string, tipoDatos: string) {
   const prompt = tipoDatos === 'tpv' ? promptVentasTPV : promptGenerico;
 
-  const response = await generate({
+  const response = await ai.generate({
     model: 'googleai/gemini-2.0-flash-exp',
     prompt: [
       { text: prompt },
@@ -85,7 +85,7 @@ async function procesarPDF(fileBase64: string, tipoDatos: string) {
     }
   });
 
-  let jsonText = response.text().trim();
+  let jsonText = response.text.trim();
   jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
   return JSON.parse(jsonText);
 }
