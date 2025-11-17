@@ -1,58 +1,110 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const ExcelJS = require('exceljs');
-const csvParser = require('csv-parser');
-const stream = require('stream');
+
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.processUploadedFile = functions.storage.object().onFinalize(async (object) => {
-  const filePath = object.name;
-  if (!filePath || !filePath.startsWith('user_uploads/')) return;
+const db = admin.firestore();
+const storage = admin.storage().bucket();
 
-  const userId = filePath.split('/')[1];
-  const fileName = filePath.split('/').pop();
-  const fileType = fileName.split('.').pop().toLowerCase();
+const STORAGE_LIMIT_BYTES = 5368709120; // 5 GB
+
+/**
+ * Cloud Function para subir un archivo de un restaurante.
+ * - Verifica el límite de almacenamiento.
+ * - Sube el archivo a Firebase Storage.
+ * - Guarda los metadatos en Firestore.
+ * - Actualiza el almacenamiento total utilizado por el restaurante.
+ */
+exports.uploadRestaurantFile = functions.https.onCall(async (data, context) => {
+  // 1. Validar autenticación
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "La función debe ser llamada por un usuario autenticado."
+    );
+  }
+
+  // 2. Validar parámetros de entrada
+  const { file, restaurantId, fileName, fileSize } = data;
+  if (!file || !restaurantId || !fileName || !fileSize) {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "Faltan parámetros requeridos (file, restaurantId, fileName, fileSize)."
+    );
+  }
+
+  const restaurantRef = db.collection("restaurants").doc(restaurantId);
 
   try {
-    const bucket = admin.storage().bucket(object.bucket);
-    const file = bucket.file(filePath);
-    const [fileBuffer] = await file.download();
+    const restaurantDoc = await restaurantRef.get();
 
-    let extractedData = {};
-
-    if (fileType === 'csv') {
-      extractedData = await processCSV(fileBuffer);
-    } else if (fileType === 'xlsx' || fileType === 'xls') {
-      extractedData = await processExcel(fileBuffer);
+    if (!restaurantDoc.exists) {
+      throw new functions.https.HttpsError(
+        "not-found",
+        `El restaurante con ID ${restaurantId} no existe.`
+      );
     }
 
-    await admin.firestore().collection(`users/${userId}/processedData`).add({
-      fileName,
-      fileType,
-      uploadDate: admin.firestore.FieldValue.serverTimestamp(),
-      data: extractedData,
-      status: 'completed'
+    // 3. Verificar que el restaurante no haya superado 5GB de almacenamiento
+    const currentStorageUsed = restaurantDoc.data().totalStorageUsed || 0;
+    if (currentStorageUsed + fileSize > STORAGE_LIMIT_BYTES) {
+      throw new functions.https.HttpsError(
+        "resource-exhausted",
+        "El límite de almacenamiento (5GB) para este restaurante ha sido superado."
+      );
+    }
+
+    // 4. Subir el archivo a Storage
+    const filePath = `restaurants/${restaurantId}/uploads/${fileName}`;
+    const fileBuffer = Buffer.from(file, "base64");
+
+    const fileUpload = storage.file(filePath);
+    await fileUpload.save(fileBuffer, {
+      metadata: {
+        contentType: "application/octet-stream", // O un tipo MIME más específico si se proporciona
+      },
+    });
+    
+    const [downloadURL] = await fileUpload.getSignedUrl({
+        action: 'read',
+        expires: '03-09-2491' // URL de larga duración
     });
 
+
+    // 5. Iniciar una transacción de Firestore para garantizar la consistencia
+    await db.runTransaction(async (transaction) => {
+      // 5a. Guardar metadatos en la colección "uploads"
+      const uploadRef = db.collection("uploads").doc();
+      transaction.set(uploadRef, {
+        restaurantId: restaurantId,
+        fileName: fileName,
+        fileSize: fileSize,
+        downloadURL: downloadURL,
+        uploadDate: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // 5b. Actualizar el campo totalStorageUsed en el documento del restaurante
+      transaction.update(restaurantRef, {
+        totalStorageUsed: admin.firestore.FieldValue.increment(fileSize),
+      });
+    });
+
+    console.log(`Archivo ${fileName} subido correctamente para el restaurante ${restaurantId}.`);
+    return {
+      success: true,
+      message: "Archivo subido y registrado correctamente.",
+      downloadURL: downloadURL,
+    };
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error al subir el archivo:", error);
+    if (error instanceof functions.https.HttpsError) {
+      throw error; // Re-lanzar errores HttpsError
+    }
+    throw new functions.https.HttpsError(
+      "internal",
+      "Ha ocurrido un error interno al procesar el archivo.",
+      error.message
+    );
   }
 });
-
-async function processCSV(buffer) {
-  return new Promise((resolve) => {
-    const results = [];
-    const bufferStream = new stream.PassThrough();
-    bufferStream.end(buffer);
-    bufferStream.pipe(csvParser()).on('data', (d) => results.push(d)).on('end', () => resolve({ rows: results }));
-  });
-}
-
-async function processExcel(buffer) {
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(buffer);
-  const rows = [];
-  workbook.worksheets[0].eachRow((r, n) => { if (n > 1) rows.push(r.values); });
-  return { rows };
-}
