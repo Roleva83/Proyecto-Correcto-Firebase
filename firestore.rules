@@ -1,23 +1,19 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Permite a los usuarios autenticados leer y escribir en sus propios perfiles
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-
-    // Permite a los usuarios autenticados leer y escribir en los perfiles de negocios
-    // Aquí se podría añadir una lógica más granular (ej: solo el dueño puede escribir)
+    
     match /businesses/{businessId} {
       allow read, write: if request.auth != null;
     }
     
-    // Permite a los usuarios autenticados subir y gestionar sus propios archivos
     match /archivos_subidos/{archivoId} {
-      allow read, write: if request.auth != null && request.auth.uid == request.resource.data.usuario_id;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.usuario_id;
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.usuario_id;
     }
     
-    // Permite a los usuarios autenticados gestionar datos dentro de su propio perfil
     match /usuarios/{userId}/{documents=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
