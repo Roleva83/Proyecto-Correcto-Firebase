@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useEffect } from 'react';
 import Header from '../components/layout/Header';
@@ -14,13 +13,13 @@ import { format } from 'date-fns';
 
 interface UploadedFile {
     id: string;
-    fileName: string;
-    fileSize: number;
-    uploadDate: {
+    nombre_archivo: string;
+    tamano: number;
+    fecha_subida: {
         seconds: number;
         nanoseconds: number;
     };
-    analysisStatus: 'pending' | 'completed' | 'error';
+    estado: string;
 }
 
 export default function UploadDataPage() {
@@ -30,7 +29,7 @@ export default function UploadDataPage() {
     useEffect(() => {
         if (!user) return;
 
-        const q = query(collection(db, `users/${user.uid}/uploads`), orderBy('uploadDate', 'desc'));
+        const q = query(collection(db, 'archivos_subidos'), orderBy('fecha_subida', 'desc'));
         
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const files: UploadedFile[] = [];
@@ -89,18 +88,18 @@ export default function UploadDataPage() {
                                             <div key={file.id} className="flex items-center gap-4 rounded-lg border p-3">
                                                 <FileText className="h-6 w-6 text-muted-foreground flex-shrink-0" />
                                                 <div className="flex-1 overflow-hidden">
-                                                    <p className="truncate text-sm font-medium text-foreground">{file.fileName}</p>
+                                                    <p className="truncate text-sm font-medium text-foreground">{file.nombre_archivo}</p>
                                                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                                        <span>{(file.fileSize / (1024 * 1024)).toFixed(2)} MB</span>
+                                                        <span>{(file.tamano / (1024 * 1024)).toFixed(2)} MB</span>
                                                         <span>
-                                                            {file.uploadDate ? format(new Date(file.uploadDate.seconds * 1000), 'dd/MM/yyyy') : '...'}
+                                                            {file.fecha_subida ? format(new Date(file.fecha_subida.seconds * 1000), 'dd/MM/yyyy') : '...'}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    {file.analysisStatus === 'completed' && <Button variant="ghost">Ver Análisis</Button>}
-                                                     {file.analysisStatus === 'pending' && <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">Pendiente</span>}
-                                                      {file.analysisStatus === 'error' && <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">Error</span>}
+                                                    {file.estado === 'completado' && <Button variant="ghost">Ver Análisis</Button>}
+                                                    {file.estado === 'pendiente' && <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">Pendiente</span>}
+                                                    {file.estado === 'error' && <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">Error</span>}
                                                 </div>
                                             </div>
                                         ))
