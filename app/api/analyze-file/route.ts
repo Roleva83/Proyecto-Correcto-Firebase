@@ -1,8 +1,9 @@
+
 import { NextRequest, NextResponse } from 'next/server';
 import { doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase';
-import { ai } from '@/ai/genkit';
+import { ai } from '@/app/ai/genkit';
 
 export async function POST(request: NextRequest) {
   try {
@@ -58,6 +59,12 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Error al analizar archivo:', error);
+    // Antes de devolver el error, intentamos actualizar el estado del documento
+    const { archivoId } = await request.json().catch(() => ({ archivoId: null }));
+    if (archivoId) {
+        const archivoRef = doc(db, 'archivos_subidos', archivoId);
+        await updateDoc(archivoRef, { estado: 'error' }).catch(err => console.error("Failed to update status to error", err));
+    }
     return NextResponse.json(
       { error: 'Error al procesar el archivo', details: error.message },
       { status: 500 }
@@ -69,7 +76,7 @@ async function procesarPDF(fileBase64: string, tipoDatos: string) {
   const prompt = tipoDatos === 'tpv' ? promptVentasTPV : promptGenerico;
 
   const response = await ai.generate({
-    model: 'googleai/gemini-2.0-flash-exp',
+    model: 'gemini-1.5-flash-latest',
     prompt: [
       { text: prompt },
       {
@@ -82,15 +89,24 @@ async function procesarPDF(fileBase64: string, tipoDatos: string) {
     config: {
       temperature: 0.1,
       maxOutputTokens: 8192
+    },
+    output: {
+      format: 'json',
     }
   });
 
-  let jsonText = response.text.trim();
+  if (response.output?.json) {
+    return response.output.json;
+  }
+  
+  // Fallback si la IA no devuelve JSON directamente
+  let jsonText = response.text().trim();
   jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
   return JSON.parse(jsonText);
 }
 
 async function procesarExcel(fileBase64: string, tipoDatos: string) {
+  // Implementación futura
   throw new Error('Procesamiento de Excel aún no implementado');
 }
 
@@ -100,7 +116,8 @@ async function guardarVentas(
   datosExtraidos: any,
   archivoOrigenId: string
 ) {
-  const ventasRef = collection(db, `usuarios/${usuarioId}/restaurantes/${restauranteId}/ventas`);
+  if (!restauranteId) throw new Error("restauranteId es indefinido en guardarVentas");
+  const ventasRef = collection(db, `businesses/${restauranteId}/ventas`);
   const batch: Promise<any>[] = [];
 
   datosExtraidos.productos?.forEach((producto: any) => {
@@ -128,14 +145,16 @@ Analiza este documento PDF de ventas de restaurante y extrae TODOS los productos
 
 REGLAS CRÍTICAS:
 - Extrae TODOS los productos (no resumas ni omitas)
-- Convierte formatos europeos: "1.234,56 €" → 1234.56
-- Si hay categorías, agrúpalas
-- Calcula precio unitario si es necesario
+- Convierte formatos de moneda europeos: "1.234,56 €" debe convertirse al número 1234.56
+- Si hay categorías, agrúpalas. Si no, usa "Sin categoría".
+- Calcula el precio unitario si no está explícito.
+- Extrae las fechas de inicio y fin del periodo del informe si están disponibles.
+- Responde ÚNICAMENTE con el objeto JSON. No incluyas texto extra, explicaciones, ni lo envuelvas en markdown como \`\`\`json.
 
 FORMATO DE SALIDA (JSON válido):
 {
   "metadata": {
-    "restaurante": "string",
+    "restaurante": "string o null",
     "periodo_inicio": "YYYY-MM-DD o null",
     "periodo_fin": "YYYY-MM-DD o null",
     "total_productos": number,
@@ -153,11 +172,9 @@ FORMATO DE SALIDA (JSON válido):
     }
   ]
 }
-
-IMPORTANTE: Responde SOLO con JSON válido, sin explicaciones ni markdown.
 `;
 
 const promptGenerico = `
 Extrae toda la información relevante de este documento y devuélvela en formato JSON estructurado.
-Responde SOLO con JSON válido, sin explicaciones.
+Responde ÚNICAMENTE con el objeto JSON. No incluyas texto extra, explicaciones, ni lo envuelvas en markdown como \`\`\`json.
 `;

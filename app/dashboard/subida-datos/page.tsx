@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -10,7 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Upload, FileText, Trash2, Loader2, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 
 interface ArchivoSubido {
   id: string;
@@ -33,11 +34,7 @@ export default function SubidaDatosPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      setLoading(true);
-      return;
-    }
-    if (!user.uid) {
+    if (!user || !user.uid) {
       setLoading(true);
       return;
     }
@@ -55,9 +52,11 @@ export default function SubidaDatosPage() {
         archivosData.push({ id: doc.id, ...doc.data() } as ArchivoSubido);
       });
       setArchivos(archivosData);
+      setLoading(false);
     }, (error) => {
         console.error("Error al obtener archivos: ", error);
         toast.error("No se pudieron cargar los archivos.");
+        setLoading(false);
     });
 
     return () => unsubscribe();
@@ -81,10 +80,9 @@ export default function SubidaDatosPage() {
     }
 
     setUploading(true);
-    toast.info('Subiendo archivo...', {
+    const toastId = toast.loading('Subiendo archivo...', {
         description: selectedFile.name,
     });
-
 
     try {
       const formData = new FormData();
@@ -93,6 +91,7 @@ export default function SubidaDatosPage() {
       formData.append('restauranteId', user.restaurante_id);
       formData.append('tipoArchivo', tipoArchivo);
 
+      // Paso 1: Subir el archivo
       const uploadResponse = await fetch('/api/upload-file', {
         method: 'POST',
         body: formData,
@@ -100,12 +99,13 @@ export default function SubidaDatosPage() {
 
       if (!uploadResponse.ok) {
         const errorData = await uploadResponse.json();
-        throw new Error(errorData.error || 'Error al subir el archivo');
+        throw new Error(errorData.details || 'Error al subir el archivo');
       }
 
       const uploadData = await uploadResponse.json();
-      toast.success('Archivo subido correctamente. Iniciando análisis...');
-
+      toast.loading('Archivo subido. Analizando con IA...', { id: toastId });
+      
+      // Paso 2: Analizar el archivo
       const analyzeResponse = await fetch('/api/analyze-file', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,17 +114,18 @@ export default function SubidaDatosPage() {
       
       if (!analyzeResponse.ok) {
         const errorData = await analyzeResponse.json();
-        throw new Error(errorData.error || 'El análisis del archivo falló');
+        throw new Error(errorData.details || 'El análisis del archivo falló');
       }
 
-      toast.success('Análisis completado');
+      toast.success('¡Análisis completado!', { id: toastId });
       
     } catch (error: any) {
       console.error('Error en el proceso:', error);
-      toast.error(error.message || 'Ocurrió un error inesperado');
+      toast.error(error.message || 'Ocurrió un error inesperado', { id: toastId });
     } finally {
       setSelectedFile(null);
-      setTipoArchivo('tpv');
+      // Mantener el tipo de archivo por si el usuario quiere subir varios del mismo tipo
+      // setTipoArchivo('tpv'); 
       const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
       setUploading(false);
@@ -132,29 +133,32 @@ export default function SubidaDatosPage() {
   };
 
   const handleDelete = async (archivo: ArchivoSubido) => {
-    if (!confirm('¿Estás seguro de eliminar este archivo?')) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar este archivo y sus datos asociados? Esta acción no se puede deshacer.')) return;
 
-    toast.info('Eliminando archivo...');
+    const toastId = toast.loading('Eliminando archivo...');
     try {
+      // Eliminar de Firebase Storage
       const storageRef = ref(storage, archivo.ruta_storage);
       await deleteObject(storageRef);
+
+      // Eliminar de Firestore
       await deleteDoc(doc(db, 'archivos_subidos', archivo.id));
-      toast.success('Archivo eliminado correctamente');
+      
+      toast.success('Archivo eliminado correctamente', { id: toastId });
     } catch (error: any) {
       console.error('Error al eliminar:', error);
-      toast.error('No se pudo eliminar el archivo.');
+      toast.error(error.message || 'No se pudo eliminar el archivo.', { id: toastId });
     }
   };
   
     const formatBytes = (bytes: number, decimals = 2) => {
-        if (bytes === 0) return '0 Bytes';
+        if (!+bytes) return '0 Bytes';
         const k = 1024;
         const dm = decimals < 0 ? 0 : decimals;
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
     }
-
 
   const getEstadoIcon = (estado: string) => {
     switch (estado) {
@@ -181,7 +185,6 @@ export default function SubidaDatosPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-        <Toaster richColors />
         <Sidebar />
         <div className="flex-1 flex flex-col">
             <Header user={user} />
@@ -223,9 +226,9 @@ export default function SubidaDatosPage() {
                                 disabled={uploading}
                                 />
                                 <label htmlFor="file-upload" className="cursor-pointer text-primary hover:underline font-medium">
-                                    Haz clic para subir
+                                    Haz clic para subir un archivo
                                 </label>
-                                <p className="text-sm text-gray-500 mt-1">o arrastra y suelta</p>
+                                <p className="text-sm text-gray-500 mt-1">o arrástralo aquí</p>
                                 {selectedFile && (
                                 <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                                     <p className="text-sm text-green-800 font-medium">✓ Archivo seleccionado: {selectedFile.name}</p>
@@ -270,12 +273,13 @@ export default function SubidaDatosPage() {
                                             <span>
                                                 {archivo.fecha_subida?.toDate?.().toLocaleDateString() || 'Reciente'}
                                             </span>
+                                            <span className="capitalize">{archivo.tipo_datos}</span>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2" title={archivo.estado}>
                                         {getEstadoIcon(archivo.estado)}
                                     </div>
-                                    <Button variant="ghost" onClick={() => handleDelete(archivo)}><Trash2 className="h-4 w-4 text-red-500"/></Button>
+                                    <Button variant="ghost" size="icon" onClick={() => handleDelete(archivo)}><Trash2 className="h-4 w-4 text-red-500"/></Button>
                                 </div>
                                 ))}
                             </div>
