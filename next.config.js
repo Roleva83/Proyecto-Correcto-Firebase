@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const path = require('path');
-
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -17,17 +15,6 @@ const nextConfig = {
         hostname: 'api.qrserver.com',
       }
     ],
-  },
-  webpack: (config) => {
-    config.externals.push({
-        'sharp': 'commonjs sharp',
-        'onnxruntime-node': 'commonjs onnxruntime-node',
-    })
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, './app'),
-    }
-    return config
   },
 };
 

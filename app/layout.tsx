@@ -23,21 +23,27 @@ export default function RootLayout({
   
   useEffect(() => {
     // Este script busca y elimina Service Workers "zombis" que puedan causar problemas de caché.
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(registrations => {
-        if (registrations.length > 0) {
-          console.log('Service Workers encontrados. Intentando eliminar...');
-          let unregistered = false;
-          registrations.forEach(registration => {
-            registration.unregister();
-            unregistered = true;
-          });
-          if (unregistered) {
-            console.log('Service Workers eliminados. Recargando la página para aplicar cambios.');
-            window.location.reload();
+    // Es una solución robusta para forzar al navegador a obtener la versión más reciente.
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations()
+        .then((registrations) => {
+          if (registrations.length > 0) {
+            console.log('Service Workers encontrados. Eliminando...');
+            const unregisterPromises = registrations.map(registration => registration.unregister());
+            
+            Promise.all(unregisterPromises).then(unregistered => {
+              if (unregistered.some(Boolean)) {
+                console.log('Todos los Service Workers han sido eliminados. Recargando la página...');
+                window.location.reload(true); // Forzar recarga desde el servidor
+              } else {
+                 console.log('No se pudo eliminar ningún Service Worker.');
+              }
+            }).catch(err => console.error("Error al eliminar los Service Workers:", err));
           }
-        }
-      });
+        })
+        .catch(error => {
+          console.error('Error al obtener los registros de Service Worker:', error);
+        });
     }
   }, []);
 
