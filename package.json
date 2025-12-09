@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "type-check": "tsc --noEmit"
+        "type-check": "tsc --noEmit",
+        "check-deps": "madge --circular --extensions ts,tsx ./app"
     },
     "dependencies": {
         "@anthropic-ai/sdk": "^0.59.0",
@@ -87,7 +88,8 @@
     "devDependencies": {
         "@types/papaparse": "^5.3.14",
         "eslint": "^8",
-        "eslint-config-next": "^16.0.8"
+        "eslint-config-next": "^16.0.8",
+        "madge": "^8.0.0"
     },
     "engines": {
         "node": "20.x"
