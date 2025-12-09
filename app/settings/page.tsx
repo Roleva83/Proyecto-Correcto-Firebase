@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Upload, Building, Globe, Mail, Phone, MapPin, Users, Star, Calendar, MessageSquare, Briefcase, Link as LinkIcon, Settings } from 'lucide-react'
+import { Upload, Building, Globe, Mail, Phone, MapPin, Users, Star, Calendar, MessageSquare, Briefcase, Link as LinkIcon, Settings, FlaskConical } from 'lucide-react'
 import Image from 'next/image'
 import { auth } from '@/lib/firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
@@ -103,6 +103,7 @@ export default function SettingsPage() {
         { id: 'lightspeed', icon: <Briefcase className="h-5 w-5 text-gray-700" />, title: 'Lightspeed', description: 'Sincroniza tus datos de ventas para obtener métricas de negocio más completas.', status: 'No conectado' },
         { id: 'zapier', icon: <LinkIcon className="h-5 w-5 text-gray-700" />, title: 'Zapier', description: 'Conecta Caña y Reseña con más de 5,000 apps para automatizar flujos de trabajo.', status: 'No conectado' },
         { id: 'webhook', icon: <LinkIcon className="h-5 w-5 text-gray-700" />, title: 'Webhook', description: 'Usa webhooks para integraciones personalizadas y notificaciones en tiempo real.', status: 'No conectado' },
+        { id: 'gastronomy_alchemist', icon: <FlaskConical className="h-5 w-5 text-purple-700" />, title: 'Gastronomy Alchemist', description: 'Conecta tu simulador de datos para probar a Lola con información realista.', status: 'No conectado' },
     ]);
 
   const updateIntegrationStatus = (id: string, status: 'Conectado' | 'No conectado', syncDate?: string) => {
@@ -128,14 +129,16 @@ export default function SettingsPage() {
       }
     } else {
         // Simulación para otras integraciones
-        toast.success(`¡${id} conectado con éxito!`);
+        const integration = integrations.find(i => i.id === id);
+        toast.success(`¡${integration?.title || id} conectado con éxito!`);
         const today = new Date().toISOString().split('T')[0];
         updateIntegrationStatus(id, 'Conectado', today);
     }
   };
 
   const handleDisconnect = (id: string) => {
-      toast.info(`Desconectado de ${id}.`);
+      const integration = integrations.find(i => i.id === id);
+      toast.info(`Desconectado de ${integration?.title || id}.`);
       updateIntegrationStatus(id, 'No conectado');
   };
 
@@ -320,12 +323,12 @@ export default function SettingsPage() {
                         </div>
                     </div>
 
-                    {/* Automatización */}
-                     <div>
-                        <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Settings className="h-5 w-5 text-primary"/> Automatización</h3>
-                        <p className="text-sm text-muted-foreground mb-4">Conecta tus cuentas para sincronizar los datos automáticamente.</p>
+                    {/* Automatización y Simulación */}
+                    <div>
+                        <h3 className="text-lg font-semibold flex items-center gap-2 mb-2"><Settings className="h-5 w-5 text-primary"/> Automatización y Simulación</h3>
+                        <p className="text-sm text-muted-foreground mb-4">Conecta con herramientas de automatización y tu simulador de datos.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           {integrations.filter(i => ['zapier', 'webhook'].includes(i.id)).map(int => (
+                           {integrations.filter(i => ['zapier', 'webhook', 'gastronomy_alchemist'].includes(i.id)).map(int => (
                                 <IntegrationCard key={int.id} integration={int} onConnect={handleConnect} onDisconnect={handleDisconnect} />
                             ))}
                         </div>
