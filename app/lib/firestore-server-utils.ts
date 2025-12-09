@@ -1,3 +1,4 @@
+'use server';
 // IMPORTANT: This file is intended for server-side use only (e.g., in Genkit flows).
 // It uses firebase-admin, which has elevated privileges.
 
@@ -9,7 +10,11 @@ if (!admin.apps.length) {
   // Cuando se despliega en Firebase/Google Cloud, las credenciales se detectan automáticamente.
   // Para desarrollo local, necesitas configurar el archivo de credenciales de la cuenta de servicio.
   // process.env.GOOGLE_APPLICATION_CREDENTIALS = "path/to/your/service-account-key.json";
-  admin.initializeApp();
+  try {
+    admin.initializeApp();
+  } catch (error) {
+    console.error('Error inicializando Firebase Admin SDK. Asegúrate de que las credenciales están configuradas en el entorno del servidor.', error);
+  }
 }
 
 const db = admin.firestore();
@@ -21,6 +26,7 @@ const db = admin.firestore();
  * @returns Una promesa que se resuelve en un array de objetos de ventas.
  */
 export async function getSalesDataForBusiness(restauranteId: string, days: number = 30): Promise<any[]> {
+  if (!admin.apps.length) return [];
   try {
     const endDate = new Date();
     const startDate = new Date();
@@ -50,17 +56,14 @@ export async function getSalesDataForBusiness(restauranteId: string, days: numbe
  * @returns Una promesa que se resuelve en un array de objetos de reseñas.
  */
 export async function getReviewsForBusiness(restauranteId: string, limit: number = 10): Promise<any[]> {
+  if (!admin.apps.length) return [];
   try {
-    // Nota: Firestore no permite consultas complejas en colecciones anidadas sin índices.
-    // Esta es una simplificación. Para un caso real, podríamos necesitar un campo businessId en cada reseña
-    // o consultar la colección `archivos_subidos` que contiene `restaurante_id`.
-    // Por simplicidad, asumiremos que existe una colección `reviews` de nivel superior con `restaurante_id`.
-    
     // Simulación: vamos a buscar en 'archivos_subidos' que tengan un analisis
+    // En un futuro, esto debería consultar una colección `reviews` dedicada.
     const snapshot = await db.collection('archivos_subidos')
       .where('restaurante_id', '==', restauranteId)
       .where('estado', '==', 'completado')
-      .where('tipo_datos', '==', 'tpv') // Asumiendo que el análisis de tpv contiene reseñas
+      // Asumiendo que el análisis de tpv podría contener algo similar a reseñas
       .orderBy('fecha_procesamiento', 'desc')
       .limit(limit)
       .get();
@@ -77,4 +80,41 @@ export async function getReviewsForBusiness(restauranteId: string, limit: number
     console.error(`Error al obtener reseñas para ${restauranteId}:`, error);
     return [];
   }
+}
+
+/**
+ * Añade datos simulados (ventas o reseñas) a Firestore para un restaurante específico.
+ * @param restauranteId El ID del negocio.
+ * @param type El tipo de dato ('ventas' o 'reviews').
+ * @param payload El array de objetos de datos a añadir.
+ * @returns Una promesa que se resuelve con el número de registros añadidos.
+ */
+export async function addSimulatedData(restauranteId: string, type: 'ventas' | 'reviews', payload: any[]): Promise<{ count: number }> {
+    if (!admin.apps.length) {
+        throw new Error('Firebase Admin no está inicializado.');
+    }
+    
+    // Validar que el negocio exista
+    const businessRef = db.collection('businesses').doc(restauranteId);
+    const businessDoc = await businessRef.get();
+    if (!businessDoc.exists) {
+        throw new Error(`El restaurante con ID ${restauranteId} no existe.`);
+    }
+
+    const collectionPath = `businesses/${restauranteId}/${type}`;
+    const batch = db.batch();
+
+    payload.forEach(item => {
+        const docRef = db.collection(collectionPath).doc();
+        batch.set(docRef, {
+            ...item,
+            // Asegurarnos de que las fechas sean Timestamps de Firestore si son strings
+            fecha: item.fecha ? admin.firestore.Timestamp.fromDate(new Date(item.fecha)) : admin.firestore.FieldValue.serverTimestamp(),
+            simulated: true // Añadir una bandera para identificar datos simulados
+        });
+    });
+
+    await batch.commit();
+
+    return { count: payload.length };
 }
