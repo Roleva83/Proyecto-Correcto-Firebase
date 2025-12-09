@@ -53,7 +53,7 @@ export default function RootLayout({
         <title>Caña y Reseña - Lola AI</title>
         <meta name="description" content="Gestión inteligente de reseñas con IA" />
       </head>
-      <body className={`${inter.variable} ${poppins.variable}`}>
+      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

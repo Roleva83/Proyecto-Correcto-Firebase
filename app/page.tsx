@@ -2,15 +2,20 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import { User, Mail, Phone, Building, Search, Star, TrendingUp, Clock, Check, Sparkles, Instagram, Facebook, Linkedin } from 'lucide-react';
 import ScrollToTopButton from './components/ui/ScrollToTopButton';
 
 const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins'
+});
 
 export default function Landing() {
   return (
-    <div className={`bg-background text-foreground ${inter.className}`}>
+    <div className={`${inter.className} ${poppins.variable} bg-background text-foreground`}>
       {/* Header/Navigation */}
       <header className="sticky top-0 z-50 h-[72px] bg-white shadow-soft">
         <div className="container mx-auto flex h-full max-w-[1200px] items-center justify-between px-4">
