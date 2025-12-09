@@ -1,0 +1,31 @@
+
+> cana-y-resena@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.33
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/lib/firestore-server-utils.ts
+Module not found: Can't resolve 'firebase-admin'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./app/ai/flows/lola-chat-flow.ts
+./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Fuser%2FProyecto-Correcto-Firebase%2Fapp%2Fai%2Fflows%2Flola-chat-flow.ts%22%2C%5B%22lolaChat%22%5D%5D%5D&__client_imported__=true!
+
+
+> Build failed because of webpack errors
+app/layout.tsx(37,40): error TS2554: Expected 0 arguments, but got 1.
+app/lib/firestore-server-utils.ts(4,24): error TS2307: Cannot find module 'firebase-admin' or its corresponding type declarations.
+app/lib/firestore-server-utils.ts(39,30): error TS7006: Parameter 'doc' implicitly has an 'any' type.
+app/lib/firestore-server-utils.ts(73,39): error TS7006: Parameter 'doc' implicitly has an 'any' type.
+src/app/api/genkit/[[...genkit]]/route.ts(3,10): error TS2305: Module '"genkit"' has no exported member 'defineFlow'.
+src/app/api/genkit/[[...genkit]]/route.ts(3,22): error TS2305: Module '"genkit"' has no exported member 'generate'.
+src/app/api/genkit/[[...genkit]]/route.ts(3,32): error TS2305: Module '"genkit"' has no exported member 'init'.
+src/app/api/genkit/[[...genkit]]/route.ts(4,10): error TS2614: Module '"@genkit-ai/google-genai"' has no exported member 'gemini'. Did you mean to use 'import gemini from "@genkit-ai/google-genai"' instead?
+src/app/api/genkit/[[...genkit]]/route.ts(5,31): error TS2307: Cannot find module '@genkit-ai/next/server' or its corresponding type declarations.
+src/app/api/genkit/[[...genkit]]/route.ts(30,12): error TS7031: Binding element 'restaurantName' implicitly has an 'any' type.
+src/app/api/genkit/[[...genkit]]/route.ts(30,28): error TS7031: Binding element 'reviewText' implicitly has an 'any' type.

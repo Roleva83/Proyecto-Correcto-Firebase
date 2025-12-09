@@ -34,7 +34,7 @@ export default function RootLayout({
             Promise.all(unregisterPromises).then(unregistered => {
               if (unregistered.some(Boolean)) {
                 console.log('Todos los Service Workers han sido eliminados. Recargando la página...');
-                window.location.reload(true); // Forzar recarga desde el servidor
+                window.location.reload(); // Forzar recarga desde el servidor
               } else {
                  console.log('No se pudo eliminar ningún Service Worker.');
               }
