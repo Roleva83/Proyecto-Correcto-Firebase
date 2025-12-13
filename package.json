@@ -64,7 +64,7 @@
         "genkit": "^1.25.0",
         "googleapis": "^155.0.0",
         "lucide-react": "^0.263.1",
-        "next": "14.2.33",
+        "next": "14.2.35",
         "next-themes": "^0.3.0",
         "openai": "^5.12.2",
         "papaparse": "^5.4.1",
